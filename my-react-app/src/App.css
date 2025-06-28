@@ -1,0 +1,13 @@
+
+.BackgroundImage{
+  height: 87%;
+  width: 60%;
+  right: 2%;
+  top: 7%;
+  position: absolute;
+  background-image: url(./pngwing.com.png);
+  background-position: center;
+  background-size:contain;
+  background-repeat: no-repeat;
+  z-index: -10;
+}
