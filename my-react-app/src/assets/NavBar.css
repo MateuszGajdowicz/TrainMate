@@ -1,0 +1,30 @@
+nav{
+    position: fixed;
+    width: 100%;
+    top: 0%;
+    display: flex;
+    justify-content: end;
+    background-color: hsl(28, 100%, 60%);
+    left: 0;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.20);
+
+    ul{
+        display: flex;
+        margin: 0px;
+        right: 20px;
+        li{
+            list-style-type: none;
+            padding: 3px 15px;
+            cursor: pointer;
+
+        }
+        li:hover{
+            background-color: hsl(28, 100%, 47%);
+        }
+        #logo{
+            position: absolute;
+            left: 20px;
+        }
+
+    }
+}

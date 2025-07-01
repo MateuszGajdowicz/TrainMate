@@ -63,13 +63,16 @@ function SignUp({setIsRegistered, setIsEmailConfirmDisplayed}){
     return(
         <div>
             <div className="LogInContainer">
+            <div className="Logo"> 
+                <h1>TrainMate</h1>
+            </div>
                 <input required value={email}type="email" placeholder="E-mail" onChange={event=>setEmail(event.target.value)}/>
                 <input required value={username}type="text" placeholder="Nazwa użytkownika" onChange={event=>setUsername(event.target.value)}/>
                 <input required value={password}type="password" placeholder="Hasło" onChange={event=>setPassword(event.target.value)}/>
                 <input required value={confirmPassword}type="password" placeholder="Powtórz hasło"onChange={event=>setConfirmPassword(event.target.value)}/>
                 <button onClick={SignUpUser}>Zarejestruj się</button>
 
-                <p onClick={()=>setIsRegistered(true)}>Masz już konto? Zaloguj się</p>
+                <p onClick={()=>setIsRegistered(true)}>Masz już konto? <span className='span'>Zaloguj się</span></p>
                 <h3>{message}</h3>
 
             </div>

@@ -1,5 +1,6 @@
 import { onAuthStateChanged } from "firebase/auth"
 import { auth } from "../firebase"
+import './ConfirmEmail.css'
 
 function ConfirmEmail({setIsEmailConfirmDisplayed, setIsRegistered,setISEmailVerified}){
 
@@ -11,8 +12,12 @@ function ConfirmEmail({setIsEmailConfirmDisplayed, setIsRegistered,setISEmailVer
         
     
     return(<>
-    <h1 style={{fontSize:"1em", position:"absolute", top:"50%", left:"10%"}}>Wysłaliśmy na twój e-mail wiadomość z potwierdzeniem konta. Kliknij w link aktywacyjny a następnie wróć na stronę kliknij przycisk poniżej</h1>
-    <button onClick={Confirm}>potweirdz </button>
+    <div className="ConfirmContainer">
+            <h3 >Wysłaliśmy na twój e-mail wiadomość z potwierdzeniem konta. Kliknij w link aktywacyjny a następnie wróć na stronę i kliknij przycisk poniżej.</h3>
+            <button onClick={Confirm}>Potwierdziłem </button>
+
+    </div>
+
     </>)
 }   
 export default ConfirmEmail

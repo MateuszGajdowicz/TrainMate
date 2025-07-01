@@ -1,0 +1,24 @@
+.ConfirmContainer{
+     position: absolute;
+     width: 35%;
+     display: flex;
+     flex-direction: column;
+     left: 5%;
+     top: 30%;
+     button{
+        padding:10px 10px;
+        background-color: #FF9131;
+        border:none ;
+        border-radius: 20px;
+        font-size: 1em;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 0.3s ease;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2); /* cien */
+        width: 30%;
+
+       }
+    button:hover{
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.5); /* cien */
+    }
+     }

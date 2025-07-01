@@ -4,6 +4,78 @@
     align-items: center;
     z-index: 100000;
     height: auto;
-    width: 300px;
-    background-color: yellow;
+    width: 400px;
+    position: absolute;
+    top: 11%;
+    left: 5%;
+    gap: 20px;
+    h1{
+        font-size: 4em;
+        margin: 0px;
+        
+    }
+    input{
+        width: 60%;
+        height: 25px;
+        border-radius: 20px;
+        border:#FF9131 solid 3px;
+        background-color: #EAEAEA;
+        transition: 0.3s ease;
+        outline: none;
+
+
+    }
+    input:hover{
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2); /* cien */
+
+    }
+    input:focus{
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2); /* cien */
+        
+
+    }
+    .Logo{
+        background-color:#FF9131;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 10px;
+        border-radius: 35px;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4); /* cien */
+        cursor: pointer;
+        transition: 0.3s ease;
+
+    }
+    .Logo:hover{        
+        box-shadow: 0px 4px 28px rgba(0, 0, 0, 0.7); /* cien */
+
+
+    }
+    button{
+        padding:10px 25px;
+        background-color: #FF9131;
+        border:none ;
+        border-radius: 20px;
+        font-size: 1em;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 0.3s ease;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2); /* cien */
+
+       }
+    button:hover{
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.5); /* cien */
+    }
+    h3{
+        margin: 0px;
+    }
+    .span{
+        color:#FF9131;
+
+    }
+}
+p{
+    cursor: pointer;
+    margin: 0px;
+
 }

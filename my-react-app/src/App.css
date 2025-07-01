@@ -1,9 +1,13 @@
-
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200;400;700&display=swap');
+body {
+  font-family: 'Cairo', sans-serif;
+  font-weight: 500;
+}
 .BackgroundImage{
   height: 87%;
   width: 60%;
   right: 2%;
-  top: 7%;
+  top: 10%;
   position: absolute;
   background-image: url(./pngwing.com.png);
   background-position: center;
