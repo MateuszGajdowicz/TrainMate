@@ -4,6 +4,7 @@ function NavBar({LogOut}){
         <nav>
             <ul>
                 <li id="logo">TrainMate</li>
+                <li>STRONA GŁÓWNA</li>
                 <li>AKTYWNOŚCI</li>
                 <li>WYZWANIA</li>
                 <li>TRENINGI</li>
