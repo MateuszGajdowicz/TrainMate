@@ -4,19 +4,20 @@ import { doc, updateDoc } from "firebase/firestore";
 
 import './AddNewTraining.css'
 import { addDoc, collection } from 'firebase/firestore';
-function AddNewTraining({trainingOptions, user,fetchTrainingsList,selectedTraining}){
+function AddNewTraining({trainingsList,trainingOptions, user,fetchTrainingsList,selectedTraining,setSelectedTraining}){
 
 
     const [trainingType, setTrainingType] = useState('')
-    const [trainingGoal, setTrainingGoal] = useState('')
+    const [trainingGoal, setTrainingGoal] = useState('Czas')
     const [trainingGoalValue, setTrainingGoalValue] = useState('')
     const [trainingHour, setTrainingHour]  = useState('')
     const [trainingDate, setTrainingDate] = useState('')
-
     const [unit, setUnit] = useState('')
+    const [trainingDescription, setTrainingDescription] = useState('')
 
     const [isEditRunning, setIsEditRunning] = useState(false)
 
+    
 
     useEffect(()=>{
         switch(trainingGoal){
@@ -32,10 +33,29 @@ function AddNewTraining({trainingOptions, user,fetchTrainingsList,selectedTraini
         }
     },[trainingGoal])
 
+    function ClearInputs(){
+            setTrainingType('')
+            setTrainingGoal('')
+            setTrainingGoalValue('')
+            setTrainingDate('')
+            setTrainingHour('')
+            setTrainingDescription('')
+    }
+    useEffect(()=>{
+        ClearInputs();
+        setIsEditRunning(false)
+        console.log(trainingsList)
+    },[trainingsList])
+
+    function CancelEdit(){
+        setIsEditRunning(false);
+        ClearInputs();
+        setSelectedTraining(null)
+        }
 
     async function handleTrainingAdd(){
         if(user){
-                if(trainingType&&trainingGoal&&trainingGoalValue&&trainingDate&&trainingHour!==""){
+            if(trainingType&&trainingGoal&&trainingGoalValue&&trainingDate&&trainingHour!==""){
                 const newTraining = {
                     userID: auth.currentUser.uid,
                     trainingType:trainingType,
@@ -44,18 +64,15 @@ function AddNewTraining({trainingOptions, user,fetchTrainingsList,selectedTraini
                     trainingUnit:unit,
                     trainingDate:trainingDate,
                     trainingHour:trainingHour,
+                    trainingDescription:trainingDescription,
                     addingDate:new Date(),
 
                 }
                 const docRef = await addDoc(collection(db, "Trainings"), newTraining)
                 window.alert("Dodano trening!")
                 fetchTrainingsList();
-                setTrainingType('')
-                setTrainingGoal('')
-                setTrainingGoalValue('')
-                setTrainingDate('')
-                setTrainingHour('')
-                setIsEditRunning(false)
+                ClearInputs();
+
                 
             }
             else{
@@ -72,15 +89,22 @@ function AddNewTraining({trainingOptions, user,fetchTrainingsList,selectedTraini
         }
 
     }
-    function prepareForTrainingEdit() {
-        setTrainingType(selectedTraining.trainingType)
-        setTrainingGoal(selectedTraining.trainingGoal)
-        setTrainingGoalValue(selectedTraining.trainingGoalValue)
-        setTrainingDate(selectedTraining.trainingDate)
-        setTrainingHour(selectedTraining.trainingHour)
-        setIsEditRunning(true)
-        
-    }
+
+    useEffect(()=>{
+        if(selectedTraining){
+            setTrainingType(selectedTraining.trainingType)
+            setTrainingGoal(selectedTraining.trainingGoal)
+            setTrainingGoalValue(selectedTraining.trainingGoalValue)
+            setTrainingDate(selectedTraining.trainingDate)
+            setTrainingHour(selectedTraining.trainingHour)
+            setTrainingDescription(selectedTraining.trainingDescription)
+
+            setIsEditRunning(true)
+
+        }
+
+
+    }, [selectedTraining])
 
     async function handleTrainingEdit() {
         try{
@@ -92,11 +116,13 @@ function AddNewTraining({trainingOptions, user,fetchTrainingsList,selectedTraini
                 trainingUnit:unit,
                 trainingDate:trainingDate,
                 trainingHour:trainingHour,
+                trainingDescription:trainingDescription,
 
             })
             window.alert("Udało się zaktualizować trening!")
             fetchTrainingsList()
             setIsEditRunning(false)
+            ClearInputs();
 
         }
         catch(error){
@@ -125,9 +151,11 @@ function AddNewTraining({trainingOptions, user,fetchTrainingsList,selectedTraini
         <input value={trainingGoalValue}type="number" placeholder= {`Wybierz ilość: ${trainingGoal}(${unit})`} onChange={event=>setTrainingGoalValue(event.target.value)}/>
         <input value={trainingDate} type="date" placeholder='Wybierz datę' onChange={event=>setTrainingDate(event.target.value)}/>
         <input value={trainingHour} type="time" placeholder='Wybierz godzinę' onChange={event=>setTrainingHour(event.target.value)}/>
+        <textarea value={trainingDescription} name="" id="" placeholder='Dodatkowe notatki (opcjonalnie)' onChange={event=>setTrainingDescription(event.target.value)}></textarea>
         <button onClick={isEditRunning?handleTrainingEdit:handleTrainingAdd}>{isEditRunning?"Edytuj trening":"Dodaj trening"}</button>
-        <button onClick={prepareForTrainingEdit}>click</button>
-
+        { isEditRunning &&
+            <button onClick={CancelEdit}>Anuluj</button>
+        }
 
     </div>
     </>)

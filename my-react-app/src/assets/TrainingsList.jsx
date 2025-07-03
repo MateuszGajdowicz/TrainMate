@@ -5,8 +5,9 @@ import { auth, db } from '../firebase'
 import { addDoc, collection,doc } from 'firebase/firestore';
 
 
-function TrainingsList({trainingsList,setTrainingsList, setSelectedTraining}){
+function TrainingsList({trainingsList,setTrainingsList,setSelectedTraining}){
 
+    const [elementToExpand, setElementToExpand] = useState(null)
 
     async function DeleteTraining(trainingID) {
         const wantToDelete = window.confirm("Czy na pewno chcesz usunąć ten trening z listy?")
@@ -14,7 +15,8 @@ function TrainingsList({trainingsList,setTrainingsList, setSelectedTraining}){
             try{
                 const trainingDocRef = doc(db,"Trainings", trainingID)
                 await deleteDoc(trainingDocRef) 
-                setTrainingsList(prev=>prev.filter(element=>element.id!==trainingID))
+                setTrainingsList(trainingsList.filter(element=>element.id!==trainingID))
+                
 
 
             }
@@ -37,15 +39,28 @@ function TrainingsList({trainingsList,setTrainingsList, setSelectedTraining}){
         <div className='YourTrainingsContainer'>
             {trainingsList.length!==0?
             trainingsList.map((element,index)=>(
-                <div className='SingleTrainigContainer' key={index}>
+                <div style={{height:elementToExpand===element?"auto":"20%"}}className='SingleTrainigContainer' key={index}>
                     <h3>{element.trainingType}</h3>
+                    {elementToExpand ===element&&
+                    (element.trainingDescription.length!==0?
+                        <p  className='TrainingDescription'>{element.trainingDescription}</p>
+                        :
+                        <p className='TrainingDescription'>Nie ma żadnych dodatkowych informacji</p>
+
+
+                    )
+                    }
                     <div className='HorizontalContainer'>
                         <h4>{element.trainingGoalValue} {element.trainingUnit}</h4>
                         <h4>{element.trainingDate}</h4>
                         <h4>{element.trainingHour}</h4>
-                        <button onClick={()=>setSelectedTraining(element)}>Edytuj</button>
-                        <button onClick={()=>DeleteTraining(element.id)}>Usuń</button>
-                        <button >Przełóż</button>
+                        <div className='buttonContainer'>
+                            <button onClick={()=>elementToExpand ===element?setElementToExpand(null):setElementToExpand(element)}>{elementToExpand ===element?"Zwiń":"Rozwiń"}</button>
+                            <button onClick={()=>setSelectedTraining(element)}>Edytuj</button>
+                            <button onClick={()=>DeleteTraining(element.id)}>Usuń</button>
+
+                        </div>
+
                     </div>
 
                 </div>
