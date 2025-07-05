@@ -1,13 +1,16 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './TrainingsList.css'
 import { deleteDoc } from 'firebase/firestore'
-import { auth, db } from '../firebase'
+import { auth, db } from '../../firebase'
 import { addDoc, collection,doc } from 'firebase/firestore';
+import FilterTrainingsContainer from './FilterTrainingsContainer';
 
 
-function TrainingsList({trainingsList,setTrainingsList,setSelectedTraining}){
+function TrainingsList({trainingOptions,displayedTrainingsList,setDisplayedTrainingList,trainingsList,setTrainingsList,setSelectedTraining}){
 
     const [elementToExpand, setElementToExpand] = useState(null)
+
+
 
     async function DeleteTraining(trainingID) {
         const wantToDelete = window.confirm("Czy na pewno chcesz usunąć ten trening z listy?")
@@ -15,7 +18,7 @@ function TrainingsList({trainingsList,setTrainingsList,setSelectedTraining}){
             try{
                 const trainingDocRef = doc(db,"Trainings", trainingID)
                 await deleteDoc(trainingDocRef) 
-                setTrainingsList(trainingsList.filter(element=>element.id!==trainingID))
+                setDisplayedTrainingList(displayedTrainingsList.filter(element=>element.id!==trainingID))
                 
 
 
@@ -35,10 +38,13 @@ function TrainingsList({trainingsList,setTrainingsList,setSelectedTraining}){
     }
     return(
         <>
-        <h1>TWOJE TRENINGI</h1>
         <div className='YourTrainingsContainer'>
-            {trainingsList.length!==0?
-            trainingsList.map((element,index)=>(
+        <h1 className='Heading'>TWOJE TRENINGI</h1>
+
+        <FilterTrainingsContainer  trainingsList={trainingsList} trainingOptions={trainingOptions} displayedTrainingsList={displayedTrainingsList} setDisplayedTrainingList={setDisplayedTrainingList}/>
+        <div className='AllSingleTrainigsContainer'>
+            {displayedTrainingsList.length!==0?
+            displayedTrainingsList.map((element,index)=>(
                 <div style={{height:elementToExpand===element?"auto":"20%"}}className='SingleTrainigContainer' key={index}>
                     <h3>{element.trainingType}</h3>
                     {elementToExpand ===element&&
@@ -69,6 +75,9 @@ function TrainingsList({trainingsList,setTrainingsList,setSelectedTraining}){
             <h3>Nie masz zaplanowanych żadnych treningów.
                 <br />
                  Może czas to zmienić?</h3>}
+
+        </div>
+
             
 
         </div>

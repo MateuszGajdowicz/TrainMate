@@ -1,19 +1,48 @@
 
+
 .YourTrainingsContainer{
     font-size: 1.2em;
     width: 40%;
     position: absolute;
-    height: 70%;
+    top: 5%;
+    left: 2%;
+    height: 85%;
     overflow: scroll;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap:10px;
-    padding-top: 20px;
+    overflow: scroll;
     scrollbar-width: none;         /* Firefox */
-    -ms-overflow-style: none;      /* IE 10+ */
+    -ms-overflow-style: none;    
+    padding-bottom: 20px;  /* IE 10+ */
+}
+.Heading{
+    position: relative;
+    left: 0%;
+    top: 0%;
+    transform: translateX(-50%); 
+    margin-bottom: 0px;
+
+
 }
 .YourTrainingsContainer::-webkit-scrollbar {
+  display: none;                 /* Chrome, Safari */
+  
+}
+.AllSingleTrainigsContainer{
+    position: absolute;
+    width: 100%;
+    height: 71%;
+    bottom: 0%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    overflow: scroll;
+    padding:10px 0px;
+}
+.AllSingleTrainigsContainer::-webkit-scrollbar {
   display: none;                 /* Chrome, Safari */
 }
 .SingleTrainigContainer {
@@ -23,7 +52,7 @@
     width: 90%;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3); /* cień */
     background: linear-gradient(135deg, hsl(26, 100%, 92%) 5%, hsl(26, 100%, 50%) 170%);
-    height: 20%;
+    height: auto !important ;
     justify-content: space-around;
     border-radius: 27px;
     overflow: none;

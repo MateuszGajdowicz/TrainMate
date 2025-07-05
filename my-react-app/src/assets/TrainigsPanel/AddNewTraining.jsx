@@ -1,5 +1,5 @@
 import { use, useEffect, useState } from 'react'
-import { db, auth } from "../firebase";
+import { db, auth } from "../../firebase";
 import { doc, updateDoc } from "firebase/firestore";
 
 import './AddNewTraining.css'
@@ -136,26 +136,29 @@ function AddNewTraining({trainingsList,trainingOptions, user,fetchTrainingsList,
     return(<>
     <div className='AddNewTrainingContainer'>
         <h2>{isEditRunning?"Edytuj Trening":"Zaplanuj trening"}</h2>
-        <input value={trainingType} list='trainings' placeholder='Wybierz typ treningu' onChange={event=>setTrainingType(event.target.value)}/>
+        <input className="Inputs" value={trainingType} list='trainings' placeholder='Wybierz typ treningu' onChange={event=>setTrainingType(event.target.value)}/>
         <datalist id='trainings'>
             {trainingOptions.map((element,index)=>(
                 <option value={element} key={index}/>
             ))}
 
         </datalist>
-        <select value={trainingGoal} name="" id="" onChange={event=>setTrainingGoal(event.target.value)}>
+        <select className="Inputs" value={trainingGoal} name="" id="" onChange={event=>setTrainingGoal(event.target.value)}>
             <option selected value="Czas">Czas</option>
             <option value='Dystans'>Dystans</option>
             <option value="Kalorie">Kalorie</option>
         </select>
-        <input value={trainingGoalValue}type="number" placeholder= {`Wybierz ilość: ${trainingGoal}(${unit})`} onChange={event=>setTrainingGoalValue(event.target.value)}/>
-        <input value={trainingDate} type="date" placeholder='Wybierz datę' onChange={event=>setTrainingDate(event.target.value)}/>
-        <input value={trainingHour} type="time" placeholder='Wybierz godzinę' onChange={event=>setTrainingHour(event.target.value)}/>
-        <textarea value={trainingDescription} name="" id="" placeholder='Dodatkowe notatki (opcjonalnie)' onChange={event=>setTrainingDescription(event.target.value)}></textarea>
-        <button onClick={isEditRunning?handleTrainingEdit:handleTrainingAdd}>{isEditRunning?"Edytuj trening":"Dodaj trening"}</button>
-        { isEditRunning &&
-            <button onClick={CancelEdit}>Anuluj</button>
-        }
+        <input className="Inputs" value={trainingGoalValue}type="number" placeholder= {`Wybierz ilość: ${trainingGoal}(${unit})`} onChange={event=>setTrainingGoalValue(event.target.value)}/>
+        <input placeholder="Wybierz datę treningu" type={trainingDate ? 'date' : 'text'} onFocus={e => e.target.type = 'date'} onBlur={e => !e.target.value && (e.target.type = 'text')}  className="Inputs" value={trainingDate}  onChange={event=>setTrainingDate(event.target.value)}/>
+        <input className="Inputs" type={trainingHour ? 'time' : 'text'} onFocus={e => e.target.type = 'time'} onBlur={e => !e.target.value && (e.target.type = 'text')}value={trainingHour}  placeholder='Wybierz godzinę' onChange={event=>setTrainingHour(event.target.value)}/>
+        <textarea className="Inputs" value={trainingDescription} name="" id="" placeholder='Dodatkowe notatki (opcjonalnie)' onChange={event=>setTrainingDescription(event.target.value)}></textarea>
+        <div className='ButtonContainer'>
+            <button onClick={isEditRunning?handleTrainingEdit:handleTrainingAdd}>{isEditRunning?"Edytuj trening":"Dodaj trening"}</button>
+            { isEditRunning &&
+                <button onClick={CancelEdit}>Anuluj</button>
+            }
+
+        </div>
 
     </div>
     </>)
