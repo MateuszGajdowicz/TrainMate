@@ -35,7 +35,7 @@ function AddNewTraining({trainingsList,trainingOptions, user,fetchTrainingsList,
 
     function ClearInputs(){
             setTrainingType('')
-            setTrainingGoal('')
+            setTrainingGoal('Czas')
             setTrainingGoalValue('')
             setTrainingDate('')
             setTrainingHour('')

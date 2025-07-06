@@ -9,6 +9,8 @@ import FilterTrainingsContainer from './FilterTrainingsContainer';
 function TrainingsList({trainingOptions,displayedTrainingsList,setDisplayedTrainingList,trainingsList,setTrainingsList,setSelectedTraining}){
 
     const [elementToExpand, setElementToExpand] = useState(null)
+    const [periodOFTrainings,setperiodOFTrainings] = useState('Nadchodzące treningi')
+
 
 
 
@@ -32,20 +34,42 @@ function TrainingsList({trainingOptions,displayedTrainingsList,setDisplayedTrain
         }
 
 
-       
-
         
     }
+
+
+useEffect(() => {
+    if(periodOFTrainings === "Nadchodzące treningi"){
+        setDisplayedTrainingList(trainingsList.filter(element => new Date(element.trainingDate) >= new Date()));
+    } else if (periodOFTrainings === "Zaległe treningi") {
+        setDisplayedTrainingList(trainingsList.filter(element => new Date(element.trainingDate) < new Date()));
+    } else {
+        setDisplayedTrainingList(trainingsList);
+    }
+    }, [trainingsList, periodOFTrainings])
+
+    
+
+
+
     return(
         <>
         <div className='YourTrainingsContainer'>
-        <h1 className='Heading'>TWOJE TRENINGI</h1>
+            <div className='HeadingContainer'> 
+                <h1 className='Heading'>TWOJE TRENINGI</h1>
+                <select className='PeriodSelect'value={periodOFTrainings} name="" id="" onChange={(event)=>setperiodOFTrainings(event.target.value)} >
+                <option  value="Nadchodzące treningi">Nadchodzące treningi</option>
+                <option value="Zaległe treningi">Zaległe treningi</option>
+            </select>
+
+            </div>
+
 
         <FilterTrainingsContainer  trainingsList={trainingsList} trainingOptions={trainingOptions} displayedTrainingsList={displayedTrainingsList} setDisplayedTrainingList={setDisplayedTrainingList}/>
         <div className='AllSingleTrainigsContainer'>
             {displayedTrainingsList.length!==0?
             displayedTrainingsList.map((element,index)=>(
-                <div style={{height:elementToExpand===element?"auto":"20%"}}className='SingleTrainigContainer' key={index}>
+            <div style={{height: elementToExpand === element ? "auto" : "20%", background: periodOFTrainings === 'Zaległe treningi' ? 'linear-gradient(135deg, hsl(26, 100%, 92%) 5%, hsl(12, 100%, 50%) 110%)' : (new Date(element.trainingDate) - new Date()) / (1000 * 60 * 60 * 24) <= 1 ? 'linear-gradient(135deg, hsl(26, 100%, 92%) 5%, hsl(200, 80%, 80%) 110%)' : 'linear-gradient(135deg, hsl(26, 100%, 92%) 5%, hsl(28, 100%, 60%) 170%)'}} className='SingleTrainigContainer' key={index}>
                     <h3>{element.trainingType}</h3>
                     {elementToExpand ===element&&
                     (element.trainingDescription.length!==0?

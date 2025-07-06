@@ -51,8 +51,9 @@ useEffect(()=>{
         id:doc.id,
         ...doc.data()
       }));
-    setDisplayedTrainingList(trainings)
-    setTrainingsList(trainings)
+    setDisplayedTrainingList(trainings.sort((a, b) => new Date(a.trainingDate) - new Date(b.trainingDate)))
+    setTrainingsList(trainings.sort((a, b) => new Date(a.trainingDate) - new Date(b.trainingDate))
+)
 
   }
   useEffect(()=>{
@@ -85,7 +86,7 @@ useEffect(()=>{
             <LogIn user={user}setIsRegistered={setIsRegistered} setIsLoggedIn={setIsLoggedIn} />
           )}
         </>
-      ) : (
+      ) : ( 
         <>
           <NavBar LogOut={LogOut}/>
           <YourTrainingsPanel displayedTrainingsList={displayedTrainingsList} setDisplayedTrainingList={setDisplayedTrainingList} setTrainingsList={setTrainingsList} trainingsList={trainingsList} fetchTrainingsList={fetchTrainingsList} user={user} trainingOptions={trainingOptions}/>

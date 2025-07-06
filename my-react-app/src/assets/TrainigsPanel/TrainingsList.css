@@ -14,18 +14,29 @@
     gap:10px;
     overflow: scroll;
     scrollbar-width: none;         /* Firefox */
-    -ms-overflow-style: none;    
-    padding-bottom: 20px;  /* IE 10+ */
-}
-.Heading{
-    position: relative;
-    left: 0%;
-    top: 0%;
-    transform: translateX(-50%); 
-    margin-bottom: 0px;
+    -ms-overflow-style: none;   
+    .HeadingContainer{
+        display: flex;
+        width: 90%;
+        justify-content: start;
+        align-items: center;
+        gap: 20px;
+        .Heading{
+            position: relative;
+            margin-top: 0px;
+            margin-bottom: 0px;
 
+        }
+        .PeriodSelect{
+            height: 40px;
+            border-radius: 20px;
+            border: 3px solid hsl(28, 100%, 60%) ;
+            
+        }
+    } 
 
 }
+
 .YourTrainingsContainer::-webkit-scrollbar {
   display: none;                 /* Chrome, Safari */
   
@@ -33,8 +44,8 @@
 .AllSingleTrainigsContainer{
     position: absolute;
     width: 100%;
-    height: 71%;
-    bottom: 0%;
+    height: 75%;
+    bottom: 1%;
     display: flex;
     flex-direction: column;
     align-items: center;
