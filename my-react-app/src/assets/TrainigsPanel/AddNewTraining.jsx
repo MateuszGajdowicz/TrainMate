@@ -1,7 +1,7 @@
 import { use, useEffect, useState } from 'react'
 import { db, auth } from "../../firebase";
 import { doc, updateDoc } from "firebase/firestore";
-
+import { estimateCalories } from '../caloriesEstimator';
 import './AddNewTraining.css'
 import { addDoc, collection } from 'firebase/firestore';
 function AddNewTraining({trainingsList,trainingOptions, user,fetchTrainingsList,selectedTraining,setSelectedTraining}){
@@ -14,6 +14,8 @@ function AddNewTraining({trainingsList,trainingOptions, user,fetchTrainingsList,
     const [trainingDate, setTrainingDate] = useState('')
     const [unit, setUnit] = useState('')
     const [trainingDescription, setTrainingDescription] = useState('')
+
+    const [estimatedCalories, setEstimatedCalories] = useState()
 
     const [isEditRunning, setIsEditRunning] = useState(false)
 
@@ -65,6 +67,7 @@ function AddNewTraining({trainingsList,trainingOptions, user,fetchTrainingsList,
                     trainingDate:trainingDate,
                     trainingHour:trainingHour,
                     trainingDescription:trainingDescription,
+                    estimatedCalories:estimatedCalories,
                     addingDate:new Date(),
 
                 }
@@ -89,6 +92,32 @@ function AddNewTraining({trainingsList,trainingOptions, user,fetchTrainingsList,
         }
 
     }
+    useEffect(() => {
+        if(trainingGoal==="Kalorie"){
+            setEstimatedCalories(trainingGoalValue)
+        }
+        else {
+                let result = 0;
+
+                if (trainingGoal === "Czas") {
+                    result = estimateCalories({
+                        type: trainingType,
+                        durationMin: parseFloat(trainingGoalValue)
+                    });
+                } else if (trainingGoal === "Dystans") {
+                    result = estimateCalories({
+                        type: trainingType,
+                        distanceKm: parseFloat(trainingGoalValue) / 1000
+                    });
+                }
+
+                setEstimatedCalories(result);
+        
+
+        }
+
+}, [trainingType, trainingGoal, trainingGoalValue]);
+
 
     useEffect(()=>{
         if(selectedTraining){
@@ -149,7 +178,7 @@ function AddNewTraining({trainingsList,trainingOptions, user,fetchTrainingsList,
             <option value="Kalorie">Kalorie</option>
         </select>
         <input className="Inputs" value={trainingGoalValue}type="number" placeholder= {`Wybierz ilość: ${trainingGoal}(${unit})`} onChange={event=>setTrainingGoalValue(event.target.value)}/>
-        <input placeholder="Wybierz datę treningu" type={trainingDate ? 'date' : 'text'} onFocus={e => e.target.type = 'date'} onBlur={e => !e.target.value && (e.target.type = 'text')}  className="Inputs" value={trainingDate}  onChange={event=>setTrainingDate(event.target.value)}/>
+        <input min={new Date().toISOString().split("T")[0]} placeholder="Wybierz datę treningu" type={trainingDate ? 'date' : 'text'} onFocus={e => e.target.type = 'date'} onBlur={e => !e.target.value && (e.target.type = 'text')}  className="Inputs" value={trainingDate}  onChange={event=>setTrainingDate(event.target.value)}/>
         <input className="Inputs" type={trainingHour ? 'time' : 'text'} onFocus={e => e.target.type = 'time'} onBlur={e => !e.target.value && (e.target.type = 'text')}value={trainingHour}  placeholder='Wybierz godzinę' onChange={event=>setTrainingHour(event.target.value)}/>
         <textarea className="Inputs" value={trainingDescription} name="" id="" placeholder='Dodatkowe notatki (opcjonalnie)' onChange={event=>setTrainingDescription(event.target.value)}></textarea>
         <div className='ButtonContainer'>

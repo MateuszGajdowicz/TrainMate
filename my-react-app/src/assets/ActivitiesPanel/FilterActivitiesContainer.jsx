@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import './FilterTrainingsContainer.css'
-function FilterTrainingsContainer({periodOFTrainings,SeparateTrainings,trainingsList,trainingOptions,setDisplayedTrainingList,displayedTrainingsList}){
+function FilterActivitiesContainer({periodOFTrainings,SeparateTrainings,trainingsList,trainingOptions,setDisplayedTrainingList,displayedTrainingsList}){
 
     const [FilteredCategory, setFilteredCategory] = useState('')
     const [firstDateValue, setFirstDateValue] = useState('')
@@ -53,4 +53,4 @@ function FilterTrainingsContainer({periodOFTrainings,SeparateTrainings,trainings
     </div>
     </>)
 }
-export default FilterTrainingsContainer
+export default FilterActivitiesContainer
