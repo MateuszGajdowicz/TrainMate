@@ -1,15 +1,23 @@
 import { useEffect, useState } from 'react'
 import './TrainingsList.css'
-import { deleteDoc } from 'firebase/firestore'
+import { deleteDoc, updateDoc } from 'firebase/firestore'
 import { auth, db } from '../../firebase'
 import { addDoc, collection,doc } from 'firebase/firestore';
 import FilterTrainingsContainer from './FilterTrainingsContainer';
 
 
-function TrainingsList({trainingOptions,displayedTrainingsList,setDisplayedTrainingList,trainingsList,setTrainingsList,setSelectedTraining}){
+function TrainingsList({fetchTrainingsList,trainingOptions,displayedTrainingsList,setDisplayedTrainingList,trainingsList,setTrainingsList,setSelectedTraining}){
 
     const [elementToExpand, setElementToExpand] = useState(null)
     const [periodOFTrainings,setperiodOFTrainings] = useState('Nadchodzące treningi')
+
+    const [favouritesTrainigsList, setFavouritesTrainingsList] = useState([])
+
+    useEffect(()=>{
+        if(trainingsList && displayedTrainingsList){
+            setFavouritesTrainingsList(displayedTrainingsList.filter(element=>element.isFavourite===true))
+        }
+    },[trainingsList,displayedTrainingsList])
 
 
 
@@ -62,6 +70,31 @@ useEffect(() => {
 
 }, [trainingsList, periodOFTrainings]);
 
+async function handleFavourite(element){
+    try{
+        const docRef = doc(db, "Trainings", element.id);
+        if(element.isFavourite===false){
+            await updateDoc(docRef, {
+            isFavourite:true,
+
+        })
+
+        }
+        else{
+            await updateDoc(docRef,{
+                isFavourite:false
+            })
+        }
+
+        fetchTrainingsList();
+    }
+    catch(error){
+        window.alert("Nie udało się dodać do ulubionych")
+    }
+
+
+}
+
 
 
 
@@ -78,11 +111,13 @@ useEffect(() => {
             </div>
 
 
-        <FilterTrainingsContainer periodOFTrainings={periodOFTrainings} SeparateTrainings={SeparateTrainings} trainingsList={trainingsList} trainingOptions={trainingOptions} displayedTrainingsList={displayedTrainingsList} setDisplayedTrainingList={setDisplayedTrainingList}/>
+        <FilterTrainingsContainer favouritesTrainigsList={favouritesTrainigsList} periodOFTrainings={periodOFTrainings} SeparateTrainings={SeparateTrainings} trainingsList={trainingsList} trainingOptions={trainingOptions} displayedTrainingsList={displayedTrainingsList} setDisplayedTrainingList={setDisplayedTrainingList}/>
         <div className='AllSingleTrainigsContainer'>
             {displayedTrainingsList.length!==0?
             displayedTrainingsList.map((element,index)=>(
+            
             <div style={{height: elementToExpand === element ? "auto" : "20%", background: periodOFTrainings === 'Zaległe treningi' ? 'linear-gradient(135deg, hsl(26, 100%, 92%) 5%, hsl(12, 100%, 50%) 110%)' : (new Date(element.trainingDate).getDay() === new Date().getDay())? 'linear-gradient(135deg, hsl(26, 100%, 92%) 5%, hsl(200, 80%, 80%) 110%)' : 'linear-gradient(135deg, hsl(26, 100%, 92%) 5%, hsl(28, 100%, 60%) 170%)'}} className='SingleTrainigContainer' key={index}>
+                <h1 className='ToggleFavourite'style={{color:element.isFavourite?"hsl(26, 100%, 50%)":"black"}} onClick={()=>handleFavourite(element)}>❤︎</h1>
                     <h3>{element.trainingType}</h3>
                         {elementToExpand === element && (
                             <>

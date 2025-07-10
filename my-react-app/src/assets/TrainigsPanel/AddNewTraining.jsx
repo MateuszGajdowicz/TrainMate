@@ -68,6 +68,7 @@ function AddNewTraining({trainingsList,trainingOptions, user,fetchTrainingsList,
                     trainingHour:trainingHour,
                     trainingDescription:trainingDescription,
                     estimatedCalories:estimatedCalories,
+                    isFavourite:false,
                     addingDate:new Date(),
 
                 }

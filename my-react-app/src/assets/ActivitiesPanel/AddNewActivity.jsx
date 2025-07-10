@@ -15,6 +15,8 @@ function AddNewActivity({trainingOptions,user,fetchActivitiesList}) {
     const [activityDescription, setActivityDescription] = useState('')
 
     const [estimatedCalories, setEstimatedCalories] = useState()
+    const [rating, setRating] = useState(0);
+    const [hoveredStar, setHoveredStar] = useState(0);
 
     useEffect(()=>{
         switch(activityGoal){
@@ -30,6 +32,16 @@ function AddNewActivity({trainingOptions,user,fetchActivitiesList}) {
         }
     },[activityGoal])
 
+function ClearInputs(){
+            setActivityType('')
+            setActivityGoal('Czas')
+            setActivityTGoalValue('')
+            setActivityHour('')
+            setActivityDate('')
+            setActivityDescription('')
+            setRating(0)
+    }
+
  async function handleActivityAdd(){
         if(user){
             if(activityType&&activityGoal&&activityGoalValue&&activityDate&&activityHour!==""){
@@ -43,13 +55,15 @@ function AddNewActivity({trainingOptions,user,fetchActivitiesList}) {
                     activityHour:activityHour,
                     activityDescription:activityDescription,
                     estimatedCalories:estimatedCalories,
+                    acitivityRating:rating,
+                    isFavourite:false,
                     addingDate:new Date(),
 
                 }
                 const docRef = await addDoc(collection(db, "Activities"), newActivity)
                 window.alert("Dodano trening!");
                 fetchActivitiesList()
-                // ClearInputs();
+                ClearInputs();
 
                 
             }
@@ -92,12 +106,14 @@ function AddNewActivity({trainingOptions,user,fetchActivitiesList}) {
         }
 
 }, [activityType, activityGoal, activityGoalValue]);
+
+
   return (
     <>
       <div className='AddNewTrainingContainer'>
         <h2>Wykonałeś nieplanowany trening? Dodaj go tutaj!</h2>
 
-        <input className="Inputs" list='trainings' placeholder='Wybierz typ treningu' onChange={event=>setActivityType(event.target.value)}/>
+        <input value={activityType} className="Inputs" list='trainings' placeholder='Wybierz typ treningu' onChange={event=>setActivityType(event.target.value)}/>
         <datalist id='trainings'>
             {trainingOptions.map(element=>(
                 <option value={element}/>
@@ -105,21 +121,35 @@ function AddNewActivity({trainingOptions,user,fetchActivitiesList}) {
 
         </datalist>
 
-        <select className="Inputs" value={activityGoal} onChange={event=>setActivityGoal(event.target.value)}> 
+        <select  value={activityGoal} className="Inputs"  onChange={event=>setActivityGoal(event.target.value)}> 
           <option value="Czas">Czas</option>
           <option value="Dystans">Dystans</option>
           <option value="Kalorie">Kalorie</option>
         </select>
 
-        <input className="Inputs" type="number" placeholder={`Wybierz ilość: ${activityGoal}(${unit})`} onChange={event=>setActivityTGoalValue(event.target.value)} />
+        <input value={activityGoalValue} className="Inputs" type="number" placeholder={`Wybierz ilość: ${activityGoal}(${unit})`} onChange={event=>setActivityTGoalValue(event.target.value)} />
+ 
+        <input value={activityDate}  max={new Date().toISOString().split("T")[0]} className="Inputs" type={activityDate ? 'date' : 'text'} onFocus={e => e.target.type = 'date'} onBlur={e => !e.target.value && (e.target.type = 'text')} placeholder="Wybierz datę treningu" onChange={event=>setActivityDate(event.target.value)} />
 
-        <input className="Inputs" type={activityDate ? 'date' : 'text'} onFocus={e => e.target.type = 'date'} onBlur={e => !e.target.value && (e.target.type = 'text')} placeholder="Wybierz datę treningu" onChange={event=>setActivityDate(event.target.value)} />
+        <input value={activityHour} className="Inputs" type={activityHour ? 'time' : 'text'} onFocus={e => e.target.type = 'time'} onBlur={e => !e.target.value && (e.target.type = 'text')} placeholder="Wybierz godzinę" onChange={event=>setActivityHour(event.target.value)}  />
 
-        <input className="Inputs" type={activityHour ? 'time' : 'text'} onFocus={e => e.target.type = 'time'} onBlur={e => !e.target.value && (e.target.type = 'text')} placeholder="Wybierz godzinę" onChange={event=>setActivityHour(event.target.value)}  />
+        <textarea value={activityDescription} className="Inputs" placeholder="Dodatkowe notatki (opcjonalnie)" onChange={event=>setActivityDescription(event.target.value)}></textarea>
+            <div style={{ display: 'flex', alignItems:'center', gap: 5, fontSize: 28, cursor: 'pointer', padding:'0px'}}>
+            <p style={{fontSize:'0.7em'}}>Oceń swój trening:</p>
 
-        <textarea className="Inputs" placeholder="Dodatkowe notatki (opcjonalnie)" onChange={event=>setActivityDescription(event.target.value)}></textarea>
-
-        <div className='ButtonContainer'>
+            {[1, 2, 3, 4, 5].map((star) => (
+                <span
+                key={star}
+                style={{ color: star <= (hoveredStar || rating) ? 'gold' : 'lightgray', transition: 'color 0.2s'}}
+                onMouseEnter={() => setHoveredStar(star)}
+                onMouseLeave={() => setHoveredStar(0)}
+                onClick={() => setRating(star)}
+                >
+                ★
+                </span>
+            ))}
+            </div>
+     <div className='ButtonContainer'>
           <button onClick={handleActivityAdd}>Dodaj trening</button>
           <button>Anuluj</button>
         </div>

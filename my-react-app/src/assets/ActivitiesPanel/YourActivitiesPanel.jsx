@@ -8,7 +8,7 @@ function YourActivitiesPanel({trainingOptions,user,setActivitesList,activitesLis
 
     return(
         <>
-        <ActivitiesList activitesList={activitesList} setActivitesList={setActivitesList} displayedActivitiesList={displayedActivitiesList} setDisplayedActivitiesList={setDisplayedActivitiesList}  />
+        <ActivitiesList fetchActivitiesList={fetchActivitiesList} trainingOptions={trainingOptions} activitesList={activitesList} setActivitesList={setActivitesList} displayedActivitiesList={displayedActivitiesList} setDisplayedActivitiesList={setDisplayedActivitiesList}  />
         <AddNewActivity user={user} trainingOptions={trainingOptions}  fetchActivitiesList={fetchActivitiesList}/>
         </>
     )

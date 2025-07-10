@@ -1,32 +1,96 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
+import { deleteDoc,updateDoc } from 'firebase/firestore'
+import { auth, db } from '../../firebase'
+import { addDoc, collection,doc } from 'firebase/firestore';
 import '../TrainigsPanel/TrainingsList.css'
+import FilterActivitiesContainer from './FilterActivitiesContainer';
 
-function ActivitiesList({activitesList,setActivitesList,displayedActivitiesList,setDisplayedActivitiesList}) {
+function ActivitiesList({fetchActivitiesList,trainingOptions,activitesList,setActivitesList,displayedActivitiesList,setDisplayedActivitiesList}) {
 
     const [elementToExpand,setElementToExpand] = useState(null)
+
+    const [favouriteActivitiesList, setFavouritesActivitiesList] = useState([])
+
+    useEffect(()=>{
+        if(activitesList && displayedActivitiesList){
+            setFavouritesActivitiesList(activitesList.filter(element=>element.isFavourite===true))
+        }
+    },[activitesList,displayedActivitiesList])
+
+
+
+
+        async function DeleteActivity(activityID) {
+        const wantToDelete = window.confirm("Czy na pewno chcesz usunąć ten trening z listy?")
+        if(wantToDelete){
+            try{
+                const activityDocRef = doc(db,"Activities", activityID)
+                await deleteDoc(activityDocRef) 
+                setDisplayedActivitiesList(displayedActivitiesList.filter(element=>element.id!==activityID))
+                
+
+
+            }
+            catch(error){
+                window.alert("Nie udało się usunąć treningu z listy")
+                console.log(error)
+            }
+
+
+        }
+
+
+        
+    }
+async function handleFavourite(element){
+    try{
+        const docRef = doc(db, "Activities", element.id);
+        if(element.isFavourite===false){
+            await updateDoc(docRef, {
+            isFavourite:true,
+
+        })
+
+        }
+        else{
+            await updateDoc(docRef,{
+                isFavourite:false
+            })
+        }
+        fetchActivitiesList();
+
+    }
+    catch(error){
+        window.alert("Nie udało się dodać do ulubionych")
+        console.log(error)
+    }
+
+
+}
+
+
   return (
     <>
       <div className="YourTrainingsContainer">
         <div className="HeadingContainer">
           <h1 className="Heading">WYKONANE TRENINGI</h1>
-          <select className="PeriodSelect">
-            <option value="Nadchodzące treningi">Nadchodzące treningi</option>
-            <option value="Zaległe treningi">Zaległe treningi</option>
-          </select>
+
         </div>
 
-        <div className="FilterTrainingsContainer">
-          {/* Tutaj można dodać statyczne filtry */}
-        </div>
+<FilterActivitiesContainer favouriteActivitiesList={favouriteActivitiesList} trainingOptions={trainingOptions}  displayedActivitiesList={displayedActivitiesList} setDisplayedActivitiesList={setDisplayedActivitiesList} activitesList={activitesList}/>
 
 <div className='AllSingleTrainigsContainer'>
             {displayedActivitiesList.length!==0?
             displayedActivitiesList.map((element,index)=>(
             <div  className='SingleTrainigContainer' key={index}>
+            <h1 className='ToggleFavourite'style={{color:element.isFavourite?"hsl(26, 100%, 50%)":"black"}} onClick={()=>handleFavourite(element)}>❤︎</h1>
+
+
                     <h3>{element.activityType}</h3>
                         {elementToExpand === element && (
                             <>
                                 <p>Szacunkowe spalone kalorie: <strong>{element.estimatedCalories}</strong></p>
+                                <p>Ocena treningu : {element.acitivityRating}/5</p>
                                 {element.activityDescription && element.activityDescription.length !== 0 ? (
                                     <p className='TrainingDescription'>{element.activityDescription}</p>
                                 ) : (
@@ -40,9 +104,9 @@ function ActivitiesList({activitesList,setActivitesList,displayedActivitiesList,
                         <h4>{element.activityDate}</h4>
                         <h4>{element.activityHour}</h4>
                         <div className='buttonContainer'>
-                            <button onClick={()=>elementToExpand?setElementToExpand(null):setElementToExpand(element)} >{elementToExpand?"Zwiń":"Rozwiń"}</button>
+                            <button onClick={()=>elementToExpand?setElementToExpand(null):setElementToExpand(element)} >{elementToExpand===element?"Zwiń":"Rozwiń"}</button>
                             <button >Edytuj</button>
-                            <button >Usuń</button>
+                            <button onClick={()=>DeleteActivity(element.id)} >Usuń</button>
 
                         </div>
 

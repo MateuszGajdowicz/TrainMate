@@ -2,13 +2,18 @@
     width:90%;
     display: flex;
     gap: 10px;
+    .FavouritesButton{
+        padding: 0 15px;
+
+
+    }
     input{
         height: 30px;
         width: 30%;
         border-radius: 20px;
         border: 3px solid hsl(28, 100%, 60%) ;
     }
-    .ClearFiltersButton{
+    .ClearFiltersButton, .FavouritesButton{
         border-radius: 20px;
         border: none;
         background-color:hsl(28, 100%, 60%);

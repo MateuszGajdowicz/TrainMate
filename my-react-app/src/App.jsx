@@ -21,6 +21,8 @@ function App() {
   const [activitesList, setActivitesList] = useState([])
   const [displayedActivitiesList, setDisplayedActivitiesList] = useState([])
 
+  const [favourites, setFavourites] = useState([])
+
   const [user, setUser] = useState(null)
   const [isLoggedIn, setIsLoggedIn] = useState(true)
   const [isRegistered, setIsRegistered] = useState(true)
@@ -107,8 +109,8 @@ useEffect(()=>{
       ) : ( 
         <>
           <NavBar LogOut={LogOut}/>
-          {/* <YourTrainingsPanel displayedTrainingsList={displayedTrainingsList} setDisplayedTrainingList={setDisplayedTrainingList} setTrainingsList={setTrainingsList} trainingsList={trainingsList} fetchTrainingsList={fetchTrainingsList} user={user} trainingOptions={trainingOptions}/> */}
-          <YourActivitiesPanel fetchActivitiesList={fetchActivitiesList}setActivitesList={setActivitesList} activitesList={activitesList} displayedActivitiesList={displayedActivitiesList} setDisplayedActivitiesList={setDisplayedActivitiesList} user={user} trainingOptions={trainingOptions}/>
+          {/* <YourTrainingsPanel favourites={favourites} setFavourites={setFavourites} displayedTrainingsList={displayedTrainingsList} setDisplayedTrainingList={setDisplayedTrainingList} setTrainingsList={setTrainingsList} trainingsList={trainingsList} fetchTrainingsList={fetchTrainingsList} user={user} trainingOptions={trainingOptions}/> */}
+          <YourActivitiesPanel trainingOptions={trainingOptions} fetchActivitiesList={fetchActivitiesList}setActivitesList={setActivitesList} activitesList={activitesList} displayedActivitiesList={displayedActivitiesList} setDisplayedActivitiesList={setDisplayedActivitiesList} user={user}/>
         </>
       )}
     </>
