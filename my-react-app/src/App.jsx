@@ -7,8 +7,8 @@ import SignUp from './assets/SignUp'
 import ConfirmEmail from './assets/ConfirmEmail'
 import NavBar from './assets/NavBar'
 import YourTrainingsPanel from './assets/TrainigsPanel/YourTrainingsPanel'
-import YourActivitiesPanel
- from './assets/ActivitiesPanel/YourActivitiesPanel'
+import YourActivitiesPanel from './assets/ActivitiesPanel/YourActivitiesPanel'
+import PlanContainer from './assets/PlanPanel/PlanContainer'
 import { collection, getDocs, query,where,doc } from 'firebase/firestore'
 
 
@@ -109,8 +109,9 @@ useEffect(()=>{
       ) : ( 
         <>
           <NavBar LogOut={LogOut}/>
-          {/* <YourTrainingsPanel favourites={favourites} setFavourites={setFavourites} displayedTrainingsList={displayedTrainingsList} setDisplayedTrainingList={setDisplayedTrainingList} setTrainingsList={setTrainingsList} trainingsList={trainingsList} fetchTrainingsList={fetchTrainingsList} user={user} trainingOptions={trainingOptions}/> */}
-          <YourActivitiesPanel trainingOptions={trainingOptions} fetchActivitiesList={fetchActivitiesList}setActivitesList={setActivitesList} activitesList={activitesList} displayedActivitiesList={displayedActivitiesList} setDisplayedActivitiesList={setDisplayedActivitiesList} user={user}/>
+          <YourTrainingsPanel favourites={favourites} setFavourites={setFavourites} displayedTrainingsList={displayedTrainingsList} setDisplayedTrainingList={setDisplayedTrainingList} setTrainingsList={setTrainingsList} trainingsList={trainingsList} fetchTrainingsList={fetchTrainingsList} user={user} trainingOptions={trainingOptions}/>
+          {/* <YourActivitiesPanel trainingOptions={trainingOptions} fetchActivitiesList={fetchActivitiesList}setActivitesList={setActivitesList} activitesList={activitesList} displayedActivitiesList={displayedActivitiesList} setDisplayedActivitiesList={setDisplayedActivitiesList} user={user}/> */}
+          {/* <PlanContainer trainingOptions={trainingOptions}/> */}
         </>
       )}
     </>

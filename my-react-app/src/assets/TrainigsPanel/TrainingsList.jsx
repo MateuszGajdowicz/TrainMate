@@ -116,7 +116,7 @@ async function handleFavourite(element){
             {displayedTrainingsList.length!==0?
             displayedTrainingsList.map((element,index)=>(
             
-            <div style={{height: elementToExpand === element ? "auto" : "20%", background: periodOFTrainings === 'Zaległe treningi' ? 'linear-gradient(135deg, hsl(26, 100%, 92%) 5%, hsl(12, 100%, 50%) 110%)' : (new Date(element.trainingDate).getDay() === new Date().getDay())? 'linear-gradient(135deg, hsl(26, 100%, 92%) 5%, hsl(200, 80%, 80%) 110%)' : 'linear-gradient(135deg, hsl(26, 100%, 92%) 5%, hsl(28, 100%, 60%) 170%)'}} className='SingleTrainigContainer' key={index}>
+            <div style={{height: elementToExpand === element ? "auto" : "20%", background: periodOFTrainings === 'Zaległe treningi' ? 'linear-gradient(135deg, hsl(26, 100%, 92%) 5%, hsl(12, 100%, 50%) 110%)' : (new Date(element.trainingDate).getDate() === new Date().getDate()) && (new Date(element.trainingDate).getMonth() === new Date().getMonth()) && (new Date(element.trainingDate).getFullYear() === new Date().getFullYear()) ? 'linear-gradient(135deg, hsl(26, 100%, 92%) 5%, hsl(200, 80%, 80%) 110%)' : 'linear-gradient(135deg, hsl(26, 100%, 92%) 5%, hsl(28, 100%, 60%) 170%)'}} className='SingleTrainigContainer' key={index}>
                 <h1 className='ToggleFavourite'style={{color:element.isFavourite?"hsl(26, 100%, 50%)":"black"}} onClick={()=>handleFavourite(element)}>❤︎</h1>
                     <h3>{element.trainingType}</h3>
                         {elementToExpand === element && (

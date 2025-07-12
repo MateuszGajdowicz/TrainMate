@@ -11,6 +11,26 @@
     gap: 23px;
     padding: 20px 40px;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3); /* cień */
+    .goalContainer{
+        display: flex;
+        width: 80%;
+        justify-content: space-between;
+        .Inputs{
+            width:70%;
+
+        }
+    }
+    .checkContainer{
+        display: flex;
+        gap: 10px;
+        width: 90%;
+        .DaysInput{
+            right: 0px;
+            border-radius: 20px;
+            border: 3px hsl(28, 100%, 60%) solid;
+        }
+    }
+
 
     h2{
         margin: 0px;

@@ -19,6 +19,10 @@ function AddNewTraining({trainingsList,trainingOptions, user,fetchTrainingsList,
 
     const [isEditRunning, setIsEditRunning] = useState(false)
 
+
+    const [isRepeating, setIsRepeating] = useState(false)
+    const [daysRepeat, setDaysRepeat] = useState(0)
+    const [repeatCount, setRepeatCount] = useState(1)
     
 
     useEffect(()=>{
@@ -42,6 +46,10 @@ function AddNewTraining({trainingsList,trainingOptions, user,fetchTrainingsList,
             setTrainingDate('')
             setTrainingHour('')
             setTrainingDescription('')
+            setIsRepeating(false)
+            setRepeatCount(1)
+            setDaysRepeat(0)
+
     }
     useEffect(()=>{
         ClearInputs();
@@ -55,24 +63,39 @@ function AddNewTraining({trainingsList,trainingOptions, user,fetchTrainingsList,
         setSelectedTraining(null)
         }
 
+        useEffect(()=>{
+            console.log(isRepeating)
+        },[isRepeating])
+
     async function handleTrainingAdd(){
         if(user){
             if(trainingType&&trainingGoal&&trainingGoalValue&&trainingDate&&trainingHour!==""){
-                const newTraining = {
-                    userID: auth.currentUser.uid,
-                    trainingType:trainingType,
-                    trainingGoal:trainingGoal,
-                    trainingGoalValue:trainingGoalValue,
-                    trainingUnit:unit,
-                    trainingDate:trainingDate,
-                    trainingHour:trainingHour,
-                    trainingDescription:trainingDescription,
-                    estimatedCalories:estimatedCalories,
-                    isFavourite:false,
-                    addingDate:new Date(),
+            for(let i=0;i<repeatCount;i++){
+                const baseDate = new Date(trainingDate);
+                const newDate = !isRepeating? baseDate: new Date(baseDate.getTime() + i * daysRepeat * 24 * 60 * 60 * 1000);
+                        const newTraining={
+                            userID: auth.currentUser.uid,
+                            trainingType:trainingType,
+                            trainingGoal:trainingGoal,
+                            trainingGoalValue:trainingGoalValue,
+                            trainingUnit:unit,
+                            trainingDate:newDate.toISOString().split("T")[0],
+                            trainingHour:trainingHour,
+                            trainingDescription:trainingDescription,
+                            estimatedCalories:estimatedCalories,
+                            isFavourite:false,
+                            addingDate:new Date(),
+
+                        }
+                    const docRef = await addDoc(collection(db, "Trainings"), newTraining)
+
+
+
+                    
 
                 }
-                const docRef = await addDoc(collection(db, "Trainings"), newTraining)
+
+
                 window.alert("Dodano trening!")
                 fetchTrainingsList();
                 ClearInputs();
@@ -162,6 +185,13 @@ function AddNewTraining({trainingsList,trainingOptions, user,fetchTrainingsList,
         
     }
 
+
+
+    function handleChecked(event){
+        setIsRepeating(event.target.value === 'yes')
+
+
+    }
     
     return(<>
     <div className='AddNewTrainingContainer'>
@@ -173,15 +203,45 @@ function AddNewTraining({trainingsList,trainingOptions, user,fetchTrainingsList,
             ))}
 
         </datalist>
+        <div className='goalContainer'>
+            <p>Wybierz swój cel: </p>
         <select className="Inputs" value={trainingGoal} name="" id="" onChange={event=>setTrainingGoal(event.target.value)}>
-            <option selected value="Czas">Czas</option>
+            <option  value="Czas">Czas</option>
             <option value='Dystans'>Dystans</option>
             <option value="Kalorie">Kalorie</option>
         </select>
+
+        </div>
+
         <input className="Inputs" value={trainingGoalValue}type="number" placeholder= {`Wybierz ilość: ${trainingGoal}(${unit})`} onChange={event=>setTrainingGoalValue(event.target.value)}/>
         <input min={new Date().toISOString().split("T")[0]} placeholder="Wybierz datę treningu" type={trainingDate ? 'date' : 'text'} onFocus={e => e.target.type = 'date'} onBlur={e => !e.target.value && (e.target.type = 'text')}  className="Inputs" value={trainingDate}  onChange={event=>setTrainingDate(event.target.value)}/>
         <input className="Inputs" type={trainingHour ? 'time' : 'text'} onFocus={e => e.target.type = 'time'} onBlur={e => !e.target.value && (e.target.type = 'text')}value={trainingHour}  placeholder='Wybierz godzinę' onChange={event=>setTrainingHour(event.target.value)}/>
         <textarea className="Inputs" value={trainingDescription} name="" id="" placeholder='Dodatkowe notatki (opcjonalnie)' onChange={event=>setTrainingDescription(event.target.value)}></textarea>
+        <p>Czy chcesz powtarzać ten trening?</p>
+        <div className='checkContainer'>
+            <input onChange={event=>handleChecked(event)} checked={isRepeating === true} type="radio" id="yes" name="repeat" value="yes" />
+            <label htmlFor="yes">Tak</label>
+
+            <input onChange={event=>handleChecked(event)} checked={isRepeating===false} type="radio" id="no" name="repeat" value="no" />
+            <label htmlFor="no">Nie</label>
+                    {isRepeating&&
+                    (
+                        <>
+                    <input style={{width:"20%"}} onChange={event=>setDaysRepeat(parseInt(event.target.value))}  className='DaysInput' type='number' min={0} placeholder='Co ile dni?'/>
+                    <input style={{width:"40%"}} onChange={event=>setRepeatCount(parseInt(event.target.value))} className='DaysInput' type="number"  min={0}  placeholder='Ile razy chcesz powtórzyć?'/>
+                        </>
+
+
+                    )
+
+        
+        }
+
+
+        </div>
+
+
+
         <div className='ButtonContainer'>
             <button onClick={isEditRunning?handleTrainingEdit:handleTrainingAdd}>{isEditRunning?"Edytuj trening":"Dodaj trening"}</button>
             { isEditRunning &&
