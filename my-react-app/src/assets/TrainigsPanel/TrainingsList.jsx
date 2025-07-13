@@ -46,7 +46,7 @@ function TrainingsList({fetchTrainingsList,trainingOptions,displayedTrainingsLis
     }
 
 function toDateOnly(date) {
-  return new Date(date).toISOString().split('T')[0];
+    return new Date(date).toLocaleDateString('sv-SE'); // => "2025-07-13"
 }
 
 function SeparateTrainings(){
@@ -63,6 +63,8 @@ function SeparateTrainings(){
   } else {
     setDisplayedTrainingList(trainingsList);
   }
+  console.log(today)
+  console.log(new Date())
 
 }
 useEffect(() => {

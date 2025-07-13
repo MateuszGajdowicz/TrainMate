@@ -8,7 +8,7 @@ import ConfirmEmail from './assets/ConfirmEmail'
 import NavBar from './assets/NavBar'
 import YourTrainingsPanel from './assets/TrainigsPanel/YourTrainingsPanel'
 import YourActivitiesPanel from './assets/ActivitiesPanel/YourActivitiesPanel'
-import PlanContainer from './assets/PlanPanel/PlanContainer'
+import PlanPanel from './assets/PlanPanel/PlanPanel'
 import { collection, getDocs, query,where,doc } from 'firebase/firestore'
 
 
@@ -20,6 +20,8 @@ function App() {
 
   const [activitesList, setActivitesList] = useState([])
   const [displayedActivitiesList, setDisplayedActivitiesList] = useState([])
+
+  const [trainingPlan, setTrainingPlan] = useState([])
 
   const [favourites, setFavourites] = useState([])
 
@@ -109,9 +111,9 @@ useEffect(()=>{
       ) : ( 
         <>
           <NavBar LogOut={LogOut}/>
-          <YourTrainingsPanel favourites={favourites} setFavourites={setFavourites} displayedTrainingsList={displayedTrainingsList} setDisplayedTrainingList={setDisplayedTrainingList} setTrainingsList={setTrainingsList} trainingsList={trainingsList} fetchTrainingsList={fetchTrainingsList} user={user} trainingOptions={trainingOptions}/>
+          {/* <YourTrainingsPanel favourites={favourites} setFavourites={setFavourites} displayedTrainingsList={displayedTrainingsList} setDisplayedTrainingList={setDisplayedTrainingList} setTrainingsList={setTrainingsList} trainingsList={trainingsList} fetchTrainingsList={fetchTrainingsList} user={user} trainingOptions={trainingOptions}/> */}
           {/* <YourActivitiesPanel trainingOptions={trainingOptions} fetchActivitiesList={fetchActivitiesList}setActivitesList={setActivitesList} activitesList={activitesList} displayedActivitiesList={displayedActivitiesList} setDisplayedActivitiesList={setDisplayedActivitiesList} user={user}/> */}
-          {/* <PlanContainer trainingOptions={trainingOptions}/> */}
+          <PlanPanel setTrainingPlan={setTrainingPlan} trainingPlan={trainingPlan} user={user} trainingOptions={trainingOptions}/>
         </>
       )}
     </>

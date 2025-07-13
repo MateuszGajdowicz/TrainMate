@@ -1,0 +1,9 @@
+.DisplayPlanContainer{
+    position: absolute;
+    height: 85%;
+    background-color: red;
+    top: 7% ;
+    right: 5%;
+    width: 40%;
+    
+}

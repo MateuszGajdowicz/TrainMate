@@ -2,13 +2,14 @@
     position: absolute;
     display: flex;
     flex-direction: column;
-    width: 35% ;
+    width: 33% ;
     height: 70%;
     top: 13%;
     left: 2%;
     align-items: start;
     justify-content: space-around;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3); /* cień */
+    padding-left: 25px;
 
     background: linear-gradient(135deg, hsl(26, 100%, 92%, 0.95) 0%, hsl(26, 100%, 50%, 0.95) 100%);
     border-radius: 30px;
@@ -16,8 +17,7 @@
     padding-bottom: 20px;
     .GoalContainer{
         display: flex;
-        width: 70%;
-        margin-left: 20px;
+        width: 80%;
         justify-content: space-between;
         .planInput{
             width: 55%;
@@ -28,16 +28,13 @@
     }
 
     .planInput, .rs_control{
-        width: 70%;
+        width: 80%;
         height: 30px;
         border-radius: 20px;
         border: 3px hsl(28, 100%, 60%) solid;
-        margin-left: 20px;
 
     }
-    .rs_control{
-        left: 20px;
-    }
+
     .createPlanButton{
             width: 50%;
             padding: 13px;

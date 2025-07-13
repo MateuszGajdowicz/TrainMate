@@ -79,7 +79,8 @@ function AddNewTraining({trainingsList,trainingOptions, user,fetchTrainingsList,
                             trainingGoal:trainingGoal,
                             trainingGoalValue:trainingGoalValue,
                             trainingUnit:unit,
-                            trainingDate:newDate.toISOString().split("T")[0],
+                            trainingDate: new Date(newDate).toLocaleDateString('sv-SE'),
+
                             trainingHour:trainingHour,
                             trainingDescription:trainingDescription,
                             estimatedCalories:estimatedCalories,
@@ -222,7 +223,7 @@ function AddNewTraining({trainingsList,trainingOptions, user,fetchTrainingsList,
             <input onChange={event=>handleChecked(event)} checked={isRepeating === true} type="radio" id="yes" name="repeat" value="yes" />
             <label htmlFor="yes">Tak</label>
 
-            <input onChange={event=>handleChecked(event)} checked={isRepeating===false} type="radio" id="no" name="repeat" value="no" />
+            <input onChange={event=>handleChecked(event)} onClick={()=>{setRepeatCount(1), setDaysRepeat(0)}} checked={isRepeating===false} type="radio" id="no" name="repeat" value="no" />
             <label htmlFor="no">Nie</label>
                     {isRepeating&&
                     (
