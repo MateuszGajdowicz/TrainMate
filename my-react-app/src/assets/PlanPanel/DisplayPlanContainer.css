@@ -1,9 +1,42 @@
-.DisplayPlanContainer{
-    position: absolute;
-    height: 85%;
-    background-color: red;
-    top: 7% ;
-    right: 5%;
-    width: 40%;
-    
+#DisplayPlanContainer{
+    background-color: hsl(26, 100%, 96%);
+    top: 8%;
+    display: flex;
+    align-items: start;
+    border-radius: 30px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3); /* cień */
+    .AllSingleTrainigsContainer{
+        top: 13%;
+    }
+    .headingContainer{
+        display: flex;
+        height: 10%;
+        width: 70%;
+        margin-left: 20px;
+        gap: 10px;
+        align-items: center;
+        margin-top: 10px;
+        button{
+            padding: 15px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            background-color:hsl(28, 100%, 60%);
+                    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2); /* cien */;
+                    transition: 0.2s ease;
+        }
+        button:hover{
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4); /* cien */;
+        }
+        h1{
+            margin: 0px
+
+        }
+    }
+
+    .SingleTrainigContainer{
+background: linear-gradient(135deg, hsl(0, 0%, 100%) 35%, hsl(26, 100%, 50%) 150%);
+
+        
+    }
 }

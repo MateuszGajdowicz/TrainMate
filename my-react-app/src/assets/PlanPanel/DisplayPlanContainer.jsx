@@ -1,9 +1,15 @@
 import './DisplayPlanContainer.css'
 import '../TrainigsPanel/TrainingsList.css'
-function DisplayPlanContainer({trainingPlan}){
+function DisplayPlanContainer({setSelectedTraining,trainingPlan}){
     return(<>
-    <div style={{left:'50%'}} className="YourTrainingsContainer">
-        <h1>Twój nowy plan</h1>
+    <div style={{left:'50%'}} className="YourTrainingsContainer" id="DisplayPlanContainer">
+        <div className='headingContainer'>
+            <h1>Twój nowy plan</h1>
+            <button>Dodaj plan</button>
+
+        </div>
+
+
         <div className='AllSingleTrainigsContainer'> 
             {
                 trainingPlan.length===0?
@@ -17,7 +23,7 @@ function DisplayPlanContainer({trainingPlan}){
                         <h4>{element.trainingDays}</h4>
                         <div className='buttonContainer'>
                             <button >Przełóż</button>
-                            <button >Edytuj</button>
+                            <button onClick={()=>setSelectedTraining(element)}>Edytuj</button>
                             <button >Usuń</button>
 
                         </div>

@@ -15,6 +15,7 @@
     overflow: scroll;
     scrollbar-width: none;         /* Firefox */
     -ms-overflow-style: none;   
+    
     .HeadingContainer{
         display: flex;
         width: 90%;

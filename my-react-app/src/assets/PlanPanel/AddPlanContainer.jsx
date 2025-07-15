@@ -10,18 +10,20 @@ function AddPlanContainer({user,trainingOptions,setTrainingPlan}){
     const intensityOptions = ['Niska', 'Średnia', 'Wysoka', 'Bardzo wysoka'];
     const timeOfDayOptions = ['Rano (6:00–9:00)', 'Przedpołudnie (9:00–13:00)', 'Popołudnie (13:00–17:00)', 'Wieczór (17:00–21:00)', 'Późny wieczór (21:00–00:00)'];
 
-    const [trainingPlanGoal, setTrainingPlanGoal] = useState('')
+    const [trainingPlanGoal, setTrainingPlanGoal] = useState ('Budowa masy mięśniowej (siła)')
     const [selectedActivities, setSelectedActivites] = useState([])
-    const [planIntensity, setPlanIntensity] = useState('')
+    const [planIntensity, setPlanIntensity] = useState('Niska')
     const [trainingsNumber, setTrainingsNumber] = useState('')
-    const [trainingTime, setTrainingTime] = useState('')
+    const [trainingTime, setTrainingTime] = useState('Rano (6:00–9:00)')
     const [trainingLength, setTrainingLength] = useState('')
     const [trainingDescription, setTrainingDescription] = useState('')
 
+
+    let newTrainingPlanData = {}
     function CreateTrainingPlan(){
         if(user){
             if(selectedActivities && trainingPlanGoal && planIntensity && trainingsNumber && trainingTime && trainingLength !==""){
-                let newTrainingPlanData = {
+                newTrainingPlanData = {
                     trainingPlanGoal:trainingPlanGoal,
                     selectedActivities:selectedActivities,
                     planIntensity:planIntensity,
@@ -56,7 +58,7 @@ function AddPlanContainer({user,trainingOptions,setTrainingPlan}){
         <div className='AddPlanContainer'>
             <h1 className='Heading'>Zbuduj swój własny plan :)</h1>
             <div className='GoalContainer'>
-                <p>Wybierz głowny cel: </p>
+                <p>Wybierz główny cel: </p>
 
             <select onChange={event=>setTrainingPlanGoal(event.target.value)} className='planInput'  name="" id="">
                 {goalOptions.map((element,index)=>(

@@ -1,7 +1,7 @@
 const weekDays = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota', 'Niedziela'];
 const activityConfig = {
-  "Bieganie": { unit: "km", min: 2, max: 20, goals: ['Poprawa wytrzymałości (kondycji)', 'Utrata wagi / redukcja tkanki tłuszczowej', 'Poprawa zdrowia i samopoczucia'] },
-  "Rower": { unit: "km", min: 2, max: 60, goals: ['Poprawa wytrzymałości (kondycji)', 'Utrata wagi / redukcja tkanki tłuszczowej', 'Poprawa zdrowia i samopoczucia'] },
+  "Bieganie": { unit: "km", min: 5, max: 20, goals: ['Poprawa wytrzymałości (kondycji)', 'Utrata wagi / redukcja tkanki tłuszczowej', 'Poprawa zdrowia i samopoczucia'] },
+  "Rower": { unit: "km", min: 5, max: 60, goals: ['Poprawa wytrzymałości (kondycji)', 'Utrata wagi / redukcja tkanki tłuszczowej', 'Poprawa zdrowia i samopoczucia'] },
   "Pływanie": { unit: "min", min: 20, max: 120, goals: ['Poprawa wytrzymałości (kondycji)', 'Poprawa mobilności i elastyczności', 'Poprawa zdrowia i samopoczucia'] },
   "Siłownia": { unit: "min", min: 20, max: 120, goals: ['Budowa masy mięśniowej (siła)', 'Utrata wagi / redukcja tkanki tłuszczowej'] },
   "Joga": { unit: "min", min: 20, max: 120, goals: ['Poprawa mobilności i elastyczności', 'Poprawa zdrowia i samopoczucia'] },
@@ -9,11 +9,11 @@ const activityConfig = {
   "HIIT": { unit: "min", min: 20, max: 120, goals: ['Utrata wagi / redukcja tkanki tłuszczowej', 'Poprawa szybkości i zwinności', 'Poprawa wytrzymałości (kondycji)'] },
   "Pilates": { unit: "min", min: 20, max: 120, goals: ['Poprawa mobilności i elastyczności', 'Poprawa zdrowia i samopoczucia'] },
   "Wspinaczka": { unit: "min", min: 20, max: 120, goals: ['Poprawa siły', 'Poprawa wytrzymałości (kondycji)', 'Poprawa szybkości i zwinności'] },
-  "Nordic Walking": { unit: "km", min: 2, max: 20, goals: ['Poprawa wytrzymałości (kondycji)', 'Poprawa zdrowia i samopoczucia'] },
-  "Rolki": { unit: "km", min: 2, max: 20, goals: ['Poprawa wytrzymałości (kondycji)', 'Poprawa szybkości i zwinności'] },
+  "Nordic Walking": { unit: "km", min:2 , max: 20, goals: ['Poprawa wytrzymałości (kondycji)', 'Poprawa zdrowia i samopoczucia'] },
+  "Rolki": { unit: "km", min:6, max: 20, goals: ['Poprawa wytrzymałości (kondycji)', 'Poprawa szybkości i zwinności'] },
   "Deskorolka": { unit: "min", min: 20, max: 120, goals: ['Poprawa szybkości i zwinności', 'Poprawa zdrowia i samopoczucia'] },
-  "Kajakarstwo": { unit: "km", min: 2, max: 30, goals: ['Poprawa wytrzymałości (kondycji)', 'Budowa masy mięśniowej (siła)'] },
-  "Wioślarstwo": { unit: "km", min: 2, max: 30, goals: ['Poprawa wytrzymałości (kondycji)', 'Budowa masy mięśniowej (siła)'] },
+  "Kajakarstwo": { unit: "km", min:6, max: 30, goals: ['Poprawa wytrzymałości (kondycji)', 'Budowa masy mięśniowej (siła)'] },
+  "Wioślarstwo": { unit: "km", min:6, max: 30, goals: ['Poprawa wytrzymałości (kondycji)', 'Budowa masy mięśniowej (siła)'] },
   "Snowboard": { unit: "min", min: 20, max: 120, goals: ['Poprawa szybkości i zwinności', 'Poprawa zdrowia i samopoczucia'] },
   "Narciarstwo": { unit: "min", min: 20, max: 120, goals: ['Poprawa wytrzymałości (kondycji)', 'Poprawa szybkości i zwinności'] },
   "Łyżwy": { unit: "min", min: 20, max: 120, goals: ['Poprawa szybkości i zwinności', 'Poprawa wytrzymałości (kondycji)'] },
@@ -23,8 +23,8 @@ const activityConfig = {
   "Krav Maga": { unit: "min", min: 20, max: 120, goals: ['Budowa masy mięśniowej (siła)', 'Poprawa szybkości i zwinności'] },
   "CrossFit": { unit: "min", min: 20, max: 120, goals: ['Budowa masy mięśniowej (siła)', 'Poprawa szybkości i zwinności', 'Utrata wagi / redukcja tkanki tłuszczowej'] },
   "Trening funkcjonalny": { unit: "min", min: 20, max: 120, goals: ['Budowa masy mięśniowej (siła)', 'Poprawa szybkości i zwinności'] },
-  "Spacer": { unit: "km", min: 2, max: 20, goals: ['Poprawa zdrowia i samopoczucia', 'Poprawa wytrzymałości (kondycji)'] },
-  "Marszobieg": { unit: "km", min: 2, max: 20, goals: ['Poprawa wytrzymałości (kondycji)', 'Utrata wagi / redukcja tkanki tłuszczowej'] },
+  "Spacer": { unit: "km", min:6, max: 20, goals: ['Poprawa zdrowia i samopoczucia', 'Poprawa wytrzymałości (kondycji)'] },
+  "Marszobieg": { unit: "km", min:6, max: 20, goals: ['Poprawa wytrzymałości (kondycji)', 'Utrata wagi / redukcja tkanki tłuszczowej'] },
   "Taniec": { unit: "min", min: 20, max: 120, goals: ['Poprawa szybkości i zwinności', 'Poprawa zdrowia i samopoczucia'] },
   "Zumba": { unit: "min", min: 20, max: 120, goals: ['Utrata wagi / redukcja tkanki tłuszczowej', 'Poprawa zdrowia i samopoczucia'] },
   "Aqua aerobic": { unit: "min", min: 20, max: 120, goals: ['Poprawa zdrowia i samopoczucia', 'Poprawa mobilności i elastyczności'] },
@@ -32,7 +32,7 @@ const activityConfig = {
   "Calisthenics": { unit: "min", min: 20, max: 120, goals: ['Budowa masy mięśniowej (siła)', 'Poprawa mobilności i elastyczności'] },
   "Gimnastyka": { unit: "min", min: 20, max: 120, goals: ['Poprawa mobilności i elastyczności', 'Poprawa zdrowia i samopoczucia'] },
   "Parkour": { unit: "min", min: 20, max: 120, goals: ['Poprawa szybkości i zwinności', 'Poprawa wytrzymałości (kondycji)'] },
-  "Triathlon": { unit: "km", min: 2, max: 50, goals: ['Poprawa wytrzymałości (kondycji)', 'Utrata wagi / redukcja tkanki tłuszczowej'] },
+  "Triathlon": { unit: "km", min:6, max: 50, goals: ['Poprawa wytrzymałości (kondycji)', 'Utrata wagi / redukcja tkanki tłuszczowej'] },
   "Piłka nożna": { unit: "min", min: 20, max: 120, goals: ['Poprawa szybkości i zwinności', 'Poprawa wytrzymałości (kondycji)'] },
   "Koszykówka": { unit: "min", min: 20, max: 120, goals: ['Poprawa szybkości i zwinności', 'Poprawa wytrzymałości (kondycji)'] },
   "Siatkówka": { unit: "min", min: 20, max: 120, goals: ['Poprawa szybkości i zwinności', 'Poprawa wytrzymałości (kondycji)'] },
@@ -52,17 +52,17 @@ const activityConfig = {
   "Airsoft": { unit: "min", min: 20, max: 120, goals: ['Poprawa szybkości i zwinności'] },
   "Żeglarstwo": { unit: "min", min: 20, max: 120, goals: ['Poprawa zdrowia i samopoczucia'] },
   "Turystyka górska": { unit: "min", min: 20, max: 120, goals: ['Poprawa wytrzymałości (kondycji)', 'Poprawa zdrowia i samopoczucia'] },
-  "Bieg na orientację": { unit: "km", min: 2, max: 20, goals: ['Poprawa wytrzymałości (kondycji)', 'Poprawa szybkości i zwinności'] }
+  "Bieg na orientację": { unit: "km", min:6, max: 20, goals: ['Poprawa wytrzymałości (kondycji)', 'Poprawa szybkości i zwinności'] }
 };
 
 
 
 function scaleGoal(min, max, intensity) {
   const scaleMap = {
-    "Niska": 0.6,
-    "Średnia": 0.8,
-    "Wysoka": 1.0,
-    "Bardzo wysoka": 1.2
+    "Niska": 0.4,
+    "Średnia": 0.6,
+    "Wysoka": 0.8,
+    "Bardzo wysoka": 1.0
   };
   const scale = scaleMap[intensity] || 1;
   const goal = Math.floor((Math.random() * (max - min + 1) + min) * scale);
@@ -105,14 +105,11 @@ export function GenerateTrainingPlan(goal, activitiesArray, intensity, number, t
     let randomActivityName = activitiesArray[randomActivityIndex];
     let config = activityConfig[randomActivityName];
 
-    // Jeżeli nie mamy danych o tej aktywności – pomiń
     if (!config) continue;
 
      let randomDayIndex = Math.floor(Math.random() * weekDays.length);
      let dayName = weekDays[randomDayIndex]
 
-
-    // Wygeneruj sensowny cel
     const trainingGoal = Math.round(scaleGoal(config.min, config.max, intensity)/5)*5;
 
     const hour  = getTimeOfDay(time)
@@ -124,7 +121,7 @@ export function GenerateTrainingPlan(goal, activitiesArray, intensity, number, t
 
     // Zbuduj entry
     trainingPlan.push({
-      activity: { label: randomActivityName },
+      activity: {value: randomActivityName, label: randomActivityName },
       dayOfTheWeek: randomDayIndex,
       trainingDays: dayName,
       trainingUnit: config.unit,
