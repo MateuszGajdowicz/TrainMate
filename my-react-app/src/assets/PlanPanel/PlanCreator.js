@@ -1,58 +1,59 @@
+import { estimateCalories } from "../caloriesEstimator";
 const weekDays = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota', 'Niedziela'];
 const activityConfig = {
-  "Bieganie": { unit: "km", min: 5, max: 20, goals: ['Poprawa wytrzymałości (kondycji)', 'Utrata wagi / redukcja tkanki tłuszczowej', 'Poprawa zdrowia i samopoczucia'] },
-  "Rower": { unit: "km", min: 5, max: 60, goals: ['Poprawa wytrzymałości (kondycji)', 'Utrata wagi / redukcja tkanki tłuszczowej', 'Poprawa zdrowia i samopoczucia'] },
-  "Pływanie": { unit: "min", min: 20, max: 120, goals: ['Poprawa wytrzymałości (kondycji)', 'Poprawa mobilności i elastyczności', 'Poprawa zdrowia i samopoczucia'] },
-  "Siłownia": { unit: "min", min: 20, max: 120, goals: ['Budowa masy mięśniowej (siła)', 'Utrata wagi / redukcja tkanki tłuszczowej'] },
-  "Joga": { unit: "min", min: 20, max: 120, goals: ['Poprawa mobilności i elastyczności', 'Poprawa zdrowia i samopoczucia'] },
-  "Stretching": { unit: "min", min: 20, max: 120, goals: ['Poprawa mobilności i elastyczności', 'Poprawa zdrowia i samopoczucia'] },
-  "HIIT": { unit: "min", min: 20, max: 120, goals: ['Utrata wagi / redukcja tkanki tłuszczowej', 'Poprawa szybkości i zwinności', 'Poprawa wytrzymałości (kondycji)'] },
-  "Pilates": { unit: "min", min: 20, max: 120, goals: ['Poprawa mobilności i elastyczności', 'Poprawa zdrowia i samopoczucia'] },
-  "Wspinaczka": { unit: "min", min: 20, max: 120, goals: ['Poprawa siły', 'Poprawa wytrzymałości (kondycji)', 'Poprawa szybkości i zwinności'] },
-  "Nordic Walking": { unit: "km", min:2 , max: 20, goals: ['Poprawa wytrzymałości (kondycji)', 'Poprawa zdrowia i samopoczucia'] },
-  "Rolki": { unit: "km", min:6, max: 20, goals: ['Poprawa wytrzymałości (kondycji)', 'Poprawa szybkości i zwinności'] },
-  "Deskorolka": { unit: "min", min: 20, max: 120, goals: ['Poprawa szybkości i zwinności', 'Poprawa zdrowia i samopoczucia'] },
-  "Kajakarstwo": { unit: "km", min:6, max: 30, goals: ['Poprawa wytrzymałości (kondycji)', 'Budowa masy mięśniowej (siła)'] },
-  "Wioślarstwo": { unit: "km", min:6, max: 30, goals: ['Poprawa wytrzymałości (kondycji)', 'Budowa masy mięśniowej (siła)'] },
-  "Snowboard": { unit: "min", min: 20, max: 120, goals: ['Poprawa szybkości i zwinności', 'Poprawa zdrowia i samopoczucia'] },
-  "Narciarstwo": { unit: "min", min: 20, max: 120, goals: ['Poprawa wytrzymałości (kondycji)', 'Poprawa szybkości i zwinności'] },
-  "Łyżwy": { unit: "min", min: 20, max: 120, goals: ['Poprawa szybkości i zwinności', 'Poprawa wytrzymałości (kondycji)'] },
-  "Boks": { unit: "min", min: 20, max: 120, goals: ['Budowa masy mięśniowej (siła)', 'Poprawa szybkości i zwinności'] },
-  "Kickboxing": { unit: "min", min: 20, max: 120, goals: ['Budowa masy mięśniowej (siła)', 'Poprawa szybkości i zwinności'] },
-  "Sztuki walki": { unit: "min", min: 20, max: 120, goals: ['Budowa masy mięśniowej (siła)', 'Poprawa szybkości i zwinności'] },
-  "Krav Maga": { unit: "min", min: 20, max: 120, goals: ['Budowa masy mięśniowej (siła)', 'Poprawa szybkości i zwinności'] },
-  "CrossFit": { unit: "min", min: 20, max: 120, goals: ['Budowa masy mięśniowej (siła)', 'Poprawa szybkości i zwinności', 'Utrata wagi / redukcja tkanki tłuszczowej'] },
-  "Trening funkcjonalny": { unit: "min", min: 20, max: 120, goals: ['Budowa masy mięśniowej (siła)', 'Poprawa szybkości i zwinności'] },
-  "Spacer": { unit: "km", min:6, max: 20, goals: ['Poprawa zdrowia i samopoczucia', 'Poprawa wytrzymałości (kondycji)'] },
-  "Marszobieg": { unit: "km", min:6, max: 20, goals: ['Poprawa wytrzymałości (kondycji)', 'Utrata wagi / redukcja tkanki tłuszczowej'] },
-  "Taniec": { unit: "min", min: 20, max: 120, goals: ['Poprawa szybkości i zwinności', 'Poprawa zdrowia i samopoczucia'] },
-  "Zumba": { unit: "min", min: 20, max: 120, goals: ['Utrata wagi / redukcja tkanki tłuszczowej', 'Poprawa zdrowia i samopoczucia'] },
-  "Aqua aerobic": { unit: "min", min: 20, max: 120, goals: ['Poprawa zdrowia i samopoczucia', 'Poprawa mobilności i elastyczności'] },
-  "Trening obwodowy": { unit: "min", min: 20, max: 120, goals: ['Budowa masy mięśniowej (siła)', 'Utrata wagi / redukcja tkanki tłuszczowej'] },
-  "Calisthenics": { unit: "min", min: 20, max: 120, goals: ['Budowa masy mięśniowej (siła)', 'Poprawa mobilności i elastyczności'] },
-  "Gimnastyka": { unit: "min", min: 20, max: 120, goals: ['Poprawa mobilności i elastyczności', 'Poprawa zdrowia i samopoczucia'] },
-  "Parkour": { unit: "min", min: 20, max: 120, goals: ['Poprawa szybkości i zwinności', 'Poprawa wytrzymałości (kondycji)'] },
-  "Triathlon": { unit: "km", min:6, max: 50, goals: ['Poprawa wytrzymałości (kondycji)', 'Utrata wagi / redukcja tkanki tłuszczowej'] },
-  "Piłka nożna": { unit: "min", min: 20, max: 120, goals: ['Poprawa szybkości i zwinności', 'Poprawa wytrzymałości (kondycji)'] },
-  "Koszykówka": { unit: "min", min: 20, max: 120, goals: ['Poprawa szybkości i zwinności', 'Poprawa wytrzymałości (kondycji)'] },
-  "Siatkówka": { unit: "min", min: 20, max: 120, goals: ['Poprawa szybkości i zwinności', 'Poprawa wytrzymałości (kondycji)'] },
-  "Tenis": { unit: "min", min: 20, max: 120, goals: ['Poprawa szybkości i zwinności', 'Poprawa wytrzymałości (kondycji)'] },
-  "Tenis stołowy": { unit: "min", min: 20, max: 120, goals: ['Poprawa szybkości i zwinności'] },
-  "Badminton": { unit: "min", min: 20, max: 120, goals: ['Poprawa szybkości i zwinności'] },
-  "Squash": { unit: "min", min: 20, max: 120, goals: ['Poprawa szybkości i zwinności'] },
-  "Golf": { unit: "min", min: 20, max: 120, goals: ['Poprawa zdrowia i samopoczucia', 'Poprawa mobilności i elastyczności'] },
-  "Bouldering": { unit: "min", min: 20, max: 120, goals: ['Budowa masy mięśniowej (siła)', 'Poprawa szybkości i zwinności'] },
-  "Surfing": { unit: "min", min: 20, max: 120, goals: ['Poprawa zdrowia i samopoczucia', 'Poprawa mobilności i elastyczności'] },
-  "Kitesurfing": { unit: "min", min: 20, max: 120, goals: ['Poprawa zdrowia i samopoczucia', 'Poprawa szybkości i zwinności'] },
-  "Windsurfing": { unit: "min", min: 20, max: 120, goals: ['Poprawa zdrowia i samopoczucia', 'Poprawa szybkości i zwinności'] },
-  "SUP (Stand Up Paddle)": { unit: "min", min: 20, max: 120, goals: ['Poprawa wytrzymałości (kondycji)', 'Poprawa zdrowia i samopoczucia'] },
-  "Łucznictwo": { unit: "min", min: 20, max: 120, goals: ['Poprawa szybkości i zwinności', 'Poprawa zdrowia i samopoczucia'] },
-  "Jeździectwo": { unit: "min", min: 20, max: 120, goals: ['Poprawa zdrowia i samopoczucia'] },
-  "Paintball": { unit: "min", min: 20, max: 120, goals: ['Poprawa szybkości i zwinności', 'Budowa masy mięśniowej (siła)'] },
-  "Airsoft": { unit: "min", min: 20, max: 120, goals: ['Poprawa szybkości i zwinności'] },
-  "Żeglarstwo": { unit: "min", min: 20, max: 120, goals: ['Poprawa zdrowia i samopoczucia'] },
-  "Turystyka górska": { unit: "min", min: 20, max: 120, goals: ['Poprawa wytrzymałości (kondycji)', 'Poprawa zdrowia i samopoczucia'] },
-  "Bieg na orientację": { unit: "km", min:6, max: 20, goals: ['Poprawa wytrzymałości (kondycji)', 'Poprawa szybkości i zwinności'] }
+  "Bieganie": { name: "Bieganie", unit: "km", min: 5, max: 20, goals: ['Poprawa wytrzymałości (kondycji)', 'Utrata wagi / redukcja tkanki tłuszczowej', 'Poprawa zdrowia i samopoczucia'] },
+  "Rower": { name: "Rower", unit: "km", min: 5, max: 60, goals: ['Poprawa wytrzymałości (kondycji)', 'Utrata wagi / redukcja tkanki tłuszczowej', 'Poprawa zdrowia i samopoczucia'] },
+  "Pływanie": { name: "Pływanie", unit: "min", min: 20, max: 120, goals: ['Poprawa wytrzymałości (kondycji)', 'Poprawa mobilności i elastyczności', 'Poprawa zdrowia i samopoczucia'] },
+  "Siłownia": { name: "Siłownia", unit: "min", min: 20, max: 120, goals: ['Budowa masy mięśniowej (siła)', 'Utrata wagi / redukcja tkanki tłuszczowej'] },
+  "Joga": { name: "Joga", unit: "min", min: 20, max: 120, goals: ['Poprawa mobilności i elastyczności', 'Poprawa zdrowia i samopoczucia'] },
+  "Stretching": { name: "Stretching", unit: "min", min: 20, max: 120, goals: ['Poprawa mobilności i elastyczności', 'Poprawa zdrowia i samopoczucia'] },
+  "HIIT": { name: "HIIT", unit: "min", min: 20, max: 120, goals: ['Utrata wagi / redukcja tkanki tłuszczowej', 'Poprawa szybkości i zwinności', 'Poprawa wytrzymałości (kondycji)'] },
+  "Pilates": { name: "Pilates", unit: "min", min: 20, max: 120, goals: ['Poprawa mobilności i elastyczności', 'Poprawa zdrowia i samopoczucia'] },
+  "Wspinaczka": { name: "Wspinaczka", unit: "min", min: 20, max: 120, goals: ['Poprawa siły', 'Poprawa wytrzymałości (kondycji)', 'Poprawa szybkości i zwinności'] },
+  "Nordic Walking": { name: "Nordic Walking", unit: "km", min:2 , max: 20, goals: ['Poprawa wytrzymałości (kondycji)', 'Poprawa zdrowia i samopoczucia'] },
+  "Rolki": { name: "Rolki", unit: "km", min:6, max: 20, goals: ['Poprawa wytrzymałości (kondycji)', 'Poprawa szybkości i zwinności'] },
+  "Deskorolka": { name: "Deskorolka", unit: "min", min: 20, max: 120, goals: ['Poprawa szybkości i zwinności', 'Poprawa zdrowia i samopoczucia'] },
+  "Kajakarstwo": { name: "Kajakarstwo", unit: "km", min:6, max: 30, goals: ['Poprawa wytrzymałości (kondycji)', 'Budowa masy mięśniowej (siła)'] },
+  "Wioślarstwo": { name: "Wioślarstwo", unit: "km", min:6, max: 30, goals: ['Poprawa wytrzymałości (kondycji)', 'Budowa masy mięśniowej (siła)'] },
+  "Snowboard": { name: "Snowboard", unit: "min", min: 20, max: 120, goals: ['Poprawa szybkości i zwinności', 'Poprawa zdrowia i samopoczucia'] },
+  "Narciarstwo": { name: "Narciarstwo", unit: "min", min: 20, max: 120, goals: ['Poprawa wytrzymałości (kondycji)', 'Poprawa szybkości i zwinności'] },
+  "Łyżwy": { name: "Łyżwy", unit: "min", min: 20, max: 120, goals: ['Poprawa szybkości i zwinności', 'Poprawa wytrzymałości (kondycji)'] },
+  "Boks": { name: "Boks", unit: "min", min: 20, max: 120, goals: ['Budowa masy mięśniowej (siła)', 'Poprawa szybkości i zwinności'] },
+  "Kickboxing": { name: "Kickboxing", unit: "min", min: 20, max: 120, goals: ['Budowa masy mięśniowej (siła)', 'Poprawa szybkości i zwinności'] },
+  "Sztuki walki": { name: "Sztuki walki", unit: "min", min: 20, max: 120, goals: ['Budowa masy mięśniowej (siła)', 'Poprawa szybkości i zwinności'] },
+  "Krav Maga": { name: "Krav Maga", unit: "min", min: 20, max: 120, goals: ['Budowa masy mięśniowej (siła)', 'Poprawa szybkości i zwinności'] },
+  "CrossFit": { name: "CrossFit", unit: "min", min: 20, max: 120, goals: ['Budowa masy mięśniowej (siła)', 'Poprawa szybkości i zwinności', 'Utrata wagi / redukcja tkanki tłuszczowej'] },
+  "Trening funkcjonalny": { name: "Trening funkcjonalny", unit: "min", min: 20, max: 120, goals: ['Budowa masy mięśniowej (siła)', 'Poprawa szybkości i zwinności'] },
+  "Spacer": { name: "Spacer", unit: "km", min:6, max: 20, goals: ['Poprawa zdrowia i samopoczucia', 'Poprawa wytrzymałości (kondycji)'] },
+  "Marszobieg": { name: "Marszobieg", unit: "km", min:6, max: 20, goals: ['Poprawa wytrzymałości (kondycji)', 'Utrata wagi / redukcja tkanki tłuszczowej'] },
+  "Taniec": { name: "Taniec", unit: "min", min: 20, max: 120, goals: ['Poprawa szybkości i zwinności', 'Poprawa zdrowia i samopoczucia'] },
+  "Zumba": { name: "Zumba", unit: "min", min: 20, max: 120, goals: ['Utrata wagi / redukcja tkanki tłuszczowej', 'Poprawa zdrowia i samopoczucia'] },
+  "Aqua aerobic": { name: "Aqua aerobic", unit: "min", min: 20, max: 120, goals: ['Poprawa zdrowia i samopoczucia', 'Poprawa mobilności i elastyczności'] },
+  "Trening obwodowy": { name: "Trening obwodowy", unit: "min", min: 20, max: 120, goals: ['Budowa masy mięśniowej (siła)', 'Utrata wagi / redukcja tkanki tłuszczowej'] },
+  "Calisthenics": { name: "Calisthenics", unit: "min", min: 20, max: 120, goals: ['Budowa masy mięśniowej (siła)', 'Poprawa mobilności i elastyczności'] },
+  "Gimnastyka": { name: "Gimnastyka", unit: "min", min: 20, max: 120, goals: ['Poprawa mobilności i elastyczności', 'Poprawa zdrowia i samopoczucia'] },
+  "Parkour": { name: "Parkour", unit: "min", min: 20, max: 120, goals: ['Poprawa szybkości i zwinności', 'Poprawa wytrzymałości (kondycji)'] },
+  "Triathlon": { name: "Triathlon", unit: "km", min:6, max: 50, goals: ['Poprawa wytrzymałości (kondycji)', 'Utrata wagi / redukcja tkanki tłuszczowej'] },
+  "Piłka nożna": { name: "Piłka nożna", unit: "min", min: 20, max: 120, goals: ['Poprawa szybkości i zwinności', 'Poprawa wytrzymałości (kondycji)'] },
+  "Koszykówka": { name: "Koszykówka", unit: "min", min: 20, max: 120, goals: ['Poprawa szybkości i zwinności', 'Poprawa wytrzymałości (kondycji)'] },
+  "Siatkówka": { name: "Siatkówka", unit: "min", min: 20, max: 120, goals: ['Poprawa szybkości i zwinności', 'Poprawa wytrzymałości (kondycji)'] },
+  "Tenis": { name: "Tenis", unit: "min", min: 20, max: 120, goals: ['Poprawa szybkości i zwinności', 'Poprawa wytrzymałości (kondycji)'] },
+  "Tenis stołowy": { name: "Tenis stołowy", unit: "min", min: 20, max: 120, goals: ['Poprawa szybkości i zwinności'] },
+  "Badminton": { name: "Badminton", unit: "min", min: 20, max: 120, goals: ['Poprawa szybkości i zwinności'] },
+  "Squash": { name: "Squash", unit: "min", min: 20, max: 120, goals: ['Poprawa szybkości i zwinności'] },
+  "Golf": { name: "Golf", unit: "min", min: 20, max: 120, goals: ['Poprawa zdrowia i samopoczucia', 'Poprawa mobilności i elastyczności'] },
+  "Bouldering": { name: "Bouldering", unit: "min", min: 20, max: 120, goals: ['Budowa masy mięśniowej (siła)', 'Poprawa szybkości i zwinności'] },
+  "Surfing": { name: "Surfing", unit: "min", min: 20, max: 120, goals: ['Poprawa zdrowia i samopoczucia', 'Poprawa mobilności i elastyczności'] },
+  "Kitesurfing": { name: "Kitesurfing", unit: "min", min: 20, max: 120, goals: ['Poprawa zdrowia i samopoczucia', 'Poprawa szybkości i zwinności'] },
+  "Windsurfing": { name: "Windsurfing", unit: "min", min: 20, max: 120, goals: ['Poprawa zdrowia i samopoczucia', 'Poprawa szybkości i zwinności'] },
+  "SUP (Stand Up Paddle)": { name: "SUP (Stand Up Paddle)", unit: "min", min: 20, max: 120, goals: ['Poprawa wytrzymałości (kondycji)', 'Poprawa zdrowia i samopoczucia'] },
+  "Łucznictwo": { name: "Łucznictwo", unit: "min", min: 20, max: 120, goals: ['Poprawa szybkości i zwinności', 'Poprawa zdrowia i samopoczucia'] },
+  "Jeździectwo": { name: "Jeździectwo", unit: "min", min: 20, max: 120, goals: ['Poprawa zdrowia i samopoczucia'] },
+  "Paintball": { name: "Paintball", unit: "min", min: 20, max: 120, goals: ['Poprawa szybkości i zwinności', 'Budowa masy mięśniowej (siła)'] },
+  "Airsoft": { name: "Airsoft", unit: "min", min: 20, max: 120, goals: ['Poprawa szybkości i zwinności'] },
+  "Żeglarstwo": { name: "Żeglarstwo", unit: "min", min: 20, max: 120, goals: ['Poprawa zdrowia i samopoczucia'] },
+  "Turystyka górska": { name: "Turystyka górska", unit: "min", min: 20, max: 120, goals: ['Poprawa wytrzymałości (kondycji)', 'Poprawa zdrowia i samopoczucia'] },
+  "Bieg na orientację": { name: "Bieg na orientację", unit: "km", min:6, max: 20, goals: ['Poprawa wytrzymałości (kondycji)', 'Poprawa szybkości i zwinności'] }
 };
 
 
@@ -104,6 +105,7 @@ export function GenerateTrainingPlan(goal, activitiesArray, intensity, number, t
     let randomActivityIndex = Math.floor(Math.random() * activitiesArray.length);
     let randomActivityName = activitiesArray[randomActivityIndex];
     let config = activityConfig[randomActivityName];
+    console.log(config)
 
     if (!config) continue;
 
@@ -114,19 +116,27 @@ export function GenerateTrainingPlan(goal, activitiesArray, intensity, number, t
 
     const hour  = getTimeOfDay(time)
 
+    let estimatedCalories = 0;
+
+    if(config.unit ==="min"){
+      estimatedCalories = estimateCalories({type:config.name,durationMin:trainingGoal })
+    }
+    else if(config.unit === "km"){
+        estimatedCalories = estimateCalories({type:config.name,distanceKm:trainingGoal })
 
 
-    // Wyrównaj do długości treningu użytkownika
-
+    }
 
     // Zbuduj entry
     trainingPlan.push({
-      activity: {value: randomActivityName, label: randomActivityName },
+      activity: randomActivityName,
       dayOfTheWeek: randomDayIndex,
       trainingDays: dayName,
       trainingUnit: config.unit,
       timeOfDay: hour,
-      trainingGoalValue: trainingGoal
+      trainingGoalValue: trainingGoal,
+      estimatedCalories:estimatedCalories,
+      trainingDescription: null,
     });
   }
 

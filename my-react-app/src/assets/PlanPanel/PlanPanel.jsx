@@ -5,17 +5,20 @@ import { useState } from 'react'
 function PlanPanel({user,trainingOptions, setTrainingPlan,trainingPlan}){
 
     const [selectedTraining,setSelectedTraining ]= useState(null)
+    const [selectedTrainingIndex, setSelectedTrainingIndex] = useState(null)
+    
+    
     return(<>
     {
         selectedTraining?
-        <EditTraining selectedTraining={selectedTraining}  setSelectedTraining={setSelectedTraining} trainingOptions={trainingOptions}/>
+        <EditTraining selectedTrainingIndex={selectedTrainingIndex} trainingPlan={trainingPlan} selectedTraining={selectedTraining}  setSelectedTraining={setSelectedTraining} trainingOptions={trainingOptions}/>
         :
-        <AddPlanContainer setTrainingPlan={setTrainingPlan} user={user} trainingOptions={trainingOptions}/>
+        <AddPlanContainer selectedTraining={selectedTraining}  trainingPlan={trainingPlan} setTrainingPlan={setTrainingPlan} user={user} trainingOptions={trainingOptions}/>
 
         
 
     }
-    <DisplayPlanContainer setSelectedTraining={setSelectedTraining} trainingPlan={trainingPlan}/>
+    <DisplayPlanContainer setSelectedTrainingIndex={setSelectedTrainingIndex} setSelectedTraining={setSelectedTraining} trainingPlan={trainingPlan}/>
     </>)
 }
 export default PlanPanel

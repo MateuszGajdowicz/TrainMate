@@ -2,8 +2,12 @@ import { useEffect, useState } from 'react';
 import './AddPlanContainer.css'
 import Select from 'react-select';
 import { GenerateTrainingPlan } from './PlanCreator';
+import { addDoc,query, collection, where,getDocs } from 'firebase/firestore';
+import { doc, updateDoc } from "firebase/firestore";
+import { db, auth } from "../../firebase";
+
 import { CheckIsGoal } from './PlanCreator';
-function AddPlanContainer({user,trainingOptions,setTrainingPlan}){
+function AddPlanContainer({selectedTraining,user,trainingOptions,setTrainingPlan,trainingPlan}){
     
     const [trainingOptionsArray, setTrainingOptionsArray] = useState(trainingOptions.map(element=>({value:element, label:element})))
     const goalOptions = ['Poprawa wytrzymałości (kondycji)', 'Budowa masy mięśniowej (siła)', 'Utrata wagi / redukcja tkanki tłuszczowej', 'Poprawa mobilności i elastyczności', 'Poprawa szybkości i zwinności', 'Poprawa zdrowia i samopoczucia'];
@@ -19,22 +23,106 @@ function AddPlanContainer({user,trainingOptions,setTrainingPlan}){
     const [trainingDescription, setTrainingDescription] = useState('')
 
 
-    let newTrainingPlanData = {}
-    function CreateTrainingPlan(){
+    const [trainingPlanData, setTrainingPlanData] = useState([])
+
+async function FetchTrainingPlanList(){
+        const q= query(
+            collection(db, "TrainingPlanList"),
+            where("userID", "==", user.uid));
+            const querySnapshot = await getDocs(q)
+            const trainingPlanList = querySnapshot.docs.map(doc=>({
+                id:doc.id,
+                ...doc.data()
+            }));
+            setTrainingPlan(trainingPlanList)
+
+            const q2 = query(
+            collection(db, "TrainingPlanData"),
+            where("userID", "==", user.uid));
+            const querySnapshot2 = await getDocs(q2)
+            const trainingPlanData = querySnapshot2.docs.map(doc=>({
+                id:doc.id,
+                ...doc.data()
+            }));
+            setTrainingPlanData(trainingPlanData)
+
+
+        
+
+    }
+
+    useEffect(() => {
+  console.log("trainingPlanData changed:", trainingPlanData);
+  if(trainingPlanData.length!==0){
+        setTrainingPlanGoal(trainingPlanData[0].trainingPlanGoal)
+        setSelectedActivites(trainingPlanData[0].selectedActivities.map(element=>({value:element, label:element})))
+        setPlanIntensity(trainingPlanData[0].planIntensity)
+        setTrainingsNumber(trainingPlanData[0].trainingsNumber)
+        setTrainingTime(trainingPlanData[0].trainingTime)
+        setTrainingLength(trainingPlanData[0].trainingLength)
+        setTrainingDescription(trainingPlanData[0].trainingDescription)
+
+
+
+  }
+        
+
+}, [trainingPlanData]);
+
+    useEffect(()=>{
+        FetchTrainingPlanList();
+
+    },[user, selectedTraining])
+
+
+    async function CreateTrainingPlan(){
         if(user){
             if(selectedActivities && trainingPlanGoal && planIntensity && trainingsNumber && trainingTime && trainingLength !==""){
-                newTrainingPlanData = {
+                const generatedPlan = (GenerateTrainingPlan(trainingPlanGoal,  selectedActivities.map((activity) => activity.value),planIntensity,trainingsNumber, trainingTime,trainingLength))
+                let isMatched = CheckIsGoal(selectedActivities.map((activity) => activity.label), trainingPlanGoal)
+                console.log(isMatched)
+                let newTrainingPlanData = {
+                    userID:auth.currentUser.uid,
                     trainingPlanGoal:trainingPlanGoal,
-                    selectedActivities:selectedActivities,
+                    selectedActivities:selectedActivities.map((activity) => activity.value),
                     planIntensity:planIntensity,
                     trainingsNumber:trainingsNumber,
                     trainingTime:trainingTime,
                     trainingLength:trainingLength,
                     trainingDescription:trainingDescription,
                 }
-                setTrainingPlan(GenerateTrainingPlan(trainingPlanGoal,  selectedActivities.map((activity) => activity.value),planIntensity,trainingsNumber, trainingTime,trainingLength))
-                let isMatched = CheckIsGoal(selectedActivities.map((activity) => activity.label), trainingPlanGoal)
-                console.log(isMatched)
+                let TrainingPlanList={
+                    userID:auth.currentUser.uid,
+                    trainingPlanList:generatedPlan,
+                    date: new Date(),                }
+                try{
+                    if(trainingPlanData.length!==0){
+                        const docRef = doc(db, "TrainingPlanData", trainingPlanData[0].id );
+                        await updateDoc(docRef, newTrainingPlanData)
+
+                    }
+                    else{
+                        const docRef = await addDoc(collection(db, "TrainingPlanData"), newTrainingPlanData )
+
+                        
+                    }
+
+                    if(trainingPlan.length!==0){
+                        const docRef2 = doc(db, "TrainingPlanList", trainingPlan[0].id);
+                        await updateDoc(docRef2, TrainingPlanList)
+
+                    }
+                    else{
+                        const docRef2 = await addDoc(collection(db,"TrainingPlanList"), TrainingPlanList )
+                        
+                    }
+
+
+                }
+                catch(error){
+                    window.alert("Nie udało się wygenerować planu treningowego")
+                }
+
 
 
 
@@ -48,9 +136,15 @@ function AddPlanContainer({user,trainingOptions,setTrainingPlan}){
             window.alert("Musisz być zalogowany żeby dodać plan")
 
         }
+        FetchTrainingPlanList();
+
 
 
     }
+useEffect(()=>{
+    console.log(trainingPlan)
+    console.log(trainingPlanData)
+}, [trainingPlan, trainingPlanData])
 
     
     return(
@@ -60,7 +154,7 @@ function AddPlanContainer({user,trainingOptions,setTrainingPlan}){
             <div className='GoalContainer'>
                 <p>Wybierz główny cel: </p>
 
-            <select onChange={event=>setTrainingPlanGoal(event.target.value)} className='planInput'  name="" id="">
+            <select value={trainingPlanGoal} onChange={event=>setTrainingPlanGoal(event.target.value)} className='planInput'  name="" id="">
                 {goalOptions.map((element,index)=>(
                     <option key={index} value={element}>{element}</option>
                 ))}
@@ -68,11 +162,11 @@ function AddPlanContainer({user,trainingOptions,setTrainingPlan}){
 
             </div>
 
-            <Select styles={{ control: (base) => ({ ...base, borderRadius: '20px', border: '3px solid hsl(28, 100%, 60%)', width: '400px', boxShadow: 'none' }), placeholder: (base) => ({ ...base, color: '#999' }), multiValue: (base) => ({ ...base, borderRadius: '10px', backgroundColor: 'hsl(28, 100%, 90%)' }) }}
+            <Select value={selectedActivities} styles={{ control: (base) => ({ ...base, borderRadius: '20px', border: '3px solid hsl(28, 100%, 60%)', width: '400px', boxShadow: 'none' }), placeholder: (base) => ({ ...base, color: '#999' }), multiValue: (base) => ({ ...base, borderRadius: '10px', backgroundColor: 'hsl(28, 100%, 90%)' }) }}
             onChange={setSelectedActivites} classNamePrefix='rs' isMulti options={trainingOptionsArray} type="text" placeholder='Wybierz preferowane aktywności'/>
             <div className='GoalContainer'>
                 <p>Wybierz intensywność:</p>
-            <select onChange={event=>setPlanIntensity(event.target.value)} className='planInput' name="" id="">
+            <select value={planIntensity} onChange={event=>setPlanIntensity(event.target.value)} className='planInput' name="" id="">
                 {intensityOptions.map((element, index)=>(
                     <option key={index} value={element}>{element}</option>
                 ))}
@@ -80,18 +174,18 @@ function AddPlanContainer({user,trainingOptions,setTrainingPlan}){
             </select>
             </div>
 
-            <input onChange={event=>setTrainingsNumber(parseInt(event.target.value))} className='planInput' type="number" placeholder='Liczba treningów w tygodniu' />
+            <input value={trainingsNumber} onChange={event=>setTrainingsNumber(parseInt(event.target.value))} className='planInput' type="number" placeholder='Liczba treningów w tygodniu' />
             <div className='GoalContainer'>
                 <p>Wybierz preferowaną porę dnia:</p>
-            <select onChange={event=>setTrainingTime(event.target.value)} style={{width:'45%'}} className='planInput' name="" id="">\
+            <select value={trainingTime} onChange={event=>setTrainingTime(event.target.value)} style={{width:'45%'}} className='planInput' name="" id="">\
                 {timeOfDayOptions.map((element, index)=>(
                     <option key={index} value={element}>{element}</option>
                 ))}
 
             </select>
             </div>
-            <input onChange={event=>setTrainingLength(parseInt(event.target.value))} className='planInput' type="number" placeholder='Wybierz długość treningu (min)' />
-            <textarea onChange={event=>setTrainingDescription(event.target.value)} className='planInput' placeholder='Dodatkowe notatki' name="" id=""></textarea>
+            <input value={trainingLength}  onChange={event=>setTrainingLength(parseInt(event.target.value))} className='planInput' type="number" placeholder='Wybierz długość treningu (min)' />
+            <textarea value={trainingDescription} onChange={event=>setTrainingDescription(event.target.value)} className='planInput' placeholder='Dodatkowe notatki' name="" id=""></textarea>
             <button onClick={CreateTrainingPlan} className='createPlanButton'>Stwórz plan</button>
         </div>
         </>

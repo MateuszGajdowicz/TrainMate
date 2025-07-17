@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react'
 import Select from 'react-select';
+import { addDoc,query, collection, where,getDocs } from 'firebase/firestore';
+import { doc, updateDoc } from "firebase/firestore";
+import { db, auth } from "../../firebase";
 
-function EditTraining({selectedTraining,setSelectedTraining,trainingOptions}){
+function EditTraining({selectedTrainingIndex,trainingPlan,selectedTraining,setSelectedTraining,trainingOptions}){
     const weekDays = ['Poniedziałek', "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota", "Niedziela"]
     const [trainingOptionsArray, setTrainingOptionsArray] = useState(trainingOptions.map(element=>({value:element, label:element})))
 
@@ -10,6 +13,10 @@ function EditTraining({selectedTraining,setSelectedTraining,trainingOptions}){
     const [trainingGoalValue, setTrainingGoalValue] = useState(0)
     const [trainingHour, setTrainingHour] = useState('')
     const [trainingWeekDay, setTrainingWeekDay] = useState('')
+    const [trainingDescription, setTrainingDescription] = useState('')
+
+
+
 
     
     useEffect(()=>{
@@ -30,17 +37,43 @@ function EditTraining({selectedTraining,setSelectedTraining,trainingOptions}){
 
             setTrainingWeekDay(selectedTraining.trainingDays)
             console.log(selectedTraining)
+            setTrainingDescription(selectedTraining.trainingDescription)
 
 
         }
 
         },[selectedTraining])
+        
+
+    async function handleTrainingEdit(){
+            if(selectedActivities && trainingGoal && trainingGoalValue && trainingHour && trainingWeekDay){
+                try{
+                    const docRef = doc(db, "TrainingPlanList", trainingPlan[0].id);
+                    // await updateDoc(docRef, {
+                    //     trainingPlanList[selectedTrainingIndex]: updatedTrainingPlanList
+                    // });
+
+                    
+
+                }
+                catch(error){
+                    window.alert("Coś poszło nie tak")
+                }
+            }
+        }
+
+
 
     return(
         <div className="AddPlanContainer">
             <h1 className="Heading">Edytuj trening</h1>
-        <Select value={selectedActivities} styles={{ control: (base) => ({ ...base, borderRadius: '20px', border: '3px solid hsl(28, 100%, 60%)', width: '400px', boxShadow: 'none' }), placeholder: (base) => ({ ...base, color: '#999' }), multiValue: (base) => ({ ...base, borderRadius: '10px', backgroundColor: 'hsl(28, 100%, 90%)' }) }}
-            onChange={setSelectedActivities} classNamePrefix='rs' isMulti options={trainingOptionsArray} type="text" placeholder='Wybierz preferowane aktywności'/>
+           <input className="planInput" value={selectedActivities} list='trainings' placeholder='Wybierz typ treningu' onChange={event=>setSelectedActivities(event.target.value)}/>
+        <datalist id='trainings'>
+            {trainingOptions.map((element,index)=>(
+                <option value={element} key={index}/>
+            ))}
+
+        </datalist>
             <div className="GoalContainer">
             <p>Wybierz swój cel:</p>
             <select value={trainingGoal} onChange={event=>setTrainingGoal(event.target.value)} className="planInput">
@@ -67,6 +100,7 @@ function EditTraining({selectedTraining,setSelectedTraining,trainingOptions}){
                 </select>
                 
             </div>
+            <textarea  value={trainingDescription} className='planInput' placeholder='Dodaj dodatkowe notatki' name="" id=""></textarea>
             <button >Edytuj</button>
             <button onClick={()=>setSelectedTraining(null)}>Anuluj</button>
 
