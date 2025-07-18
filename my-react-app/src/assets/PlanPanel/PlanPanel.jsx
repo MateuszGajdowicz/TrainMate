@@ -2,7 +2,7 @@ import DisplayPlanContainer from './DisplayPlanContainer'
 import AddPlanContainer from './AddPlanContainer'
 import EditTraining from './EditTraining'
 import { useState } from 'react'
-function PlanPanel({user,trainingOptions, setTrainingPlan,trainingPlan}){
+function PlanPanel({FetchTrainingPlanList,setTrainingPlanData,trainingPlanData,user,trainingOptions, setTrainingPlan,trainingPlan}){
 
     const [selectedTraining,setSelectedTraining ]= useState(null)
     const [selectedTrainingIndex, setSelectedTrainingIndex] = useState(null)
@@ -13,7 +13,7 @@ function PlanPanel({user,trainingOptions, setTrainingPlan,trainingPlan}){
         selectedTraining?
         <EditTraining selectedTrainingIndex={selectedTrainingIndex} trainingPlan={trainingPlan} selectedTraining={selectedTraining}  setSelectedTraining={setSelectedTraining} trainingOptions={trainingOptions}/>
         :
-        <AddPlanContainer selectedTraining={selectedTraining}  trainingPlan={trainingPlan} setTrainingPlan={setTrainingPlan} user={user} trainingOptions={trainingOptions}/>
+        <AddPlanContainer FetchTrainingPlanList={FetchTrainingPlanList} setTrainingPlanData={setTrainingPlanData} trainingPlanData={trainingPlanData} selectedTraining={selectedTraining}  trainingPlan={trainingPlan} setTrainingPlan={setTrainingPlan} user={user} trainingOptions={trainingOptions}/>
 
         
 

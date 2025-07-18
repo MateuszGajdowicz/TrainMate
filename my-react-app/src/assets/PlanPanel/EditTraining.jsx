@@ -3,6 +3,7 @@ import Select from 'react-select';
 import { addDoc,query, collection, where,getDocs } from 'firebase/firestore';
 import { doc, updateDoc } from "firebase/firestore";
 import { db, auth } from "../../firebase";
+import { estimateCalories } from '../caloriesEstimator';
 
 function EditTraining({selectedTrainingIndex,trainingPlan,selectedTraining,setSelectedTraining,trainingOptions}){
     const weekDays = ['Poniedziałek', "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota", "Niedziela"]
@@ -45,29 +46,78 @@ function EditTraining({selectedTrainingIndex,trainingPlan,selectedTraining,setSe
         },[selectedTraining])
         
 
-    async function handleTrainingEdit(){
-            if(selectedActivities && trainingGoal && trainingGoalValue && trainingHour && trainingWeekDay){
-                try{
-                    const docRef = doc(db, "TrainingPlanList", trainingPlan[0].id);
-                    // await updateDoc(docRef, {
-                    //     trainingPlanList[selectedTrainingIndex]: updatedTrainingPlanList
-                    // });
+ async function handleTrainingEdit() {
+    if (selectedActivities &&trainingGoal &&trainingGoalValue &&trainingHour &&trainingWeekDay
+    ) {
+        try {
+            const docRef = doc(db, "TrainingPlanList", trainingPlan[0].id);
 
-                    
+            const updatedTrainingPlanList = [...trainingPlan[0].trainingPlanList];
+            
+            const hourNumber = parseInt(trainingHour.split(":")[0], 10);
 
-                }
-                catch(error){
-                    window.alert("Coś poszło nie tak")
-                }
+            let trainingUnit = "";
+            switch (trainingGoal) {
+                case "Czas":
+                    trainingUnit = "min";
+                    break;
+                case "Dystans":
+                    trainingUnit = "km";
+                    break;
+                case "Kalorie":
+                    trainingUnit = "kcal";
+                    break;
             }
+            let estimatedCalories = 0;
+            if(trainingUnit ==="min"){
+                 estimatedCalories = estimateCalories({type:selectedActivities,durationMin:Number(trainingGoalValue) })
+            }
+            else if(trainingUnit === "km"){
+                estimatedCalories = estimateCalories({type:selectedActivities,distanceKm:Number(trainingGoalValue) })
+
+
+    }
+
+
+
+            updatedTrainingPlanList[selectedTrainingIndex] = {
+                activity: selectedActivities,
+                trainingGoalValue: Number(trainingGoalValue),
+                timeOfDay: hourNumber,
+                trainingDays: trainingWeekDay,
+                trainingDescription: trainingDescription,
+                estimatedCalories:estimatedCalories,
+                trainingUnit: trainingUnit,
+                dayOfTheWeek: weekDays.indexOf(trainingWeekDay),
+            };
+
+                await updateDoc(docRef, {
+                userID:auth.currentUser.uid,
+                trainingPlanList: updatedTrainingPlanList,
+                date: new Date(),
+                });
+
+
+            window.alert("Zaktualizowano trening!");
+            setSelectedTraining(null);
+
+        } catch (error) {
+            console.error("Błąd przy aktualizacji treningu:", error);
+            window.alert("Coś poszło nie tak 😥");
         }
+    } else {
+        window.alert("Uzupełnij wszystkie pola!");
+    }
+}
+
 
 
 
     return(
         <div className="AddPlanContainer">
             <h1 className="Heading">Edytuj trening</h1>
-           <input className="planInput" value={selectedActivities} list='trainings' placeholder='Wybierz typ treningu' onChange={event=>setSelectedActivities(event.target.value)}/>
+           <input className="planInput" value={selectedActivities}
+ list='trainings' placeholder='Wybierz typ treningu' onChange={event=>setSelectedActivities(event.target.value)}/>
         <datalist id='trainings'>
             {trainingOptions.map((element,index)=>(
                 <option value={element} key={index}/>
@@ -100,8 +150,8 @@ function EditTraining({selectedTrainingIndex,trainingPlan,selectedTraining,setSe
                 </select>
                 
             </div>
-            <textarea  value={trainingDescription} className='planInput' placeholder='Dodaj dodatkowe notatki' name="" id=""></textarea>
-            <button >Edytuj</button>
+            <textarea   className='planInput' placeholder='Dodaj dodatkowe notatki' name="" id=""></textarea>
+            <button onClick={handleTrainingEdit} >Edytuj</button>
             <button onClick={()=>setSelectedTraining(null)}>Anuluj</button>
 
 

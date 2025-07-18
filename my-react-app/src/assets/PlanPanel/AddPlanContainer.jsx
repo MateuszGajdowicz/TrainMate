@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react';
 import './AddPlanContainer.css'
 import Select from 'react-select';
 import { GenerateTrainingPlan } from './PlanCreator';
-import { addDoc,query, collection, where,getDocs } from 'firebase/firestore';
+import { addDoc,query, collection, where,getDocs, deleteDoc } from 'firebase/firestore';
 import { doc, updateDoc } from "firebase/firestore";
 import { db, auth } from "../../firebase";
 
 import { CheckIsGoal } from './PlanCreator';
-function AddPlanContainer({selectedTraining,user,trainingOptions,setTrainingPlan,trainingPlan}){
+function AddPlanContainer({FetchTrainingPlanList,setTrainingPlanData,trainingPlanData,selectedTraining,user,trainingOptions,setTrainingPlan,trainingPlan}){
     
     const [trainingOptionsArray, setTrainingOptionsArray] = useState(trainingOptions.map(element=>({value:element, label:element})))
     const goalOptions = ['Poprawa wytrzymałości (kondycji)', 'Budowa masy mięśniowej (siła)', 'Utrata wagi / redukcja tkanki tłuszczowej', 'Poprawa mobilności i elastyczności', 'Poprawa szybkości i zwinności', 'Poprawa zdrowia i samopoczucia'];
@@ -23,33 +23,6 @@ function AddPlanContainer({selectedTraining,user,trainingOptions,setTrainingPlan
     const [trainingDescription, setTrainingDescription] = useState('')
 
 
-    const [trainingPlanData, setTrainingPlanData] = useState([])
-
-async function FetchTrainingPlanList(){
-        const q= query(
-            collection(db, "TrainingPlanList"),
-            where("userID", "==", user.uid));
-            const querySnapshot = await getDocs(q)
-            const trainingPlanList = querySnapshot.docs.map(doc=>({
-                id:doc.id,
-                ...doc.data()
-            }));
-            setTrainingPlan(trainingPlanList)
-
-            const q2 = query(
-            collection(db, "TrainingPlanData"),
-            where("userID", "==", user.uid));
-            const querySnapshot2 = await getDocs(q2)
-            const trainingPlanData = querySnapshot2.docs.map(doc=>({
-                id:doc.id,
-                ...doc.data()
-            }));
-            setTrainingPlanData(trainingPlanData)
-
-
-        
-
-    }
 
     useEffect(() => {
   console.log("trainingPlanData changed:", trainingPlanData);
@@ -82,7 +55,6 @@ async function FetchTrainingPlanList(){
                 let isMatched = CheckIsGoal(selectedActivities.map((activity) => activity.label), trainingPlanGoal)
                 console.log(isMatched)
                 let newTrainingPlanData = {
-                    userID:auth.currentUser.uid,
                     trainingPlanGoal:trainingPlanGoal,
                     selectedActivities:selectedActivities.map((activity) => activity.value),
                     planIntensity:planIntensity,
@@ -90,11 +62,14 @@ async function FetchTrainingPlanList(){
                     trainingTime:trainingTime,
                     trainingLength:trainingLength,
                     trainingDescription:trainingDescription,
+                    userID:auth.currentUser.uid
                 }
-                let TrainingPlanList={
-                    userID:auth.currentUser.uid,
-                    trainingPlanList:generatedPlan,
-                    date: new Date(),                }
+                // let TrainingPlanList={
+                //     userID:auth.currentUser.uid,
+                //     trainingPlanList:generatedPlan,
+                //     date: new Date(),                }
+
+                
                 try{
                     if(trainingPlanData.length!==0){
                         const docRef = doc(db, "TrainingPlanData", trainingPlanData[0].id );
@@ -107,15 +82,37 @@ async function FetchTrainingPlanList(){
                         
                     }
 
-                    if(trainingPlan.length!==0){
-                        const docRef2 = doc(db, "TrainingPlanList", trainingPlan[0].id);
-                        await updateDoc(docRef2, TrainingPlanList)
+                    for(let i = 0;i<trainingPlan.length;i++){
+                        const docRef1 = doc(db, "TrainingPlanList", trainingPlan[i].id)
+                        await deleteDoc(docRef1)
+                    }
 
-                    }
-                    else{
-                        const docRef2 = await addDoc(collection(db,"TrainingPlanList"), TrainingPlanList )
+                    for(let i =0; i<generatedPlan.length;i++){
+                        let trainingPlanDay = {...generatedPlan[i],
+                                                    userID:auth.currentUser.uid,}
+                        try{
+                            const docRef = addDoc(collection(db, "TrainingPlanList"), trainingPlanDay)
+                        }
+                        catch(error){
+                        }
+
                         
+                        
+
+                            
                     }
+
+
+
+                    // if(trainingPlan.length!==0){
+                    //     const docRef2 = doc(db, "TrainingPlanList", trainingPlan[0].id);
+                    //     await updateDoc(docRef2, TrainingPlanList)
+
+                    // }
+                    // else{
+                    //     const docRef2 = await addDoc(collection(db,"TrainingPlanList"), TrainingPlanList )
+                        
+                    // }
 
 
                 }

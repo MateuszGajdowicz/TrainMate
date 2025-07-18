@@ -22,6 +22,8 @@ function App() {
   const [displayedActivitiesList, setDisplayedActivitiesList] = useState([])
 
   const [trainingPlan, setTrainingPlan] = useState([])
+  const [trainingPlanData, setTrainingPlanData] = useState([])
+
 
   const [favourites, setFavourites] = useState([])
 
@@ -32,6 +34,32 @@ function App() {
   
 
   const [isRunnerOpacityFull, setIsRunnerOpacityFull] = useState(false)
+
+  async function FetchTrainingPlanList(){
+        const q= query(
+            collection(db, "TrainingPlanList"),
+            where("userID", "==", user.uid));
+            const querySnapshot = await getDocs(q)
+            const trainingPlanList = querySnapshot.docs.map(doc=>({
+                id:doc.id,
+                ...doc.data()
+            }));
+            setTrainingPlan(trainingPlanList)
+
+            const q2 = query(
+            collection(db, "TrainingPlanData"),
+            where("userID", "==", user.uid));
+            const querySnapshot2 = await getDocs(q2)
+            const trainingPlanData = querySnapshot2.docs.map(doc=>({
+                id:doc.id,
+                ...doc.data()
+            }));
+            setTrainingPlanData(trainingPlanData)
+
+
+        
+
+    }
 
 
 useEffect(()=>{
@@ -113,7 +141,7 @@ useEffect(()=>{
           <NavBar LogOut={LogOut}/>
           {/* <YourTrainingsPanel favourites={favourites} setFavourites={setFavourites} displayedTrainingsList={displayedTrainingsList} setDisplayedTrainingList={setDisplayedTrainingList} setTrainingsList={setTrainingsList} trainingsList={trainingsList} fetchTrainingsList={fetchTrainingsList} user={user} trainingOptions={trainingOptions}/> */}
           {/* <YourActivitiesPanel trainingOptions={trainingOptions} fetchActivitiesList={fetchActivitiesList}setActivitesList={setActivitesList} activitesList={activitesList} displayedActivitiesList={displayedActivitiesList} setDisplayedActivitiesList={setDisplayedActivitiesList} user={user}/> */}
-          <PlanPanel setTrainingPlan={setTrainingPlan} trainingPlan={trainingPlan} user={user} trainingOptions={trainingOptions}/>
+          <PlanPanel FetchTrainingPlanList={FetchTrainingPlanList} setTrainingPlanData={setTrainingPlanData} trainingPlanData={trainingPlanData} setTrainingPlan={setTrainingPlan} trainingPlan={trainingPlan} user={user} trainingOptions={trainingOptions}/>
         </>
       )}
     </>
