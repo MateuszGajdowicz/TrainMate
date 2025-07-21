@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import './AddPlanContainer.css'
+import './GeneratePlanContainer.css'
 import Select from 'react-select';
 import { GenerateTrainingPlan } from './PlanCreator';
 import { addDoc,query, collection, where,getDocs, deleteDoc } from 'firebase/firestore';
@@ -7,7 +7,7 @@ import { doc, updateDoc } from "firebase/firestore";
 import { db, auth } from "../../firebase";
 
 import { CheckIsGoal } from './PlanCreator';
-function AddPlanContainer({FetchTrainingPlanList,setTrainingPlanData,trainingPlanData,selectedTraining,user,trainingOptions,setTrainingPlan,trainingPlan}){
+function GeneratePlanContainer({setIsActivityMatched,planCreatingWay,setPlanCreatingWay,FetchTrainingPlanList,setTrainingPlanData,trainingPlanData,selectedTraining,user,trainingOptions,setTrainingPlan,trainingPlan}){
     
     const [trainingOptionsArray, setTrainingOptionsArray] = useState(trainingOptions.map(element=>({value:element, label:element})))
     const goalOptions = ['Poprawa wytrzymałości (kondycji)', 'Budowa masy mięśniowej (siła)', 'Utrata wagi / redukcja tkanki tłuszczowej', 'Poprawa mobilności i elastyczności', 'Poprawa szybkości i zwinności', 'Poprawa zdrowia i samopoczucia'];
@@ -54,6 +54,7 @@ function AddPlanContainer({FetchTrainingPlanList,setTrainingPlanData,trainingPla
                 const generatedPlan = (GenerateTrainingPlan(trainingPlanGoal,  selectedActivities.map((activity) => activity.value),planIntensity,trainingsNumber, trainingTime,trainingLength))
                 let isMatched = CheckIsGoal(selectedActivities.map((activity) => activity.label), trainingPlanGoal)
                 console.log(isMatched)
+                setIsActivityMatched(isMatched)
                 let newTrainingPlanData = {
                     trainingPlanGoal:trainingPlanGoal,
                     selectedActivities:selectedActivities.map((activity) => activity.value),
@@ -147,7 +148,13 @@ useEffect(()=>{
     return(
         <>
         <div className='AddPlanContainer'>
-            <h1 className='Heading'>Zbuduj swój własny plan :)</h1>
+            <h1 className='Heading'>Zbuduj swój własny
+                 plan :)</h1>
+                 <div className='SwitchContainer'>
+                    <button style={{backgroundColor:planCreatingWay==="Wpisz"?"hsl(28, 100%, 60%":"white"}} onClick={()=>setPlanCreatingWay("Wpisz")}>Wpisz samodzielnie</button>
+
+                    <button style={{backgroundColor:planCreatingWay==="Wygeneruj"?"hsl(28, 100%, 60%":"white"}} onClick={()=>setPlanCreatingWay("Wygeneruj")}>Wygeneruj automatycznie</button>
+                 </div>
             <div className='GoalContainer'>
                 <p>Wybierz główny cel: </p>
 
@@ -183,9 +190,9 @@ useEffect(()=>{
             </div>
             <input value={trainingLength}  onChange={event=>setTrainingLength(parseInt(event.target.value))} className='planInput' type="number" placeholder='Wybierz długość treningu (min)' />
             <textarea value={trainingDescription} onChange={event=>setTrainingDescription(event.target.value)} className='planInput' placeholder='Dodatkowe notatki' name="" id=""></textarea>
-            <button onClick={CreateTrainingPlan} className='createPlanButton'>Stwórz plan</button>
+            <button onClick={CreateTrainingPlan} className='createPlanButton'>{trainingPlan.length!==0?"Wygeneruj ponownie":"Wygeneruj plan"}</button>
         </div>
         </>
     )
 }
-export default AddPlanContainer
+export default GeneratePlanContainer

@@ -4,8 +4,10 @@ import { addDoc,query, collection, where,getDocs } from 'firebase/firestore';
 import { doc, updateDoc } from "firebase/firestore";
 import { db, auth } from "../../firebase";
 import { estimateCalories } from '../caloriesEstimator';
+import './GeneratePlanContainer.css'
 
-function EditTraining({selectedTrainingIndex,trainingPlan,selectedTraining,setSelectedTraining,trainingOptions}){
+
+function EditTraining({FetchTrainingPlanList,selectedTrainingIndex,trainingPlan,selectedTraining,setSelectedTraining,trainingOptions}){
     const weekDays = ['Poniedziałek', "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota", "Niedziela"]
     const [trainingOptionsArray, setTrainingOptionsArray] = useState(trainingOptions.map(element=>({value:element, label:element})))
 
@@ -21,6 +23,7 @@ function EditTraining({selectedTrainingIndex,trainingPlan,selectedTraining,setSe
 
     
     useEffect(()=>{
+        if(selectedTraining!==null){
         if(selectedTraining){
             switch(selectedTraining.trainingUnit){
                 case "min":
@@ -33,8 +36,7 @@ function EditTraining({selectedTrainingIndex,trainingPlan,selectedTraining,setSe
             }
             setSelectedActivities(selectedTraining.activity)
             setTrainingGoalValue(selectedTraining.trainingGoalValue)
-            const formattedHour = selectedTraining.timeOfDay.toString().padStart(2, '0') + ":00";
-            setTrainingHour(formattedHour);
+            setTrainingHour(selectedTraining.timeOfDay);
 
             setTrainingWeekDay(selectedTraining.trainingDays)
             console.log(selectedTraining)
@@ -43,6 +45,10 @@ function EditTraining({selectedTrainingIndex,trainingPlan,selectedTraining,setSe
 
         }
 
+        }
+        
+
+
         },[selectedTraining])
         
 
@@ -50,11 +56,7 @@ function EditTraining({selectedTrainingIndex,trainingPlan,selectedTraining,setSe
     if (selectedActivities &&trainingGoal &&trainingGoalValue &&trainingHour &&trainingWeekDay
     ) {
         try {
-            const docRef = doc(db, "TrainingPlanList", trainingPlan[0].id);
 
-            const updatedTrainingPlanList = [...trainingPlan[0].trainingPlanList];
-            
-            const hourNumber = parseInt(trainingHour.split(":")[0], 10);
 
             let trainingUnit = "";
             switch (trainingGoal) {
@@ -77,29 +79,24 @@ function EditTraining({selectedTrainingIndex,trainingPlan,selectedTraining,setSe
 
 
     }
-
-
-
-            updatedTrainingPlanList[selectedTrainingIndex] = {
+        let updatedTraining = {
                 activity: selectedActivities,
                 trainingGoalValue: Number(trainingGoalValue),
-                timeOfDay: hourNumber,
+                timeOfDay: trainingHour,
                 trainingDays: trainingWeekDay,
                 trainingDescription: trainingDescription,
                 estimatedCalories:estimatedCalories,
                 trainingUnit: trainingUnit,
                 dayOfTheWeek: weekDays.indexOf(trainingWeekDay),
+                
             };
-
-                await updateDoc(docRef, {
-                userID:auth.currentUser.uid,
-                trainingPlanList: updatedTrainingPlanList,
-                date: new Date(),
-                });
+            const docRef = doc(db, "TrainingPlanList", trainingPlan[selectedTrainingIndex].id);
+            await updateDoc(docRef,updatedTraining );
 
 
             window.alert("Zaktualizowano trening!");
             setSelectedTraining(null);
+            FetchTrainingPlanList();
 
         } catch (error) {
             console.error("Błąd przy aktualizacji treningu:", error);
@@ -150,9 +147,13 @@ function EditTraining({selectedTrainingIndex,trainingPlan,selectedTraining,setSe
                 </select>
                 
             </div>
-            <textarea   className='planInput' placeholder='Dodaj dodatkowe notatki' name="" id=""></textarea>
-            <button onClick={handleTrainingEdit} >Edytuj</button>
-            <button onClick={()=>setSelectedTraining(null)}>Anuluj</button>
+            <textarea value={trainingDescription}  onChange={event=>setTrainingDescription(event.target.value)}  className='planInput' placeholder='Dodaj dodatkowe notatki' name="" id=""></textarea>
+            <div style={{display:"flex"}}>
+                <button className='createPlanButton' onClick={handleTrainingEdit} >Edytuj</button>
+                <button className='createPlanButton' onClick={()=>setSelectedTraining(null)}>Anuluj</button>
+
+            </div>
+
 
 
 

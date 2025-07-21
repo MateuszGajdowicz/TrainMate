@@ -31,7 +31,7 @@ function AddNewTraining({trainingsList,trainingOptions, user,fetchTrainingsList,
                 setUnit("min")
                 break;
             case "Dystans":
-                setUnit("m")
+                setUnit("km")
                 break;
             case "Kalorie":
                 setUnit("kcal")
@@ -132,7 +132,7 @@ function AddNewTraining({trainingsList,trainingOptions, user,fetchTrainingsList,
                 } else if (trainingGoal === "Dystans") {
                     result = estimateCalories({
                         type: trainingType,
-                        distanceKm: parseFloat(trainingGoalValue) / 1000
+                        distanceKm: parseFloat(trainingGoalValue)
                     });
                 }
 

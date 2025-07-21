@@ -58,6 +58,7 @@ const activityConfig = {
 
 
 
+
 function scaleGoal(min, max, intensity) {
   const scaleMap = {
     "Niska": 0.4,
@@ -95,7 +96,19 @@ function getTimeOfDay(time){
 
     return randomHour
 }
+function getTrainingGoal(unit){
+  let trainingGoal;
+  switch(unit){
+    case "min":
+      trainingGoal= "Czas"
+      break;
+    case "km":
+      trainingGoal="Dystans"
+      break;
+  }
+  return trainingGoal;
 
+}
 
 
 
@@ -112,29 +125,32 @@ export function GenerateTrainingPlan(goal, activitiesArray, intensity, number, t
      let randomDayIndex = Math.floor(Math.random() * weekDays.length);
      let dayName = weekDays[randomDayIndex]
 
-    const trainingGoal = Math.round(scaleGoal(config.min, config.max, intensity)/5)*5;
+    const trainingGoalValue = Math.round(scaleGoal(config.min, config.max, intensity)/5)*5;
 
     const hour  = getTimeOfDay(time)
 
     let estimatedCalories = 0;
 
     if(config.unit ==="min"){
-      estimatedCalories = estimateCalories({type:config.name,durationMin:trainingGoal })
+      estimatedCalories = estimateCalories({type:config.name,durationMin:trainingGoalValue })
     }
     else if(config.unit === "km"){
-        estimatedCalories = estimateCalories({type:config.name,distanceKm:trainingGoal })
+        estimatedCalories = estimateCalories({type:config.name,distanceKm:trainingGoalValue })
 
 
     }
+
+    let trainingGoal = getTrainingGoal(config.unit)
 
     // Zbuduj entry
     trainingPlan.push({
       activity: randomActivityName,
       dayOfTheWeek: randomDayIndex,
       trainingDays: dayName,
+      trainingGoal:trainingGoal,
       trainingUnit: config.unit,
-      timeOfDay: hour,
-      trainingGoalValue: trainingGoal,
+      timeOfDay: `${hour.toString().padStart(2, '0')}:00`,
+      trainingGoalValue: trainingGoalValue,
       estimatedCalories:estimatedCalories,
       trainingDescription: null,
     });
@@ -151,10 +167,16 @@ export function CheckIsGoal(activitiesArray,goal){
         let currentActivityInfo = activityConfig[element]
         return currentActivityInfo.goals.includes(goal)
     })
+    let matchedActivities = Object.fromEntries(Object.entries(activityConfig).filter(([key, value])=>value.goals.includes(goal)))
 
+    let matchedNames = Object.values(matchedActivities).map(element=>element.name)
 
+  let checkedData = {
+    isMatched:(checkedIsMatched.length/activitiesArray.length)<0.5? false: true,
+    matchedActivities:matchedNames,
+  }
 
-    return (checkedIsMatched.length/activitiesArray.length)<0.5? false: true
+    return checkedData
     
 
 

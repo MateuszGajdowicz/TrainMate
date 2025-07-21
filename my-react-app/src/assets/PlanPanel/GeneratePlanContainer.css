@@ -3,7 +3,7 @@
     display: flex;
     flex-direction: column;
     width: 33% ;
-    height: 70%;
+    height: 75%;
     top: 13%;
     left: 2%;
     align-items: start;
@@ -21,6 +21,22 @@
         justify-content: space-between;
         .planInput{
             width: 55%;
+        }
+    }
+    .SwitchContainer{
+        width: 80%;
+        display: flex;
+        border-radius: 50px;
+        background-color: yellow;
+        overflow: hidden;
+        gap:0px;
+        justify-content: space-between;
+        height: 5%;
+        border:hsl(28, 100%, 60%) 3px solid ;
+        button{
+            border: none;
+            width: 50%;
+            cursor: pointer;
         }
     }
     .Heading{

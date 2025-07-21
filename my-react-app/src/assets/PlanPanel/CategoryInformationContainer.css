@@ -1,0 +1,7 @@
+.CategoryInformationContainer{
+    width: 150px;
+    height: auto;
+    background-color: orange;
+    position: absolute;
+    left: 40%;
+}
