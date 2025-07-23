@@ -5,7 +5,7 @@ import { useState } from 'react'
 import FillTrainingPlan from './FillTrainingPlan'
 import { CheckIsGoal } from './PlanCreator'
 import CategoryInformationContainer from './CategoryInformationContainer'
-function PlanPanel({FetchTrainingPlanList,setTrainingPlanData,trainingPlanData,user,trainingOptions, setTrainingPlan,trainingPlan}){
+function PlanPanel({trainingsList,fetchTrainingsList,FetchTrainingPlanList,setTrainingPlanData,trainingPlanData,user,trainingOptions, setTrainingPlan,trainingPlan}){
 
     const [selectedTraining,setSelectedTraining ]= useState(null)
     const [selectedTrainingIndex, setSelectedTrainingIndex] = useState(null)
@@ -13,6 +13,10 @@ function PlanPanel({FetchTrainingPlanList,setTrainingPlanData,trainingPlanData,u
     const [planCreatingWay, setPlanCreatingWay] = useState("Wpisz")
 
     const [isAcitivityMatched, setIsActivityMatched] = useState({isMatched:true})
+
+    const [selectedAddActivity, setSelectedAddActivity] = useState(null)
+
+    const [dontShowAgain, setDontShowAgain] = useState(false)
 
     
     
@@ -34,11 +38,14 @@ function PlanPanel({FetchTrainingPlanList,setTrainingPlanData,trainingPlanData,u
         (
             <>
             {
-                !isAcitivityMatched.isMatched &&
-                <CategoryInformationContainer isAcitivityMatched={isAcitivityMatched}/>
+                !isAcitivityMatched.isMatched && !dontShowAgain &&(
+                    <CategoryInformationContainer setDontShowAgain={setDontShowAgain} setIsActivityMatched={setIsActivityMatched} setSelectedAddActivity={setSelectedAddActivity} isAcitivityMatched={isAcitivityMatched}/>
+
+
+                )
 
             }
-            <GeneratePlanContainer setIsActivityMatched={setIsActivityMatched} planCreatingWay={planCreatingWay} setPlanCreatingWay={setPlanCreatingWay}  FetchTrainingPlanList={FetchTrainingPlanList} setTrainingPlanData={setTrainingPlanData} trainingPlanData={trainingPlanData} selectedTraining={selectedTraining}  trainingPlan={trainingPlan} setTrainingPlan={setTrainingPlan} user={user} trainingOptions={trainingOptions}/>
+            <GeneratePlanContainer selectedAddActivity={selectedAddActivity} setIsActivityMatched={setIsActivityMatched} planCreatingWay={planCreatingWay} setPlanCreatingWay={setPlanCreatingWay}  FetchTrainingPlanList={FetchTrainingPlanList} setTrainingPlanData={setTrainingPlanData} trainingPlanData={trainingPlanData} selectedTraining={selectedTraining}  trainingPlan={trainingPlan} setTrainingPlan={setTrainingPlan} user={user} trainingOptions={trainingOptions}/>
             </>
         )
 
@@ -52,7 +59,7 @@ function PlanPanel({FetchTrainingPlanList,setTrainingPlanData,trainingPlanData,u
         
 
     }
-    <DisplayPlanContainer FetchTrainingPlanList={FetchTrainingPlanList} setSelectedTrainingIndex={setSelectedTrainingIndex} setSelectedTraining={setSelectedTraining} trainingPlan={trainingPlan}/>
+    <DisplayPlanContainer trainingsList={trainingsList} fetchTrainingsList={fetchTrainingsList} FetchTrainingPlanList={FetchTrainingPlanList} setSelectedTrainingIndex={setSelectedTrainingIndex} setSelectedTraining={setSelectedTraining} trainingPlan={trainingPlan}/>
     </>)
 }
 export default PlanPanel

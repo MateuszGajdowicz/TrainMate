@@ -142,7 +142,6 @@ export function GenerateTrainingPlan(goal, activitiesArray, intensity, number, t
 
     let trainingGoal = getTrainingGoal(config.unit)
 
-    // Zbuduj entry
     trainingPlan.push({
       activity: randomActivityName,
       dayOfTheWeek: randomDayIndex,
@@ -156,7 +155,6 @@ export function GenerateTrainingPlan(goal, activitiesArray, intensity, number, t
     });
   }
 
-  // Sortuj po dniach
   trainingPlan.sort((a, b) => a.dayOfTheWeek - b.dayOfTheWeek);
 
   return trainingPlan;
@@ -170,11 +168,13 @@ export function CheckIsGoal(activitiesArray,goal){
     let matchedActivities = Object.fromEntries(Object.entries(activityConfig).filter(([key, value])=>value.goals.includes(goal)))
 
     let matchedNames = Object.values(matchedActivities).map(element=>element.name)
+    let filteredMatchedNames = matchedNames.filter(element=>!activitiesArray.includes(element))
 
   let checkedData = {
     isMatched:(checkedIsMatched.length/activitiesArray.length)<0.5? false: true,
-    matchedActivities:matchedNames,
+    matchedActivities:filteredMatchedNames,
   }
+
 
     return checkedData
     

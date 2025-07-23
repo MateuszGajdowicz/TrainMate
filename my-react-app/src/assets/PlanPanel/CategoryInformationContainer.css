@@ -1,7 +1,52 @@
 .CategoryInformationContainer{
-    width: 150px;
-    height: auto;
-    background-color: orange;
+    width: 300px;
+    height: 400px;
+    background-color: hsl(26, 100%, 90%);
     position: absolute;
-    left: 40%;
+    left: 38%;
+    top: 15%;
+    z-index: 1000;
+    padding: 10px;
+    padding-bottom: 20px;
+    border-radius: 20px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.6); /* cien */;
+    button{
+            padding:0px 10px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            background-color:hsl(28, 100%, 60%);
+                    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2); /* cien */;
+                    transition: 0.2s ease;
+        }
+        button:hover{
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4); /* cien */;
+
+            
+
+        }
+
+    .ListContainer{
+        height: 200px;
+        overflow: scroll;
+
+        ul{
+            padding: 0px;
+        }
+        
+
+    .OptionContainer{
+        display: flex;
+        justify-content: space-between;
+        margin: 10px;
+
+        li{
+            list-style-type: none;
+            
+        }
+    }
+}
+    }
+.ListContainer::-webkit-scrollbar {
+  display: none;                 /* Chrome, Safari */
 }

@@ -141,7 +141,7 @@ useEffect(()=>{
           <NavBar LogOut={LogOut}/>
           {/* <YourTrainingsPanel favourites={favourites} setFavourites={setFavourites} displayedTrainingsList={displayedTrainingsList} setDisplayedTrainingList={setDisplayedTrainingList} setTrainingsList={setTrainingsList} trainingsList={trainingsList} fetchTrainingsList={fetchTrainingsList} user={user} trainingOptions={trainingOptions}/> */}
           {/* <YourActivitiesPanel trainingOptions={trainingOptions} fetchActivitiesList={fetchActivitiesList}setActivitesList={setActivitesList} activitesList={activitesList} displayedActivitiesList={displayedActivitiesList} setDisplayedActivitiesList={setDisplayedActivitiesList} user={user}/> */}
-          <PlanPanel FetchTrainingPlanList={FetchTrainingPlanList} setTrainingPlanData={setTrainingPlanData} trainingPlanData={trainingPlanData} setTrainingPlan={setTrainingPlan} trainingPlan={trainingPlan} user={user} trainingOptions={trainingOptions}/>
+          <PlanPanel trainingsList={trainingsList} fetchTrainingsList={fetchTrainingsList} FetchTrainingPlanList={FetchTrainingPlanList} setTrainingPlanData={setTrainingPlanData} trainingPlanData={trainingPlanData} setTrainingPlan={setTrainingPlan} trainingPlan={trainingPlan} user={user} trainingOptions={trainingOptions}/>
         </>
       )}
     </>

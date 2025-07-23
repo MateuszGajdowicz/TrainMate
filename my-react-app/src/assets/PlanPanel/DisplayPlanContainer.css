@@ -11,11 +11,18 @@
     .headingContainer{
         display: flex;
         height: 10%;
-        width: 70%;
+        width: 100%;
         margin-left: 20px;
         gap: 10px;
         align-items: center;
         margin-top: 10px;
+        .downloadButton{
+            background-image: url('../../download.png');
+            background-position: center;
+            background-size: 70%;
+            padding: 18px;
+            background-repeat: no-repeat;
+        }
         button{
             padding: 15px;
             border-radius: 20px;
@@ -32,6 +39,13 @@
             margin: 0px
 
         }
+        .planInput{
+        width:17%;
+        height: 30px;
+        border-radius: 20px;
+        border: 3px hsl(28, 100%, 60%) solid;
+
+    }
     }
 
     .SingleTrainigContainer{

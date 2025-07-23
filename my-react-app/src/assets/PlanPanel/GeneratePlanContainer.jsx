@@ -7,7 +7,7 @@ import { doc, updateDoc } from "firebase/firestore";
 import { db, auth } from "../../firebase";
 
 import { CheckIsGoal } from './PlanCreator';
-function GeneratePlanContainer({setIsActivityMatched,planCreatingWay,setPlanCreatingWay,FetchTrainingPlanList,setTrainingPlanData,trainingPlanData,selectedTraining,user,trainingOptions,setTrainingPlan,trainingPlan}){
+function GeneratePlanContainer({selectedAddActivity,setIsActivityMatched,planCreatingWay,setPlanCreatingWay,FetchTrainingPlanList,setTrainingPlanData,trainingPlanData,selectedTraining,user,trainingOptions,setTrainingPlan,trainingPlan}){
     
     const [trainingOptionsArray, setTrainingOptionsArray] = useState(trainingOptions.map(element=>({value:element, label:element})))
     const goalOptions = ['Poprawa wytrzymałości (kondycji)', 'Budowa masy mięśniowej (siła)', 'Utrata wagi / redukcja tkanki tłuszczowej', 'Poprawa mobilności i elastyczności', 'Poprawa szybkości i zwinności', 'Poprawa zdrowia i samopoczucia'];
@@ -42,6 +42,10 @@ function GeneratePlanContainer({setIsActivityMatched,planCreatingWay,setPlanCrea
 
 }, [trainingPlanData]);
 
+useEffect(()=>{
+    setSelectedActivites(prev=>[...prev,{value:selectedAddActivity, label:selectedAddActivity}])
+},[selectedAddActivity])
+
     useEffect(()=>{
         FetchTrainingPlanList();
 
@@ -54,6 +58,8 @@ function GeneratePlanContainer({setIsActivityMatched,planCreatingWay,setPlanCrea
                 const generatedPlan = (GenerateTrainingPlan(trainingPlanGoal,  selectedActivities.map((activity) => activity.value),planIntensity,trainingsNumber, trainingTime,trainingLength))
                 let isMatched = CheckIsGoal(selectedActivities.map((activity) => activity.label), trainingPlanGoal)
                 console.log(isMatched)
+                console.log(selectedActivities)
+
                 setIsActivityMatched(isMatched)
                 let newTrainingPlanData = {
                     trainingPlanGoal:trainingPlanGoal,
@@ -75,6 +81,7 @@ function GeneratePlanContainer({setIsActivityMatched,planCreatingWay,setPlanCrea
                     if(trainingPlanData.length!==0){
                         const docRef = doc(db, "TrainingPlanData", trainingPlanData[0].id );
                         await updateDoc(docRef, newTrainingPlanData)
+
 
                     }
                     else{

@@ -75,6 +75,7 @@ function AddNewTraining({trainingsList,trainingOptions, user,fetchTrainingsList,
                 const newDate = !isRepeating? baseDate: new Date(baseDate.getTime() + i * daysRepeat * 24 * 60 * 60 * 1000);
                         const newTraining={
                             userID: auth.currentUser.uid,
+                            isFromTrainingPlan:false,
                             trainingType:trainingType,
                             trainingGoal:trainingGoal,
                             trainingGoalValue:trainingGoalValue,

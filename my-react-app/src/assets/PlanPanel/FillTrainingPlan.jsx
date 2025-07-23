@@ -58,6 +58,7 @@ const weekDays = ['Poniedziałek', "Wtorek", "Środa", "Czwartek", "Piątek", "S
         let newSingleTrainingPlan = {
                 userID:auth.currentUser.uid,
                 activity: selectedActivities,
+                trainingGoal:trainingGoal,
                 trainingGoalValue: Number(trainingGoalValue),
                 timeOfDay: trainingHour,
                 trainingDays: trainingWeekDay,
