@@ -7,7 +7,7 @@ import './GeneratePlanContainer.css'
 
 
 
-function FillTrainingPlan({FetchTrainingPlanList,trainingOptions,planCreatingWay,setPlanCreatingWay}){
+function FillTrainingPlan({user,FetchTrainingPlanList,trainingOptions,planCreatingWay,setPlanCreatingWay}){
 const weekDays = ['Poniedziałek', "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota", "Niedziela"]
 
 
@@ -20,12 +20,11 @@ const weekDays = ['Poniedziałek', "Wtorek", "Środa", "Czwartek", "Piątek", "S
     const [trainingUnit, setTrainingUnit] = useState('min')
 
     useEffect(()=>{
-        if(FetchTrainingPlanList){
-            FetchTrainingPlanList();
+        FetchTrainingPlanList();
+
+    },[user])
 
 
-        }
-    },[FetchTrainingPlanList])
     useEffect(()=>{
         let trainingUnit = "";
             switch (trainingGoal) {
@@ -47,6 +46,10 @@ const weekDays = ['Poniedziałek', "Wtorek", "Środa", "Czwartek", "Piątek", "S
         if(selectedActivities && trainingGoal && trainingGoalValue && trainingHour && trainingWeekDay!==''){
 
         let estimatedCalories = 0;
+        if(trainingGoal === "Kalorie"){
+            estimatedCalories = Number(trainingGoalValue)
+        }
+        else{
             if(trainingUnit ==="min"){
                  estimatedCalories = estimateCalories({type:selectedActivities,durationMin:Number(trainingGoalValue) })
             }
@@ -55,6 +58,9 @@ const weekDays = ['Poniedziałek', "Wtorek", "Środa", "Czwartek", "Piątek", "S
 
 
     }
+
+        }
+
         let newSingleTrainingPlan = {
                 userID:auth.currentUser.uid,
                 activity: selectedActivities,

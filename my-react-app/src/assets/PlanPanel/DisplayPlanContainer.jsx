@@ -3,7 +3,7 @@ import '../TrainigsPanel/TrainingsList.css'
 import { addDoc,query, collection, where,getDocs, deleteDoc } from 'firebase/firestore';
 import { doc, updateDoc } from "firebase/firestore";
 import { db, auth } from "../../firebase";
-import { useState , useRef} from 'react'
+import { useState , useRef, useEffect, use} from 'react'
 import React from 'react';
 import generatePDF from './generatePDFplan';
 import download from '../../download.png'
@@ -14,6 +14,18 @@ function DisplayPlanContainer({trainingsList,fetchTrainingsList,FetchTrainingPla
 
     const [planRepeatValue, setPlanRepeatValue] = useState(null)
 
+    const [totalCalories, setTotalCalories] = useState(null)
+    const [planLength, setPlanLength] = useState(null)
+
+    function CalculatePlanInfo(planAray){
+        const summedCalories = planAray.reduce((prev, next)=>prev+next.estimatedCalories, 0)
+        setTotalCalories(summedCalories)
+        setPlanLength(planAray.length)
+
+    }
+useEffect(()=>{
+    CalculatePlanInfo(trainingPlan)   
+}, [trainingPlan])
 
 
     async function MovePlanToTrainings(array){
@@ -112,6 +124,10 @@ function DisplayPlanContainer({trainingsList,fetchTrainingsList,FetchTrainingPla
 
 
         </div>
+            <div className='InfoContainer'>
+                <p>Z twoim planem treningowym w tydzień spalisz <strong>{totalCalories}</strong> kcal</p>
+
+            </div>
 
 
         <div   className='AllSingleTrainigsContainer'> 

@@ -20,7 +20,6 @@ function GeneratePlanContainer({selectedAddActivity,setIsActivityMatched,planCre
     const [trainingsNumber, setTrainingsNumber] = useState('')
     const [trainingTime, setTrainingTime] = useState('Rano (6:00–9:00)')
     const [trainingLength, setTrainingLength] = useState('')
-    const [trainingDescription, setTrainingDescription] = useState('')
 
 
 
@@ -33,7 +32,6 @@ function GeneratePlanContainer({selectedAddActivity,setIsActivityMatched,planCre
         setTrainingsNumber(trainingPlanData[0].trainingsNumber)
         setTrainingTime(trainingPlanData[0].trainingTime)
         setTrainingLength(trainingPlanData[0].trainingLength)
-        setTrainingDescription(trainingPlanData[0].trainingDescription)
 
 
 
@@ -49,7 +47,7 @@ useEffect(()=>{
     useEffect(()=>{
         FetchTrainingPlanList();
 
-    },[user, selectedTraining])
+    },[user])
 
 
     async function CreateTrainingPlan(){
@@ -68,7 +66,6 @@ useEffect(()=>{
                     trainingsNumber:trainingsNumber,
                     trainingTime:trainingTime,
                     trainingLength:trainingLength,
-                    trainingDescription:trainingDescription,
                     userID:auth.currentUser.uid
                 }
                 // let TrainingPlanList={
@@ -196,7 +193,6 @@ useEffect(()=>{
             </select>
             </div>
             <input value={trainingLength}  onChange={event=>setTrainingLength(parseInt(event.target.value))} className='planInput' type="number" placeholder='Wybierz długość treningu (min)' />
-            <textarea value={trainingDescription} onChange={event=>setTrainingDescription(event.target.value)} className='planInput' placeholder='Dodatkowe notatki' name="" id=""></textarea>
             <button onClick={CreateTrainingPlan} className='createPlanButton'>{trainingPlan.length!==0?"Wygeneruj ponownie":"Wygeneruj plan"}</button>
         </div>
         </>

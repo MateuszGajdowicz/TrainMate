@@ -32,7 +32,7 @@ function PlanPanel({trainingsList,fetchTrainingsList,FetchTrainingPlanList,setTr
         (
             planCreatingWay==="Wpisz"?
         ( 
-        <FillTrainingPlan FetchTrainingPlanList={FetchTrainingPlanList} planCreatingWay={planCreatingWay} setPlanCreatingWay={setPlanCreatingWay} trainingOptions={trainingOptions}/>
+        <FillTrainingPlan user = {user} FetchTrainingPlanList={FetchTrainingPlanList} planCreatingWay={planCreatingWay} setPlanCreatingWay={setPlanCreatingWay} trainingOptions={trainingOptions}/>
         )
         :   
         (

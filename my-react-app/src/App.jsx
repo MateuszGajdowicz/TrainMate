@@ -9,7 +9,10 @@ import NavBar from './assets/NavBar'
 import YourTrainingsPanel from './assets/TrainigsPanel/YourTrainingsPanel'
 import YourActivitiesPanel from './assets/ActivitiesPanel/YourActivitiesPanel'
 import PlanPanel from './assets/PlanPanel/PlanPanel'
+import ChallengesPanel from './assets/ChallenegesPanel/ChallengesPanel'
+
 import { collection, getDocs, query,where,doc } from 'firebase/firestore'
+import { defaultChallenges } from './assets/ChallenegesPanel/DefaultChallenges'
 
 
 function App() {
@@ -31,9 +34,39 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(true)
   const [isRegistered, setIsRegistered] = useState(true)
   const [isEmailConfirmDisplayed, setIsEmailConfirmDisplayed] = useState(false)
+
+  const [personalChallengesList, setPersonalChallenges] = useState([])
+  const [allChallengesList, setAllChallengesList] = useState([])
+  
   
 
   const [isRunnerOpacityFull, setIsRunnerOpacityFull] = useState(false)
+
+// 
+
+async function FetchPersonalChallengesList() {
+    const qPersonal = query(
+      collection(db,"PersonalChallenges"),
+      where("userID", "==", user.uid));
+
+      const querySnapshot = await getDocs(qPersonal)
+      const personalChallengesList = querySnapshot.docs.map(doc=>({
+        id:doc.id,
+        ...doc.data()
+
+      }));
+      setAllChallengesList([...defaultChallenges, ...personalChallengesList])
+    }
+useEffect(()=>{
+  console.log(allChallengesList)
+}, [allChallengesList])
+
+
+  // useEffect(()=>{
+  //   setAllChallengesList([...defaultChallenges, ...personalChallengesList])
+  // }, [personalChallengesList])
+
+    
 
   async function FetchTrainingPlanList(){
         const q= query(
@@ -141,7 +174,8 @@ useEffect(()=>{
           <NavBar LogOut={LogOut}/>
           {/* <YourTrainingsPanel favourites={favourites} setFavourites={setFavourites} displayedTrainingsList={displayedTrainingsList} setDisplayedTrainingList={setDisplayedTrainingList} setTrainingsList={setTrainingsList} trainingsList={trainingsList} fetchTrainingsList={fetchTrainingsList} user={user} trainingOptions={trainingOptions}/> */}
           {/* <YourActivitiesPanel trainingOptions={trainingOptions} fetchActivitiesList={fetchActivitiesList}setActivitesList={setActivitesList} activitesList={activitesList} displayedActivitiesList={displayedActivitiesList} setDisplayedActivitiesList={setDisplayedActivitiesList} user={user}/> */}
-          <PlanPanel trainingsList={trainingsList} fetchTrainingsList={fetchTrainingsList} FetchTrainingPlanList={FetchTrainingPlanList} setTrainingPlanData={setTrainingPlanData} trainingPlanData={trainingPlanData} setTrainingPlan={setTrainingPlan} trainingPlan={trainingPlan} user={user} trainingOptions={trainingOptions}/>
+          {/* <PlanPanel trainingsList={trainingsList} fetchTrainingsList={fetchTrainingsList} FetchTrainingPlanList={FetchTrainingPlanList} setTrainingPlanData={setTrainingPlanData} trainingPlanData={trainingPlanData} setTrainingPlan={setTrainingPlan} trainingPlan={trainingPlan} user={user} trainingOptions={trainingOptions}/> */}
+          <ChallengesPanel trainingOptions={trainingOptions} setAllChallengesList={setAllChallengesList} allChallengesList={allChallengesList} FetchPersonalChallengesList={FetchPersonalChallengesList} user={user}/>
         </>
       )}
     </>
