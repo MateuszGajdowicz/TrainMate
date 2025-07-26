@@ -89,6 +89,7 @@ async function handleFavourite(element){
                     <h3>{element.activityType}</h3>
                         {elementToExpand === element && (
                             <>
+                                <p>Zdobyte punkty: <strong>{element.points}</strong></p>
                                 <p>Szacunkowe spalone kalorie: <strong>{element.estimatedCalories}</strong></p>
                                 <p>Ocena treningu : {element.acitivityRating}/5</p>
                                 {element.activityDescription && element.activityDescription.length !== 0 ? (
@@ -103,9 +104,8 @@ async function handleFavourite(element){
                         <h4>{element.activityGoalValue} {element.activityUnit}</h4>
                         <h4>{element.activityDate}</h4>
                         <h4>{element.activityHour}</h4>
-                        <div className='buttonContainer'>
+                        <div className='buttonContainer' style={{width:"25%"}}>
                             <button onClick={()=>elementToExpand?setElementToExpand(null):setElementToExpand(element)} >{elementToExpand===element?"Zwiń":"Rozwiń"}</button>
-                            <button >Edytuj</button>
                             <button onClick={()=>DeleteActivity(element.id)} >Usuń</button>
 
                         </div>

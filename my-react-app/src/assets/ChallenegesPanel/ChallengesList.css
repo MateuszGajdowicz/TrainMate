@@ -1,20 +1,102 @@
 .ChooseChallenge{
+    top: 8%;
     width: 30%;
+    height: 90%;
+    left: 3%;
     position: absolute;
+        button{
+            padding: 10px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            background-color:hsl(28, 100%, 60%);
+                    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2); /* cien */;
+                    transition: 0.2s ease;
+        }
+        button:hover{
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4); /* cien */;
+
+            
+
+        }
+    .buttonContainer{
+        display: flex;
+        width: 30%;
+        justify-content: space-around;
+        }
+    
     .AddChallengeContainer{
         display: flex;
         flex-direction: column;
+        gap: 10px;
+        padding: 20px;
+        padding-top: 0px;
+        margin-bottom: 20px;
+        background-color: hsl(26, 100%, 96%);
+        border-radius: 30px;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2); /* cien */;
+
+
+        h3{
+            margin: 0px;
+        }
+        .input{
+            height: 25px;
+            border-radius: 20px;
+            border: 3px solid hsl(28, 100%, 60%) ;
+            width: 70%;
+
+        }
+        .radioContainer{
+            display: flex;
+        }
+        .goalContainer{
+            display: flex;
+            justify-content: space-between;
+            width: 70%;
+            select{
+                width: 60%;
+            }
+        }
     }
     .header{
         display: flex;
+        padding: 0px;
+        width: 70%;
+        justify-content: space-between;
+        align-items: center;
+        button{
+            padding: 15px;
+            height: 50%;
+        }
+        h1{
+            margin: 0px;
+        }
+        
+    
     }
     
     .AllChallengesContainer{
     display: flex;
     flex-direction: column;
+    gap: 15px;
+    overflow: scroll;
+    padding: 10px;
+    height: 90%;
     }
+    .AllChallengesContainer::-webkit-scrollbar {
+  display: none;                 /* Chrome, Safari */
+}
     .SingleChallengeContainer{
-        border: 3px solid black;
+        background: linear-gradient(135deg, hsl(0, 0%, 100%) 15%, hsl(26, 100%, 50%) 150%);
+        padding: 10px;
+        border-radius: 30px;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2); /* cien */;
+        h3,h4,p{
+            margin: 5px;
+        }
+
+
     }
 
 

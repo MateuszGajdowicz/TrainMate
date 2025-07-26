@@ -3,6 +3,7 @@ import { estimateCalories } from '../caloriesEstimator';
 import { addDoc, collection } from 'firebase/firestore';
 import { db, auth } from '../../firebase'
 import { doc, updateDoc } from "firebase/firestore";
+import { CalculatePointsForTrainings } from '../pointsCalculatorTrainings';
 
 import { useState, useEffect } from 'react'
 function AddNewActivity({trainingOptions,user,fetchActivitiesList}) {
@@ -43,6 +44,7 @@ function ClearInputs(){
     }
 
  async function handleActivityAdd(){
+    let points = CalculatePointsForTrainings(activityGoal,activityGoalValue,estimatedCalories)
         if(user){
             if(activityType&&activityGoal&&activityGoalValue&&activityDate&&activityHour!==""){
                 const newActivity = {
@@ -58,9 +60,11 @@ function ClearInputs(){
                     acitivityRating:rating,
                     isFavourite:false,
                     addingDate:new Date(),
+                    points:Number(points)
 
                 }
                 const docRef = await addDoc(collection(db, "Activities"), newActivity)
+
                 window.alert("Dodano trening!");
                 fetchActivitiesList()
                 ClearInputs();

@@ -1,4 +1,5 @@
 import { estimateCalories } from "../caloriesEstimator";
+import { CalculatePointsForTrainings } from "../pointsCalculatorTrainings";
 const weekDays = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota', 'Niedziela'];
 const activityConfig = {
   "Bieganie": { name: "Bieganie", unit: "km", min: 5, max: 20, goals: ['Poprawa wytrzymałości (kondycji)', 'Utrata wagi / redukcja tkanki tłuszczowej', 'Poprawa zdrowia i samopoczucia'] },
@@ -139,8 +140,10 @@ export function GenerateTrainingPlan(goal, activitiesArray, intensity, number, t
 
 
     }
-
     let trainingGoal = getTrainingGoal(config.unit)
+
+    let points = CalculatePointsForTrainings(trainingGoal,trainingGoalValue,estimatedCalories)
+
 
     trainingPlan.push({
       activity: randomActivityName,
@@ -152,6 +155,7 @@ export function GenerateTrainingPlan(goal, activitiesArray, intensity, number, t
       trainingGoalValue: trainingGoalValue,
       estimatedCalories:estimatedCalories,
       trainingDescription: null,
+      points:Number(points),
     });
   }
 

@@ -4,6 +4,7 @@ import { doc, updateDoc } from "firebase/firestore";
 import { estimateCalories } from '../caloriesEstimator';
 import './AddNewTraining.css'
 import { addDoc, collection } from 'firebase/firestore';
+import { CalculatePointsForTrainings } from '../pointsCalculatorTrainings';
 function AddNewTraining({trainingsList,trainingOptions, user,fetchTrainingsList,selectedTraining,setSelectedTraining}){
 
 
@@ -81,12 +82,12 @@ function AddNewTraining({trainingsList,trainingOptions, user,fetchTrainingsList,
                             trainingGoalValue:trainingGoalValue,
                             trainingUnit:unit,
                             trainingDate: new Date(newDate).toLocaleDateString('sv-SE'),
-
                             trainingHour:trainingHour,
                             trainingDescription:trainingDescription,
                             estimatedCalories:estimatedCalories,
                             isFavourite:false,
                             addingDate:new Date(),
+                            points: Number(CalculatePointsForTrainings(trainingGoal,trainingGoalValue,estimatedCalories))
 
                         }
                     const docRef = await addDoc(collection(db, "Trainings"), newTraining)
@@ -153,7 +154,6 @@ function AddNewTraining({trainingsList,trainingOptions, user,fetchTrainingsList,
             setTrainingDate(selectedTraining.trainingDate)
             setTrainingHour(selectedTraining.trainingHour)
             setTrainingDescription(selectedTraining.trainingDescription)
-
             setIsEditRunning(true)
 
         }
@@ -165,13 +165,19 @@ function AddNewTraining({trainingsList,trainingOptions, user,fetchTrainingsList,
         try{
             const docRef = doc(db, "Trainings", selectedTraining.id);
             await updateDoc(docRef, {
+                userID: auth.currentUser.uid,
+                isFromTrainingPlan:false,
                 trainingType:trainingType,
                 trainingGoal:trainingGoal,
                 trainingGoalValue:trainingGoalValue,
                 trainingUnit:unit,
-                trainingDate:trainingDate,
+                trainingDate: new Date(trainingDate).toLocaleDateString('sv-SE'),
                 trainingHour:trainingHour,
                 trainingDescription:trainingDescription,
+                estimatedCalories:estimatedCalories,
+                isFavourite:false,
+                addingDate:new Date(),
+                points: CalculatePointsForTrainings(trainingGoal,trainingGoalValue,estimatedCalories)
 
             })
             window.alert("Udało się zaktualizować trening!")
@@ -182,6 +188,7 @@ function AddNewTraining({trainingsList,trainingOptions, user,fetchTrainingsList,
         }
         catch(error){
             window.alert("Nie udało się zaaktualizować treningu")
+            console.log(error)
 
         }
         

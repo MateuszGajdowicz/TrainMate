@@ -123,6 +123,7 @@ async function handleFavourite(element){
                     <h3>{element.trainingType}</h3>
                         {elementToExpand === element && (
                             <>
+                                <p>Liczba punktów do zdobycia: <strong>{element.points}</strong></p>
                                 <p>Szacunkowe spalone kalorie: <strong>{element.estimatedCalories}</strong></p>
                                 {element.trainingDescription && element.trainingDescription.length !== 0 ? (
                                     <p className='TrainingDescription'>{element.trainingDescription}</p>

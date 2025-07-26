@@ -1,4 +1,4 @@
-import { useState,useEffect, act } from 'react'
+import { useState,useEffect, act, use } from 'react'
 import './App.css'
 import { onAuthStateChanged, signOut } from 'firebase/auth'
 import { auth, db } from './firebase'
@@ -23,6 +23,7 @@ function App() {
 
   const [activitesList, setActivitesList] = useState([])
   const [displayedActivitiesList, setDisplayedActivitiesList] = useState([])
+  const [points, setPoints] = useState(0);
 
   const [trainingPlan, setTrainingPlan] = useState([])
   const [trainingPlanData, setTrainingPlanData] = useState([])
@@ -37,6 +38,7 @@ function App() {
 
   const [personalChallengesList, setPersonalChallenges] = useState([])
   const [allChallengesList, setAllChallengesList] = useState([])
+
   
   
 
@@ -88,10 +90,7 @@ useEffect(()=>{
                 ...doc.data()
             }));
             setTrainingPlanData(trainingPlanData)
-
-
-        
-
+  
     }
 
 
@@ -136,8 +135,17 @@ useEffect(()=>{
     setDisplayedActivitiesList(trainings.sort((a, b) => new Date(a.activityDate) - new Date(b.activityDate)))
     setActivitesList(trainings.sort((a, b) => new Date(a.activityDate) - new Date(b.activityDate))
 )
+  }
+useEffect(()=>{
+  if(activitesList.length!==0){
+      let newPoints = (activitesList.reduce((prev, next)=>prev+Number(next.points),0))
+      console.log(newPoints)
+      setPoints(newPoints)
 
   }
+
+}, [activitesList])
+
   useEffect(()=>{
     if(user){
           fetchTrainingsList();

@@ -16,19 +16,30 @@ function DisplayPlanContainer({trainingsList,fetchTrainingsList,FetchTrainingPla
 
     const [totalCalories, setTotalCalories] = useState(null)
     const [planLength, setPlanLength] = useState(null)
+    const [trainingPlanPoints, setTrainingPlanPoints] = useState(0)
+    const [added, setAdded] = useState(()=>{
+        return 
+    })
 
     function CalculatePlanInfo(planAray){
         const summedCalories = planAray.reduce((prev, next)=>prev+next.estimatedCalories, 0)
         setTotalCalories(summedCalories)
         setPlanLength(planAray.length)
+        let points = planAray.reduce((prev, next)=>prev+next.points, 0)
+        setTrainingPlanPoints(points)
+        localStorage.setItem("isAdded", "false")
 
     }
 useEffect(()=>{
     CalculatePlanInfo(trainingPlan)   
+
 }, [trainingPlan])
 
 
     async function MovePlanToTrainings(array){
+        const added = localStorage.getItem("isAdded")==="true"
+
+        if(!added){
         let trainingsFromPlan = trainingsList.filter(element=>element.isFromTrainingPlan)
         for(let i=0;i<trainingsFromPlan.length;i++){
             try{
@@ -73,6 +84,7 @@ useEffect(()=>{
                         trainingHour:array[j].timeOfDay,
                         trainingType:array[j].activity,
                         trainingUnit:array[j].trainingUnit,
+                        points: array[j].points,
                         userID:array[j].userID,
                     }
                     try{
@@ -89,6 +101,7 @@ useEffect(()=>{
 
             }
             fetchTrainingsList();
+            localStorage.setItem("isAdded", "true")
             
 
         }
@@ -97,6 +110,25 @@ useEffect(()=>{
         }
 
     }
+    else{
+    window.alert("Ten trening został już dodany :)")
+}
+}
+
+
+// function handleMovePlanToTrainings(){
+//     const added = localStorage.getItem("isAdded")==="true"
+//     if(!added){
+//         MovePlanToTrainings(trainingPlan)
+//     }
+
+//     else{
+//         let confirm = window.confirm("Ten plan jest już dodany do treningów, czy chcesz go dodać jeszcze raz? ")
+//         if(confirm){
+//             MovePlanToTrainings(trainingPlan)
+//         }
+//     }
+// }
 
 
     async function DeleteTraining(element){
@@ -125,7 +157,7 @@ useEffect(()=>{
 
         </div>
             <div className='InfoContainer'>
-                <p>Z twoim planem treningowym w tydzień spalisz <strong>{totalCalories}</strong> kcal</p>
+                <p>Z twoim planem w tydzień spalisz <strong>{totalCalories}</strong> kcal i zdobędziesz <strong>{trainingPlanPoints}</strong> pkt</p>
 
             </div>
 
@@ -150,7 +182,7 @@ useEffect(()=>{
  
                     </div>
                     {elementToExpand===element &&
-                    <>
+                    <>  <p>Punkty do zdobycia: <strong>{element.points}</strong> </p>
                         <p>Szacunkowe spalone kalorie: <strong>{element.estimatedCalories}</strong>  kcal</p>
                         {
                             element.trainingDescription==='' || element.trainingDescription===null?

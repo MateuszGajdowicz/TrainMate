@@ -50,10 +50,10 @@ const weekDays = ['Poniedziałek', "Wtorek", "Środa", "Czwartek", "Piątek", "S
             estimatedCalories = Number(trainingGoalValue)
         }
         else{
-            if(trainingUnit ==="min"){
+            if(trainingGoal ==="Czas"){
                  estimatedCalories = estimateCalories({type:selectedActivities,durationMin:Number(trainingGoalValue) })
             }
-            else if(trainingUnit === "km"){
+            else if(trainingGoal === "Dystans"){
                 estimatedCalories = estimateCalories({type:selectedActivities,distanceKm:Number(trainingGoalValue) })
 
 
