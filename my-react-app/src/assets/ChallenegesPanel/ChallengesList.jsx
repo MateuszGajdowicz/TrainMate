@@ -7,7 +7,7 @@ import { db, auth } from '../../firebase'
 import { doc, updateDoc } from "firebase/firestore";
 import { fetchSignInMethodsForEmail } from "firebase/auth";
 import './ChallengesList.css'
-function ChallengesList({trainingOptions,setAllChallengesList,FetchPersonalChallengesList,allChallengesList,user}){
+function ChallengesList({allChallengesList,handleChallengesSort,trainingOptions,setNewChallengesList,FetchPersonalChallengesList,newChallengesList,user}){
         const [selected, setSelected] = useState("nie");
         const [toggleAdd, setToggleAdd] = useState(false)
 
@@ -22,6 +22,9 @@ function ChallengesList({trainingOptions,setAllChallengesList,FetchPersonalChall
     const [challengeDiscipline, setChallengeDiscipline] = useState(null)
 
     const [inputPlaceholder, setInputPlaceholder] = useState('')
+
+    const [expandedElement, setExpandedElement] = useState(null)
+
 
     useEffect(()=>{
         switch(challengeGoal){
@@ -45,13 +48,13 @@ function ChallengesList({trainingOptions,setAllChallengesList,FetchPersonalChall
             case "Liczba treningów":
                 setInputPlaceholder("Ile treningów chcesz wykonać?")
                 setChallengeType("sessions")
-                setChallengeUnit("trainings")
+                setChallengeUnit("treningi")
 
                 break;
             case "Treningi z rzędu":
                 setInputPlaceholder('Ile treningów z rzędu chcesz wykonać?')
                 setChallengeType("streak")
-                setChallengeUnit("days")
+                setChallengeUnit("dni")
 
                 break;
             }
@@ -72,10 +75,13 @@ async function handleCreateNewChallenge() {
                 type:challengeType,
                 goalValue: challengeGoalValue,
                 unit: challengeUnit,
+                progress:0,
                 period: challengePeriod,
-                completed:false,
+                status:"new",
                 disciplines:challengeDiscipline,
                 points:challengePoints,
+                startDate:null,
+                addingDate:new Date(),
 
 
             }
@@ -97,23 +103,63 @@ async function handleCreateNewChallenge() {
 
     
 }
-    
+async function handleAddDefaultChallenges(){
 
-    // async function handleAddChallengeToList(){
-    //     try{
-    //         const snapshot = await getDocs(collection(db, "DefaultChallenges"))
-    //         if(snapshot.empty){
-    //             for(let i =0;i<defaultChallenges.length;i++){
-    //                 await addDoc(collection(db, "DefaultChallenges"), defaultChallenges[i])
-    // }
+    if(allChallengesList.length===0)
+    {
+    for(let i=0;i<defaultChallenges.length;i++){
+        try{
+            const docRef = await addDoc(collection(db, "PersonalChallenges"), {userID:auth.currentUser.uid, addingDate:new Date(),...defaultChallenges[i]})
 
-    //         }
-    //     }
-    //     catch(error){
+        }
+        catch(error){
+            console.log(error)
 
-    //     }
+        }
+    }
+    FetchPersonalChallengesList();
+    }
 
-    // }
+}
+useEffect(()=>{
+    handleAddDefaultChallenges()
+},[allChallengesList])
+
+async function handleStartChallenge(element){
+    try{
+        let startedChallenge = {
+                userID:auth.currentUser.uid,
+                title: element.title,
+                description:element.description,
+                type:element.type,
+                goalValue: element.goalValue,
+                unit: element.unit,
+                progress:0,
+                period:element.period,
+                status:"started",
+                disciplines:element.disciplines,
+                points:element.points,
+                startDate:new Date(),
+                addingDate:element.addingDate,
+
+
+
+            }
+
+        const docRef = doc(db, "PersonalChallenges", element.id)
+        await updateDoc(docRef, startedChallenge)
+        FetchPersonalChallengesList();
+
+
+    }    
+    catch(error){
+        window.alert("spróbuj ponownie")
+        console.log(error)
+    }
+
+
+} 
+
 
 
     return(
@@ -121,6 +167,12 @@ async function handleCreateNewChallenge() {
             <div className="header">
                 <h1>Twoje wyzwania!</h1>
                 <button onClick={()=>setToggleAdd(true)}>Dodaj </button>
+                <select  className="sortSelect" onChange={event=>handleChallengesSort(newChallengesList, event, setNewChallengesList)}  name="" id="">
+                    <option  value="Najwięcej puntków">Najwięcej puntków</option>
+                    <option value="Najmniej punktów">Najmniej punktów</option>
+                    <option value="Najkrótsze">Najkrótsze</option>
+                    <option value="Najdłuższe">Najdłuższe</option>
+                </select>
             </div>
     { toggleAdd &&
         <div className="AddChallengeContainer">
@@ -173,12 +225,30 @@ async function handleCreateNewChallenge() {
         </div>
         }
         <div style={{height:toggleAdd?"27%":"90%"}} className="AllChallengesContainer">
-            {allChallengesList.map((element)=>(
+            {newChallengesList.map((element)=>(
                 <div className="SingleChallengeContainer">
                     <h3>{element.title}</h3>
                     <h4>{element.description}</h4>
-                    <p>Punkty do zdobycia: <strong>{element.points}</strong></p>
-                    <button>Dodaj</button>
+                    <p>Punkty do zdobycia: <strong>{element.points.toFixed(0)}</strong></p>
+                    {
+                        expandedElement===element &&
+                        <>
+                        {
+                            element.disciplines!==null &&
+                            <p>Aktywność: <strong>{element.disciplines}</strong></p>
+                        }
+                        <p></p>
+                        <p>Liczba dni: <strong>{element.period}</strong></p>
+                        <p>Cel: <strong>{element.goalValue} {element.unit}</strong></p>
+                        </>
+                    }
+                    <div className="buttonContainer">
+                    <button onClick={()=>handleStartChallenge(element)}>Dodaj</button>
+                    <button onClick={()=>{expandedElement===element?setExpandedElement(null):setExpandedElement(element)} }>{expandedElement===element?"Zwiń":"Rozwiń"}</button>
+                    <button>Usuń</button>
+
+                    </div>
+
                 </div>
             ))}
 

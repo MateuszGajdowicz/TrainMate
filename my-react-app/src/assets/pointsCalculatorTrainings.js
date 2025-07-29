@@ -2,13 +2,13 @@ export function CalculatePointsForTrainings(trainingGoal, trainingGoalValue, est
     let goalWeight = 0;
     switch(trainingGoal){
         case "Kalorie":
-            goalWeight:0.1
+            goalWeight=0.05;
             break;
         case "Dystans":
-            goalWeight:4
+            goalWeight=5;
             break;
         case "Czas":
-            goalWeight:0.5
+            goalWeight=0.5;
             }
         let points = Math.round((goalWeight*trainingGoalValue)+(estimatedCalories*0.05))
         return points;

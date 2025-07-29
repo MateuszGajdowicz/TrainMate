@@ -10,7 +10,7 @@ function YourTrainingsPanel({favourites,setFavourites,displayedTrainingsList,set
     return(
         <>
         <TrainingsList fetchTrainingsList={fetchTrainingsList} favourites={favourites} setFavourites={setFavourites} trainingOptions={trainingOptions} displayedTrainingsList={displayedTrainingsList} setDisplayedTrainingList={setDisplayedTrainingList} setSelectedTraining={setSelectedTraining}  setTrainingsList={setTrainingsList} trainingsList = {trainingsList}/>
-        <AddNewTraining  trainingsList={trainingsList} selectedTraining={selectedTraining} setSelectedTraining={setSelectedTraining}   fetchTrainingsList={fetchTrainingsList} user={user} trainingOptions={trainingOptions}/>
+        <AddNewTraining  setTrainingsList={setTrainingsList} trainingsList={trainingsList} selectedTraining={selectedTraining} setSelectedTraining={setSelectedTraining}   fetchTrainingsList={fetchTrainingsList} user={user} trainingOptions={trainingOptions}/>
         </>
     )
 

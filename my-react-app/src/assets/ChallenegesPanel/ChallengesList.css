@@ -62,9 +62,16 @@
     .header{
         display: flex;
         padding: 0px;
-        width: 70%;
+        width: 95%;
         justify-content: space-between;
         align-items: center;
+        .sortSelect{
+            height: 25px;
+            border-radius: 20px;
+            border: 3px solid hsl(28, 100%, 60%) ;
+            width: 22%;
+
+        }
         button{
             padding: 15px;
             height: 50%;
@@ -94,6 +101,9 @@
         box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2); /* cien */;
         h3,h4,p{
             margin: 5px;
+        }
+        .buttonContainer{
+            width: 50%;
         }
 
 

@@ -36,7 +36,6 @@ function App() {
   const [isRegistered, setIsRegistered] = useState(true)
   const [isEmailConfirmDisplayed, setIsEmailConfirmDisplayed] = useState(false)
 
-  const [personalChallengesList, setPersonalChallenges] = useState([])
   const [allChallengesList, setAllChallengesList] = useState([])
 
   
@@ -45,6 +44,8 @@ function App() {
   const [isRunnerOpacityFull, setIsRunnerOpacityFull] = useState(false)
 
 // 
+
+
 
 async function FetchPersonalChallengesList() {
     const qPersonal = query(
@@ -57,7 +58,8 @@ async function FetchPersonalChallengesList() {
         ...doc.data()
 
       }));
-      setAllChallengesList([...defaultChallenges, ...personalChallengesList])
+      let allChallenges = (personalChallengesList)
+      setAllChallengesList(allChallenges)
     }
 useEffect(()=>{
   console.log(allChallengesList)
@@ -150,6 +152,7 @@ useEffect(()=>{
     if(user){
           fetchTrainingsList();
           fetchActivitiesList();
+          FetchPersonalChallengesList();
 
 
     }
@@ -180,10 +183,10 @@ useEffect(()=>{
       ) : ( 
         <>
           <NavBar LogOut={LogOut}/>
-          {/* <YourTrainingsPanel favourites={favourites} setFavourites={setFavourites} displayedTrainingsList={displayedTrainingsList} setDisplayedTrainingList={setDisplayedTrainingList} setTrainingsList={setTrainingsList} trainingsList={trainingsList} fetchTrainingsList={fetchTrainingsList} user={user} trainingOptions={trainingOptions}/> */}
+          <YourTrainingsPanel  favourites={favourites} setFavourites={setFavourites} displayedTrainingsList={displayedTrainingsList} setDisplayedTrainingList={setDisplayedTrainingList} setTrainingsList={setTrainingsList} trainingsList={trainingsList} fetchTrainingsList={fetchTrainingsList} user={user} trainingOptions={trainingOptions}/>
           {/* <YourActivitiesPanel trainingOptions={trainingOptions} fetchActivitiesList={fetchActivitiesList}setActivitesList={setActivitesList} activitesList={activitesList} displayedActivitiesList={displayedActivitiesList} setDisplayedActivitiesList={setDisplayedActivitiesList} user={user}/> */}
           {/* <PlanPanel trainingsList={trainingsList} fetchTrainingsList={fetchTrainingsList} FetchTrainingPlanList={FetchTrainingPlanList} setTrainingPlanData={setTrainingPlanData} trainingPlanData={trainingPlanData} setTrainingPlan={setTrainingPlan} trainingPlan={trainingPlan} user={user} trainingOptions={trainingOptions}/> */}
-          <ChallengesPanel trainingOptions={trainingOptions} setAllChallengesList={setAllChallengesList} allChallengesList={allChallengesList} FetchPersonalChallengesList={FetchPersonalChallengesList} user={user}/>
+          {/* <ChallengesPanel trainingOptions={trainingOptions} setAllChallengesList={setAllChallengesList} allChallengesList={allChallengesList} FetchPersonalChallengesList={FetchPersonalChallengesList} user={user}/> */}
         </>
       )}
     </>
