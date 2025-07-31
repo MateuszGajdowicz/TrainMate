@@ -26,6 +26,7 @@ function ChallengesList({allChallengesList,handleChallengesSort,trainingOptions,
     const [expandedElement, setExpandedElement] = useState(null)
 
 
+
     useEffect(()=>{
         switch(challengeGoal){
             case "Dystans (km)":
@@ -60,9 +61,6 @@ function ChallengesList({allChallengesList,handleChallengesSort,trainingOptions,
             }
     }, [challengeGoal])
 
-    useEffect(()=>{
-        FetchPersonalChallengesList();
-    }, [user])
 
 async function handleCreateNewChallenge() {
     if(challengeName!==" " && challengeDescription!==" " && challengeGoal!=="" && challengePeriod!==0){
@@ -82,6 +80,8 @@ async function handleCreateNewChallenge() {
                 points:challengePoints,
                 startDate:null,
                 addingDate:new Date(),
+                isOverTime:false,
+                endingDate:null,
 
 
             }
@@ -104,12 +104,16 @@ async function handleCreateNewChallenge() {
     
 }
 async function handleAddDefaultChallenges(){
+       
+        const defaultChallengesList = allChallengesList.filter(element=>element.status==='new')
 
-    if(allChallengesList.length===0)
+    if(defaultChallengesList.length===0)
     {
     for(let i=0;i<defaultChallenges.length;i++){
         try{
-            const docRef = await addDoc(collection(db, "PersonalChallenges"), {userID:auth.currentUser.uid, addingDate:new Date(),...defaultChallenges[i]})
+            const docRef = await addDoc(collection(db, "PersonalChallenges"),
+             {userID:auth.currentUser.uid,
+                 addingDate:new Date(),...defaultChallenges[i]})
 
         }
         catch(error){
@@ -121,30 +125,21 @@ async function handleAddDefaultChallenges(){
     }
 
 }
-useEffect(()=>{
-    handleAddDefaultChallenges()
-},[allChallengesList])
+useEffect(() => {
+    if (user) {
+        handleAddDefaultChallenges();
+    }
+}, [user]);
+
 
 async function handleStartChallenge(element){
     try{
-        let startedChallenge = {
-                userID:auth.currentUser.uid,
-                title: element.title,
-                description:element.description,
-                type:element.type,
-                goalValue: element.goalValue,
-                unit: element.unit,
-                progress:0,
-                period:element.period,
-                status:"started",
-                disciplines:element.disciplines,
-                points:element.points,
-                startDate:new Date(),
-                addingDate:element.addingDate,
+        const endDate = new Date()
+        endDate.setDate(endDate.getDate()+element.period)
+        let startedChallenge = { ...element, status:"started",
+             startDate:new Date(),
+            endingDate:endDate}
 
-
-
-            }
 
         const docRef = doc(db, "PersonalChallenges", element.id)
         await updateDoc(docRef, startedChallenge)

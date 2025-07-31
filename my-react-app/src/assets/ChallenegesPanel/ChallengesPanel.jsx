@@ -6,7 +6,7 @@ import { auth, db } from '../../firebase'
 import { addDoc, collection,doc } from 'firebase/firestore';
 import { TrackChallenges } from "./TrackChallenges"
 
-function ChallengesPanel({activitesList,trainingOptions,setAllChallengesList,allChallengesList,FetchPersonalChallengesList,user}){
+function ChallengesPanel({imaginaryArray,activitesList,trainingOptions,setAllChallengesList,allChallengesList,FetchPersonalChallengesList,user}){
 
       const [newChallengesList, setNewChallengesList] = useState([])
       const [startedChallengesList, setStartedChallengesList] = useState(allChallengesList.filter(element=>element.status==="started"))
@@ -59,7 +59,7 @@ function ChallengesPanel({activitesList,trainingOptions,setAllChallengesList,all
 
     return(<>
     <ChallengesList setAllChallengesList={setAllChallengesList} allChallengesList={allChallengesList} handleChallengesSort={handleChallengesSort} trainingOptions={trainingOptions} setNewChallengesList={setNewChallengesList} newChallengesList={newChallengesList} FetchPersonalChallengesList={FetchPersonalChallengesList} user={user}/>
-   <StartedChallenges allChallengesList={allChallengesList} activitesList={activitesList} handleChallengeRemove={handleChallengeRemove} setStartedChallengesList={setStartedChallengesList} handleChallengesSort={handleChallengesSort} startedChallengesList={startedChallengesList}/> 
+   <StartedChallenges imaginaryArray={imaginaryArray} FetchPersonalChallengesList={FetchPersonalChallengesList} allChallengesList={allChallengesList} activitesList={activitesList} handleChallengeRemove={handleChallengeRemove} setStartedChallengesList={setStartedChallengesList} handleChallengesSort={handleChallengesSort} startedChallengesList={startedChallengesList}/> 
     </>)
 }
 export default ChallengesPanel

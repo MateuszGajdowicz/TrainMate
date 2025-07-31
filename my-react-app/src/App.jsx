@@ -45,6 +45,7 @@ function App() {
 
 // 
 
+        const [imaginaryArray,setImaginaryArray]  = useState([])
 
 
 async function FetchPersonalChallengesList() {
@@ -60,10 +61,12 @@ async function FetchPersonalChallengesList() {
       }));
       let allChallenges = (personalChallengesList)
       setAllChallengesList(allChallenges)
+      return allChallenges
+      
     }
-useEffect(()=>{
-  console.log(allChallengesList)
-}, [allChallengesList])
+// useEffect(()=>{
+//   console.log(allChallengesList)
+// }, [allChallengesList])
 
 
   // useEffect(()=>{
@@ -186,7 +189,7 @@ useEffect(()=>{
           {/* <YourTrainingsPanel  favourites={favourites} setFavourites={setFavourites} displayedTrainingsList={displayedTrainingsList} setDisplayedTrainingList={setDisplayedTrainingList} setTrainingsList={setTrainingsList} trainingsList={trainingsList} fetchTrainingsList={fetchTrainingsList} user={user} trainingOptions={trainingOptions}/> */}
           <YourActivitiesPanel allChallengesList={allChallengesList} trainingOptions={trainingOptions} fetchActivitiesList={fetchActivitiesList}setActivitesList={setActivitesList} activitesList={activitesList} displayedActivitiesList={displayedActivitiesList} setDisplayedActivitiesList={setDisplayedActivitiesList} user={user}/>
           {/* <PlanPanel trainingsList={trainingsList} fetchTrainingsList={fetchTrainingsList} FetchTrainingPlanList={FetchTrainingPlanList} setTrainingPlanData={setTrainingPlanData} trainingPlanData={trainingPlanData} setTrainingPlan={setTrainingPlan} trainingPlan={trainingPlan} user={user} trainingOptions={trainingOptions}/> */}
-          {/* <ChallengesPanel activitesList={activitesList} trainingOptions={trainingOptions} setAllChallengesList={setAllChallengesList} allChallengesList={allChallengesList} FetchPersonalChallengesList={FetchPersonalChallengesList} user={user}/> */}
+          <ChallengesPanel imaginaryArray={imaginaryArray} activitesList={activitesList} trainingOptions={trainingOptions} setAllChallengesList={setAllChallengesList} allChallengesList={allChallengesList} FetchPersonalChallengesList={FetchPersonalChallengesList} user={user}/>
         </>
       )}
     </>
