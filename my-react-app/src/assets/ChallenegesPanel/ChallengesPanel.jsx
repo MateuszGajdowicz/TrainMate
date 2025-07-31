@@ -4,14 +4,16 @@ import { useState,useEffect, act, use } from 'react'
 import { deleteDoc, updateDoc } from 'firebase/firestore'
 import { auth, db } from '../../firebase'
 import { addDoc, collection,doc } from 'firebase/firestore';
+import { TrackChallenges } from "./TrackChallenges"
 
-function ChallengesPanel({trainingOptions,setAllChallengesList,allChallengesList,FetchPersonalChallengesList,user}){
+function ChallengesPanel({activitesList,trainingOptions,setAllChallengesList,allChallengesList,FetchPersonalChallengesList,user}){
 
       const [newChallengesList, setNewChallengesList] = useState([])
       const [startedChallengesList, setStartedChallengesList] = useState(allChallengesList.filter(element=>element.status==="started"))
       const [finishedChallenges, setFinishedChallegnges] = useState(allChallengesList.filter(element=>element.status==="finished"))
 
-
+    const [challengesProgressInfo, setChallengesProgressInfo] = useState(null)
+       
       useEffect(()=>{
         let newchallenges = allChallengesList.filter(element=>element.status === "new").sort((a, b) => b.addingDate.toDate() - a.addingDate.toDate())
         setNewChallengesList(newchallenges)
@@ -54,9 +56,10 @@ function ChallengesPanel({trainingOptions,setAllChallengesList,allChallengesList
 
     }
 
+
     return(<>
     <ChallengesList setAllChallengesList={setAllChallengesList} allChallengesList={allChallengesList} handleChallengesSort={handleChallengesSort} trainingOptions={trainingOptions} setNewChallengesList={setNewChallengesList} newChallengesList={newChallengesList} FetchPersonalChallengesList={FetchPersonalChallengesList} user={user}/>
-   <StartedChallenges handleChallengeRemove={handleChallengeRemove} setStartedChallengesList={setStartedChallengesList} handleChallengesSort={handleChallengesSort} startedChallengesList={startedChallengesList}/> 
+   <StartedChallenges allChallengesList={allChallengesList} activitesList={activitesList} handleChallengeRemove={handleChallengeRemove} setStartedChallengesList={setStartedChallengesList} handleChallengesSort={handleChallengesSort} startedChallengesList={startedChallengesList}/> 
     </>)
 }
 export default ChallengesPanel

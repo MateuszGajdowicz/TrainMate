@@ -6,8 +6,9 @@ import { addDoc, collection, getDoc,getDocs } from 'firebase/firestore';
 import { db, auth } from '../../firebase'
 import { doc, updateDoc } from "firebase/firestore";
 import { fetchSignInMethodsForEmail } from "firebase/auth";
+import { TrackChallenges } from "./TrackChallenges";
 import './ChallengesList.css'
-function StartedChallenges({handleChallengeRemove,setStartedChallengesList,startedChallengesList,handleChallengesSort,trainingOptions,setNewChallengesList,FetchPersonalChallengesList,newChallengesList,user}){
+function StartedChallenges({allChallengesList,activitesList,handleChallengeRemove,setStartedChallengesList,startedChallengesList,handleChallengesSort,trainingOptions,setNewChallengesList,FetchPersonalChallengesList,newChallengesList,user}){
 
 
         const [expandedElement, setExpandedElement] = useState(null)
@@ -32,6 +33,31 @@ function StartedChallenges({handleChallengeRemove,setStartedChallengesList,start
 
         }
     }
+
+
+        useEffect(()=>{
+            let trackedChallenges = TrackChallenges(activitesList, allChallengesList)
+            console.log(trackedChallenges)
+            async function UploadChallengesProgress() {
+                for(let i =0;i<trackedChallenges.length;i++){
+                    let updatedChallenge = {
+                        
+                    }
+                try{
+                    const docRef = doc(db, "PersonalChallenges", trackedChallenges[i].id)
+                    await updateDoc(docRef)
+
+                }
+                catch(error){
+
+                }
+
+                }
+
+                
+            }
+
+        }, [activitesList])
 
     return(
         <div style={{left:'35%'}} className="ChooseChallenge">
