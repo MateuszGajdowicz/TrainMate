@@ -7,7 +7,7 @@ import { db, auth } from '../../firebase'
 import { doc, updateDoc } from "firebase/firestore";
 import { fetchSignInMethodsForEmail } from "firebase/auth";
 import './ChallengesList.css'
-function ChallengesList({allChallengesList,handleChallengesSort,trainingOptions,setNewChallengesList,FetchPersonalChallengesList,newChallengesList,user}){
+function ChallengesList({startedChallengesList,handleChallengeRemove,allChallengesList,handleChallengesSort,trainingOptions,setNewChallengesList,FetchPersonalChallengesList,newChallengesList,user}){
         const [selected, setSelected] = useState("nie");
         const [toggleAdd, setToggleAdd] = useState(false)
 
@@ -67,6 +67,7 @@ async function handleCreateNewChallenge() {
         let challengePoints = calculatePoints(challengeType,challengeGoalValue, challengePeriod)
         try{
             let newChallenge = {
+
                 userID:auth.currentUser.uid,
                 title: challengeName,
                 description:challengeDescription,
@@ -74,7 +75,7 @@ async function handleCreateNewChallenge() {
                 goalValue: challengeGoalValue,
                 unit: challengeUnit,
                 progress:0,
-                period: challengePeriod,
+                period: Number(challengePeriod),
                 status:"new",
                 disciplines:challengeDiscipline,
                 points:challengePoints,
@@ -82,12 +83,15 @@ async function handleCreateNewChallenge() {
                 addingDate:new Date(),
                 isOverTime:false,
                 endingDate:null,
+                isDefault:false,
+                finishDate:null
 
 
             }
         const docRef = await addDoc(collection(db, "PersonalChallenges"), newChallenge) 
         FetchPersonalChallengesList();
         setToggleAdd(false)
+        setChallengeDiscipline(null)
 
     }
         catch(error){
@@ -103,42 +107,60 @@ async function handleCreateNewChallenge() {
 
     
 }
-async function handleAddDefaultChallenges(){
-       
-        const defaultChallengesList = allChallengesList.filter(element=>element.status==='new')
+// async function handleAddDefaultChallenges(){
+//     if(newChallengesList.length===0){
+//     for(let i=0;i<defaultChallenges.length;i++){
+//         try{
+//             let newDefaultChallenge =              
+//             {userID:auth.currentUser.uid,
+//                  endingDate:null,
+//                  finishDate:null,
+//                  isOverTime:false,
+//                  ...defaultChallenges[i]}
+//             if(!allChallengesList.includes(newDefaultChallenge)){
+//                 const docRef = await addDoc(collection(db, "PersonalChallenges"),newDefaultChallenge)
 
-    if(defaultChallengesList.length===0)
-    {
-    for(let i=0;i<defaultChallenges.length;i++){
-        try{
-            const docRef = await addDoc(collection(db, "PersonalChallenges"),
-             {userID:auth.currentUser.uid,
-                 addingDate:new Date(),...defaultChallenges[i]})
 
-        }
-        catch(error){
-            console.log(error)
+//             }
 
-        }
-    }
-    FetchPersonalChallengesList();
-    }
 
+//         }
+//         catch(error){
+//             console.log(error)
+
+        
+//     }
+//     }
+//         FetchPersonalChallengesList();
+
+
+//     }
+
+
+// }
+// useEffect(() => {
+//     if (user) {
+//         handleAddDefaultChallenges();
+//     }
+// }, [user]);
+
+
+function isRepeatingChallenges(startedChallenges, challengeElement){
+    let matchedDisciplines=startedChallenges.filter(element=>element.disciplines===challengeElement.disciplines && element.disciplines!==null)
+    let matchedType = startedChallenges.filter(element=>element.type===challengeElement.type && element.disciplines===challengeElement.disciplines)
+    return matchedDisciplines.length!==0 || matchedType.length!==0? true:false
 }
-useEffect(() => {
-    if (user) {
-        handleAddDefaultChallenges();
-    }
-}, [user]);
-
 
 async function handleStartChallenge(element){
+    const isRepeating = false
+    if(!isRepeating){
     try{
         const endDate = new Date()
-        endDate.setDate(endDate.getDate()+element.period)
-        let startedChallenge = { ...element, status:"started",
+        endDate.setDate(endDate.getDate()+(element.period))
+        let startedChallenge = {status:"started",
              startDate:new Date(),
-            endingDate:endDate}
+            endingDate:endDate,
+        }
 
 
         const docRef = doc(db, "PersonalChallenges", element.id)
@@ -151,6 +173,12 @@ async function handleStartChallenge(element){
         window.alert("spróbuj ponownie")
         console.log(error)
     }
+
+    }
+    else{
+        window.alert(`Już jedno z twoich zaczętych wyzwań ma cel ${element.type} lub dyscyplinę ${element.disciplines}`)
+    }
+
 
 
 } 
@@ -220,9 +248,13 @@ async function handleStartChallenge(element){
         </div>
         }
         <div style={{height:toggleAdd?"27%":"90%"}} className="AllChallengesContainer">
-            {newChallengesList.map((element)=>(
+            { newChallengesList.length===0?
+            <h3>Wygląda na to, że nie masz żadnych wyzwań do dodania. Stwórz jakieś i zdobywaj punkty!</h3>
+        :
+            newChallengesList.map((element)=>(
                 <div className="SingleChallengeContainer">
                     <h3>{element.title}</h3>
+                    <h3>{element.id}</h3>
                     <h4>{element.description}</h4>
                     <p>Punkty do zdobycia: <strong>{element.points.toFixed(0)}</strong></p>
                     {
@@ -240,12 +272,14 @@ async function handleStartChallenge(element){
                     <div className="buttonContainer">
                     <button onClick={()=>handleStartChallenge(element)}>Dodaj</button>
                     <button onClick={()=>{expandedElement===element?setExpandedElement(null):setExpandedElement(element)} }>{expandedElement===element?"Zwiń":"Rozwiń"}</button>
-                    <button>Usuń</button>
+                    <button onClick={()=>handleChallengeRemove(element.id, setNewChallengesList, newChallengesList)}>Usuń</button>
 
                     </div>
 
                 </div>
-            ))}
+            ))
+        }
+
 
         </div>
 

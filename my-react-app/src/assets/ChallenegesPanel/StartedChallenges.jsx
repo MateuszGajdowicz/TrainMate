@@ -8,7 +8,7 @@ import { doc, updateDoc } from "firebase/firestore";
 import { fetchSignInMethodsForEmail } from "firebase/auth";
 import { TrackChallenges } from "./TrackChallenges";
 import './ChallengesList.css'
-function StartedChallenges({imaginaryArray,allChallengesList,activitesList,handleChallengeRemove,setStartedChallengesList,startedChallengesList,handleChallengesSort,trainingOptions,setNewChallengesList,FetchPersonalChallengesList,newChallengesList,user}){
+function StartedChallenges({allChallengesList,activitesList,handleChallengeRemove,setStartedChallengesList,startedChallengesList,handleChallengesSort,trainingOptions,setNewChallengesList,FetchPersonalChallengesList,newChallengesList,user}){
 
         const [expandedElement, setExpandedElement] = useState(null)
 const prevFinishedIds = useRef(new Set());
@@ -25,7 +25,8 @@ const prevFinishedIds = useRef(new Set());
         async function cancelStartedChallenge(element){
             let confirm = window.confirm("Czy na pewno chcesz przerwać to wyzwanie? Stracisz wtedy cały postęp. ")
             if(confirm){
-                let canceledChallenge = {...element, status:"new", stardDate:null, progress:0}
+                let canceledChallenge = {status:"new", startDate:null, progress:0,endingDate:null}
+                
                 try{
                     const docRef = doc(db, "PersonalChallenges", element.id)
                     await updateDoc(docRef, canceledChallenge)
@@ -33,13 +34,16 @@ const prevFinishedIds = useRef(new Set());
                 }
                 catch(error){
                     window.alert("Coś poszło nie tak")
+                    console.log(error)
+                    console.log(element.id)
+
             }
             FetchPersonalChallengesList();
         }
     }
 async function handleFinishChallenge(challengesToFinish) {
     const updatePromises = challengesToFinish.map(async ch => {
-        let finishedChallenge = { ...ch, status: "finished" };
+        let finishedChallenge = {status: "finished", finishDate:new Date() };
         try {
             const docRef = doc(db, "PersonalChallenges", ch.id);
             await updateDoc(docRef, finishedChallenge);
@@ -48,7 +52,7 @@ async function handleFinishChallenge(challengesToFinish) {
         }
     });
 
-    await Promise.all(updatePromises); // poczekaj na wszystkie aktualizacje
+    await Promise.all(updatePromises); 
 }
 
 
@@ -82,6 +86,8 @@ async function handleFinishChallenge(challengesToFinish) {
 useEffect(() => {
     const newlyFinished = startedChallengesList.filter(ch =>
         ch.status !== "finished" &&
+
+        
         ch.progress >= ch.goalValue &&
         !prevFinishedIds.current.has(ch.id)
     );
@@ -109,11 +115,15 @@ useEffect(() => {
             </div>
     
         <div  className="AllChallengesContainer">
-            {startedChallengesList.map((element)=>(
+            {
+                startedChallengesList.length===0?
+                <h3>Nie masz żadnych obecnie trwających wyzwań. Klikij "Dodaj" w panelu obok i zdobywaj punkty!</h3>
+                :
+                startedChallengesList.map((element)=>(
                 <div className="SingleChallengeContainer">
                     <h3>{element.title}</h3>
+                    <p>{element.id}</p>
                     <h4>{element.description}</h4>
-                    <h4>{element.status}</h4>
                     <p>Punkty do zdobycia: <strong>{element.points.toFixed(0)}</strong></p>
                     <p>Czas do: <strong>{element.endingDate.toDate().toLocaleDateString()} <strong>{element.endingDate.toDate().getHours()}:{element.endingDate.toDate().getMinutes()}</strong></strong></p>
                                         {
@@ -131,15 +141,19 @@ useEffect(() => {
                     <p>Progres: {element.progress}/{element.goalValue} {element.unit}</p>
                     <progress value={element.progress/element.goalValue}></progress>
                     <div className="buttonContainer">
+                            <button onClick={()=>cancelStartedChallenge(element)}>Przerwij</button>
+
                         <button onClick={()=>{expandedElement===element.id?setExpandedElement(null):setExpandedElement(element.id)} }>{expandedElement===element.id?"Zwiń":"Rozwiń"}</button>
-                        <button onClick={()=>cancelStartedChallenge(element)}>Przerwij</button>
-                        <button onClick={()=>askAndRemove(element)}>Usuń</button>
+                        <button onClick={()=>handleChallengeRemove(element.id,setStartedChallengesList, startedChallengesList)}>Usuń</button>
 
 
 
                     </div>
                 </div>
             ))}
+
+            
+
 
         </div>
 

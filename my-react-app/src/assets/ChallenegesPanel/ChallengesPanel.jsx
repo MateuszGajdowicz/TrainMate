@@ -5,12 +5,13 @@ import { deleteDoc, updateDoc } from 'firebase/firestore'
 import { auth, db } from '../../firebase'
 import { addDoc, collection,doc } from 'firebase/firestore';
 import { TrackChallenges } from "./TrackChallenges"
+import FinishedChallenges from "./FinishedChallenges"
 
-function ChallengesPanel({imaginaryArray,activitesList,trainingOptions,setAllChallengesList,allChallengesList,FetchPersonalChallengesList,user}){
+function ChallengesPanel({activitesList,trainingOptions,setAllChallengesList,allChallengesList,FetchPersonalChallengesList,user}){
 
       const [newChallengesList, setNewChallengesList] = useState([])
       const [startedChallengesList, setStartedChallengesList] = useState(allChallengesList.filter(element=>element.status==="started"))
-      const [finishedChallenges, setFinishedChallegnges] = useState(allChallengesList.filter(element=>element.status==="finished"))
+      const [finishedChallengesList, setFinishedChallengesList] = useState(allChallengesList.filter(element=>element.status==="finished"))
 
     const [challengesProgressInfo, setChallengesProgressInfo] = useState(null)
        
@@ -20,6 +21,9 @@ function ChallengesPanel({imaginaryArray,activitesList,trainingOptions,setAllCha
 
         let startedChallenges = allChallengesList.filter(element=>element.status === "started").sort((a,b)=>b.addingDate.toDate() - a.addingDate.toDate())
         setStartedChallengesList(startedChallenges)
+
+        let finishedChallenges = allChallengesList.filter(element=>element.status==="finished").sort((a,b)=>b.addingDate.toDate() - a.addingDate.toDate())
+        setFinishedChallengesList(finishedChallenges)
       },[allChallengesList, user])
 
 
@@ -48,18 +52,24 @@ function ChallengesPanel({imaginaryArray,activitesList,trainingOptions,setAllCha
         try{
             const docRef = doc(db, "PersonalChallenges", challengeID)
             await deleteDoc(docRef) 
-            setList(List.filter(element=>element.id!==challengeID))
+                    setList(List.filter(ch => ch.id !== challengeID)); 
+                    console.log(challengeID)
+
+            FetchPersonalChallengesList()
         }
         catch(error){
             window.alert("Coś poszło nie tak")
+            console.log(error)
         }
+
 
     }
 
 
     return(<>
-    <ChallengesList setAllChallengesList={setAllChallengesList} allChallengesList={allChallengesList} handleChallengesSort={handleChallengesSort} trainingOptions={trainingOptions} setNewChallengesList={setNewChallengesList} newChallengesList={newChallengesList} FetchPersonalChallengesList={FetchPersonalChallengesList} user={user}/>
-   <StartedChallenges imaginaryArray={imaginaryArray} FetchPersonalChallengesList={FetchPersonalChallengesList} allChallengesList={allChallengesList} activitesList={activitesList} handleChallengeRemove={handleChallengeRemove} setStartedChallengesList={setStartedChallengesList} handleChallengesSort={handleChallengesSort} startedChallengesList={startedChallengesList}/> 
+    <ChallengesList startedChallengesList={startedChallengesList} handleChallengeRemove={handleChallengeRemove} setAllChallengesList={setAllChallengesList} allChallengesList={allChallengesList} handleChallengesSort={handleChallengesSort} trainingOptions={trainingOptions} setNewChallengesList={setNewChallengesList} newChallengesList={newChallengesList} FetchPersonalChallengesList={FetchPersonalChallengesList} user={user}/>
+   <StartedChallenges  handleChallengesSort={handleChallengesSort} FetchPersonalChallengesList={FetchPersonalChallengesList} allChallengesList={allChallengesList} activitesList={activitesList} handleChallengeRemove={handleChallengeRemove} setStartedChallengesList={setStartedChallengesList}  startedChallengesList={startedChallengesList}/> 
+   <FinishedChallenges startedChallengesList={startedChallengesList} setFinishedChallengesList={setFinishedChallengesList} handleChallengesSort={handleChallengesSort} FetchPersonalChallengesList={FetchPersonalChallengesList} finishedChallengesList={finishedChallengesList} user={user}/>
     </>)
 }
 export default ChallengesPanel

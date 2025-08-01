@@ -17,7 +17,8 @@ let challenge = {
         disciplines: startedChallenges[i].disciplines,
         points: startedChallenges[i].points,
         startDate: startedChallenges[i].startDate,
-        addingDate: startedChallenges[i].addingDate
+        addingDate: startedChallenges[i].addingDate,
+        finishDate:startedChallenges[i].finishDate
     }
 };
 let activitiesAfterStartDate = activitiesArray.filter(element=>(element.addingDate)> (challenge.data.startDate))

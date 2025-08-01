@@ -11,6 +11,7 @@ export const defaultChallenges = [
     progress: 0,
     status: "new",
     startDate: null,
+    isDefault:true,
   },
   {
     title: "Treningowy hat-trick",
@@ -24,6 +25,8 @@ export const defaultChallenges = [
     progress: 0,
     status: "new",
     startDate: null,
+        isDefault:true,
+
   },
   {
     title: "Czas to forma",
@@ -37,6 +40,8 @@ export const defaultChallenges = [
     progress: 0,
     status: "new",
     startDate: null,
+        isDefault:true,
+
   },
   {
     title: "Spal 1000 kcal",
@@ -50,6 +55,8 @@ export const defaultChallenges = [
     progress: 0,
     status: "new",
     startDate: null,
+        isDefault:true,
+
   },
   {
     title: "Biegacz-amator",
@@ -63,6 +70,8 @@ export const defaultChallenges = [
     progress: 0,
     status: "new",
     startDate: null,
+        isDefault:true,
+
   },
   {
     title: "7 dni – 7 treningów",
@@ -76,6 +85,8 @@ export const defaultChallenges = [
     progress: 0,
     status: "new",
     startDate: null,
+        isDefault:true,
+
   },
   {
     title: "Poranny bohater",
@@ -89,6 +100,8 @@ export const defaultChallenges = [
     progress: 0,
     status: "new",
     startDate: null,
+        isDefault:true,
+
   },
   {
     title: "Siłacz tygodnia",
@@ -102,6 +115,8 @@ export const defaultChallenges = [
     progress: 0,
     status: "new",
     startDate: null,
+        isDefault:true,
+
   },
   {
     title: "Wydolnościowiec",
@@ -115,6 +130,8 @@ export const defaultChallenges = [
     progress: 0,
     status: "new",
     startDate: null,
+        isDefault:true,
+
   },
   {
     title: "Minutowy maraton",
@@ -128,6 +145,8 @@ export const defaultChallenges = [
     progress: 0,
     status: "new",
     startDate: null,
+        isDefault:true,
+
   },
   {
     title: "Kaloryczny spalacz",
@@ -141,6 +160,8 @@ export const defaultChallenges = [
     progress: 0,
     status: "new",
     startDate: null,
+        isDefault:true,
+
   },
   {
     title: "Jogging poranny",
@@ -154,6 +175,8 @@ export const defaultChallenges = [
     progress: 0,
     status: "new",
     startDate: null,
+        isDefault:true,
+
   },
   {
     title: "Streak maraton",
@@ -167,6 +190,8 @@ export const defaultChallenges = [
     progress: 0,
     status: "new",
     startDate: null,
+        isDefault:true,
+
   },
   {
     title: "Szybki rowerzysta",
@@ -180,5 +205,7 @@ export const defaultChallenges = [
     progress: 0,
     status: "new",
     startDate: null,
+        isDefault:true,
+
   },
 ];
