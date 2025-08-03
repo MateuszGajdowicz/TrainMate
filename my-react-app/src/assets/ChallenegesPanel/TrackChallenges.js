@@ -1,7 +1,18 @@
+function countTimeLeft(challenge){
+    let today = new Date();
+    let endingDate = new Date(challenge.endingDate.seconds * 1000 + Math.floor(challenge.endingDate.nanoseconds / 1e6));
+
+    let timeLeft = (endingDate - today)
+    console.log(challenge.endingDate)
+    return timeLeft
+}
+
+
 export function TrackChallenges(activitiesArray, allChallenges){
     let startedChallenges = allChallenges.filter(element=>element.status==="started")
     let progressArray = []
     for(let i = 0;i<startedChallenges.length; i++){
+        
 let challenge = {
     challengeID: startedChallenges[i].id,
     data: {
@@ -18,9 +29,13 @@ let challenge = {
         points: startedChallenges[i].points,
         startDate: startedChallenges[i].startDate,
         addingDate: startedChallenges[i].addingDate,
-        finishDate:startedChallenges[i].finishDate
+        finishDate:startedChallenges[i].finishDate,
+        endingDate:startedChallenges[i].endingDate,
+        isDefault:startedChallenges[i].isDefault,
+        timeLeft:countTimeLeft(startedChallenges[i])/ (1000 * 60 * 60 * 24)
     }
 };
+
 let activitiesAfterStartDate = activitiesArray.filter(element=>(element.addingDate)> (challenge.data.startDate))
 
         for(let j=0; j<activitiesAfterStartDate.length;j++){
@@ -72,8 +87,3 @@ let activitiesAfterStartDate = activitiesArray.filter(element=>(element.addingDa
 
 }
 
-export function CheckIsTooLate(challenge){
-    let today = new Date();
-    if(today-challenge.addingDate<0){}
-
-}

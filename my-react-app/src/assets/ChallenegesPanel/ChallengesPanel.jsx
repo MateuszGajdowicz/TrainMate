@@ -6,12 +6,13 @@ import { auth, db } from '../../firebase'
 import { addDoc, collection,doc } from 'firebase/firestore';
 import { TrackChallenges } from "./TrackChallenges"
 import FinishedChallenges from "./FinishedChallenges"
-
+import NotificationContainer from "./NotificationContainer"
 function ChallengesPanel({activitesList,trainingOptions,setAllChallengesList,allChallengesList,FetchPersonalChallengesList,user}){
 
       const [newChallengesList, setNewChallengesList] = useState([])
       const [startedChallengesList, setStartedChallengesList] = useState(allChallengesList.filter(element=>element.status==="started"))
       const [finishedChallengesList, setFinishedChallengesList] = useState(allChallengesList.filter(element=>element.status==="finished"))
+      const [failedChallengesList, setFailedChallengesList] = useState([])
 
     const [challengesProgressInfo, setChallengesProgressInfo] = useState(null)
        
@@ -24,6 +25,9 @@ function ChallengesPanel({activitesList,trainingOptions,setAllChallengesList,all
 
         let finishedChallenges = allChallengesList.filter(element=>element.status==="finished").sort((a,b)=>b.addingDate.toDate() - a.addingDate.toDate())
         setFinishedChallengesList(finishedChallenges)
+
+        let failedChallenges = allChallengesList.filter(element=>element.status==="failed").sort((a,b)=>b.addingDate.toDate() - a.addingDate.toDate())
+        setFailedChallengesList(failedChallenges)
       },[allChallengesList, user])
 
 
@@ -65,11 +69,14 @@ function ChallengesPanel({activitesList,trainingOptions,setAllChallengesList,all
 
     }
 
+    const [notificationChallengeData, setNotficationChallengeData] = useState([])
+
 
     return(<>
     <ChallengesList startedChallengesList={startedChallengesList} handleChallengeRemove={handleChallengeRemove} setAllChallengesList={setAllChallengesList} allChallengesList={allChallengesList} handleChallengesSort={handleChallengesSort} trainingOptions={trainingOptions} setNewChallengesList={setNewChallengesList} newChallengesList={newChallengesList} FetchPersonalChallengesList={FetchPersonalChallengesList} user={user}/>
-   <StartedChallenges  handleChallengesSort={handleChallengesSort} FetchPersonalChallengesList={FetchPersonalChallengesList} allChallengesList={allChallengesList} activitesList={activitesList} handleChallengeRemove={handleChallengeRemove} setStartedChallengesList={setStartedChallengesList}  startedChallengesList={startedChallengesList}/> 
-   <FinishedChallenges startedChallengesList={startedChallengesList} setFinishedChallengesList={setFinishedChallengesList} handleChallengesSort={handleChallengesSort} FetchPersonalChallengesList={FetchPersonalChallengesList} finishedChallengesList={finishedChallengesList} user={user}/>
+   <StartedChallenges setNotficationChallengeData={setNotficationChallengeData}  handleChallengesSort={handleChallengesSort} FetchPersonalChallengesList={FetchPersonalChallengesList} allChallengesList={allChallengesList} activitesList={activitesList} handleChallengeRemove={handleChallengeRemove} setStartedChallengesList={setStartedChallengesList}  startedChallengesList={startedChallengesList}/> 
+   <FinishedChallenges  failedChallengesList={failedChallengesList} startedChallengesList={startedChallengesList} setFinishedChallengesList={setFinishedChallengesList} handleChallengesSort={handleChallengesSort} FetchPersonalChallengesList={FetchPersonalChallengesList} finishedChallengesList={finishedChallengesList} user={user}/>
+   <NotificationContainer notificationChallengeData={notificationChallengeData}/>
     </>)
 }
 export default ChallengesPanel

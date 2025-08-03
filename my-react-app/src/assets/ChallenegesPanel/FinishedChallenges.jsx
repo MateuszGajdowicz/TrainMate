@@ -8,9 +8,10 @@ import { doc, updateDoc } from "firebase/firestore";
 import { fetchSignInMethodsForEmail } from "firebase/auth";
 import { TrackChallenges } from "./TrackChallenges";
 import './ChallengesList.css'
-function FinishedChallenges({startedChallengesList,setFinishedChallengesList,handleChallengesSort,FetchPersonalChallengesList,user,finishedChallengesList}){
+function FinishedChallenges({setNotficationChallengeData,failedChallengesList,startedChallengesList,setFinishedChallengesList,handleChallengesSort,FetchPersonalChallengesList,user,finishedChallengesList}){
 
         const [expandedElement, setExpandedElement] = useState(null)
+        const [displayedList, setDisplayedList] = useState(finishedChallengesList)
 
     function isRepeatingChallenges(startedChallenges, challengeElement){
     let matchedDisciplines=startedChallenges.filter(element=>element.disciplines===challengeElement.disciplines && element.disciplines!==null)
@@ -26,6 +27,8 @@ async function handleRepeatChallenge(element) {
     endDate.setDate(endDate.getDate() + Number(element.period));
 
     try {
+          const endDate = new Date()
+        endDate.setDate(endDate.getDate()+(element.period))
       // Usuń `id` z obiektu:
       const { id, ...challengeWithoutId } = element;
 
@@ -36,6 +39,7 @@ async function handleRepeatChallenge(element) {
         startDate: new Date(),
         endingDate: endDate,
         finishDate: null,
+        timeLeft:(endDate- new Date())/ (1000 * 60 * 60 * 24),
       };
 
       await addDoc(collection(db, "PersonalChallenges"), repeatedChallenge);
@@ -49,13 +53,30 @@ async function handleRepeatChallenge(element) {
   }
 }
 
+function handleChallengeType(event){
+  let value = event.target.value;
+  switch(value){
+    case "Ukończone wyzwania":
+      setDisplayedList(finishedChallengesList)
+      break;
+    case "Nieudane wyzwania":
+      setDisplayedList(failedChallengesList)
+      break;
+  }
+
+}
 
 
     return(
         <div style={{left:'67%'}} className="ChooseChallenge">
+
             <div className="header">
-                <h1>Ukończone wyzwania!</h1>
-                <select className="sortSelect" onClick={event=>handleChallengesSort(finishedChallengesList, event, setFinishedChallengesList)}    name="" id="">
+                <h1>{displayedList===failedChallengesList?"Nieudane wyzwania :(":"Ukończone wyzwania!"}</h1>
+                <select onChange={event=>handleChallengeType(event)} style={{width:"5%"}} className="sortSelect"  name="" id="">
+                  <option value="Ukończone wyzwania">Ukończone wyzwania</option>
+                  <option value="Nieudane wyzwania">Nieudane wyzwania</option>
+                </select>
+                <select className="sortSelect" onChange={event=>handleChallengesSort(displayedList, event, displayedList===finishedChallengesList?finishedChallengesList:failedChallengesList)}    name="" id="">
                     <option value="Najwięcej puntków">Najwięcj puntków</option>
                     <option value="Najmniej punktów">Najmniej punktów</option>
                     <option value="Najkrótsze">Najkrótsze</option>
@@ -65,13 +86,12 @@ async function handleRepeatChallenge(element) {
     
         <div  className="AllChallengesContainer">
             {
-                finishedChallengesList.length===0?
+                displayedList.length===0?
                 <h3>Nie masz jeszcze żadnych ukończonych wyzwań. Trenuj dalej, by je ukończysz a zdobędziesz punkty!</h3>
                 :
-                finishedChallengesList.map((element)=>(
+                displayedList.map((element)=>(
                 <div className="SingleChallengeContainer">
                     <h3>{element.title}</h3>
-                    <h3>{element.id}</h3>
                     <h4>{element.description}</h4>
                     <p>Zdobyte punkty: <strong>{element.points.toFixed(0)}</strong></p>
                     <p>Ukończono: <strong>{element.finishDate.toDate().toLocaleDateString()} <strong>{element.finishDate.toDate().getHours()}:{String(element.finishDate.toDate().getMinutes()).padStart(2,'0')}</strong></strong></p>
@@ -93,6 +113,9 @@ async function handleRepeatChallenge(element) {
 
                         <button onClick={()=>{expandedElement===element.id?setExpandedElement(null):setExpandedElement(element.id)} }>{expandedElement===element.id?"Zwiń":"Rozwiń"}</button>
                         <button >Usuń</button>
+                        { displayedList===finishedChallengesList &&
+                            <button style={{right:'20px', position:'absolute'}}>Udostępnij</button>
+                          }
 
 
 

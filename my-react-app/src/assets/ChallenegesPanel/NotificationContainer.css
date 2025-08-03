@@ -1,0 +1,12 @@
+.NotificationContainer{
+    position: absolute;
+    background-color: orange;
+    width: 800px;
+    height: 500px;
+    left: 22%;
+    top: 15%;
+    border-radius: 30px;
+    padding: 10px;
+
+
+}

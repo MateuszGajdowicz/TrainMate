@@ -84,7 +84,8 @@ async function handleCreateNewChallenge() {
                 isOverTime:false,
                 endingDate:null,
                 isDefault:false,
-                finishDate:null
+                finishDate:null,
+                timeLeft:null,
 
 
             }
@@ -92,6 +93,7 @@ async function handleCreateNewChallenge() {
         FetchPersonalChallengesList();
         setToggleAdd(false)
         setChallengeDiscipline(null)
+        setChallengeGoal('Dystans (km)')
 
     }
         catch(error){
@@ -147,12 +149,13 @@ async function handleCreateNewChallenge() {
 
 function isRepeatingChallenges(startedChallenges, challengeElement){
     let matchedDisciplines=startedChallenges.filter(element=>element.disciplines===challengeElement.disciplines && element.disciplines!==null)
-    let matchedType = startedChallenges.filter(element=>element.type===challengeElement.type && element.disciplines===challengeElement.disciplines)
-    return matchedDisciplines.length!==0 || matchedType.length!==0? true:false
+    let matchedType = startedChallenges.filter(element=>element.type===challengeElement.type && element.disciplines!==challengeElement.disciplines && (challengeElement.disciplines===null || element.disciplines===null))
+    let nullDisciplines = startedChallenges.filter(element=>element.type===challengeElement.type && element.disciplines===null && challengeElement.disciplines===null)
+    return matchedDisciplines.length!==0 || matchedType.length!==0 || nullDisciplines.length!==0? true:false
 }
 
 async function handleStartChallenge(element){
-    const isRepeating = false
+    const isRepeating = isRepeatingChallenges(startedChallengesList, element)
     if(!isRepeating){
     try{
         const endDate = new Date()
@@ -160,6 +163,7 @@ async function handleStartChallenge(element){
         let startedChallenge = {status:"started",
              startDate:new Date(),
             endingDate:endDate,
+            timeLeft:(endDate- new Date())/ (1000 * 60 * 60 * 24)
         }
 
 
@@ -253,8 +257,8 @@ async function handleStartChallenge(element){
         :
             newChallengesList.map((element)=>(
                 <div className="SingleChallengeContainer">
+                    <p>{element.timeLeft}</p>
                     <h3>{element.title}</h3>
-                    <h3>{element.id}</h3>
                     <h4>{element.description}</h4>
                     <p>Punkty do zdobycia: <strong>{element.points.toFixed(0)}</strong></p>
                     {

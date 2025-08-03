@@ -8,7 +8,7 @@ import { doc, updateDoc } from "firebase/firestore";
 import { fetchSignInMethodsForEmail } from "firebase/auth";
 import { TrackChallenges } from "./TrackChallenges";
 import './ChallengesList.css'
-function StartedChallenges({allChallengesList,activitesList,handleChallengeRemove,setStartedChallengesList,startedChallengesList,handleChallengesSort,trainingOptions,setNewChallengesList,FetchPersonalChallengesList,newChallengesList,user}){
+function StartedChallenges({setNotficationChallengeData,allChallengesList,activitesList,handleChallengeRemove,setStartedChallengesList,startedChallengesList,handleChallengesSort,trainingOptions,setNewChallengesList,FetchPersonalChallengesList,newChallengesList,user}){
 
         const [expandedElement, setExpandedElement] = useState(null)
 const prevFinishedIds = useRef(new Set());
@@ -25,7 +25,7 @@ const prevFinishedIds = useRef(new Set());
         async function cancelStartedChallenge(element){
             let confirm = window.confirm("Czy na pewno chcesz przerwać to wyzwanie? Stracisz wtedy cały postęp. ")
             if(confirm){
-                let canceledChallenge = {status:"new", startDate:null, progress:0,endingDate:null}
+                let canceledChallenge = {status:"new", startDate:null, progress:0,endingDate:null,timeLeft:null}
                 
                 try{
                     const docRef = doc(db, "PersonalChallenges", element.id)
@@ -43,7 +43,7 @@ const prevFinishedIds = useRef(new Set());
     }
 async function handleFinishChallenge(challengesToFinish) {
     const updatePromises = challengesToFinish.map(async ch => {
-        let finishedChallenge = {status: "finished", finishDate:new Date() };
+        let finishedChallenge = {status: "finished", finishDate:new Date(),timeLeft:null };
         try {
             const docRef = doc(db, "PersonalChallenges", ch.id);
             await updateDoc(docRef, finishedChallenge);
@@ -54,7 +54,20 @@ async function handleFinishChallenge(challengesToFinish) {
 
     await Promise.all(updatePromises); 
 }
-
+async function trackFailed(startedChallenges) {
+    for(let i=0;i<startedChallenges;i++){
+        if(startedChallenges[i].timeLeft<=0){
+            try{
+                const docRef = doc(db, "PersonalChallenges", startedChallenges[i].id)
+                await updateDoc(docRef, {status:"failed"})
+            }
+            catch(error){
+                console.log(error)
+            }
+        }
+    }
+    
+}
 
 
         useEffect(()=>{
@@ -73,15 +86,16 @@ async function handleFinishChallenge(challengesToFinish) {
                 }
 
                 }     
-                FetchPersonalChallengesList();           
             }
                 UploadChallengesProgress();
+                trackFailed(startedChallengesList)
+                FetchPersonalChallengesList();
 
 
 
                 
 
-        }, [activitesList])
+        }, [activitesList, user])
 
 useEffect(() => {
     const newlyFinished = startedChallengesList.filter(ch =>
@@ -93,6 +107,8 @@ useEffect(() => {
     );
 
     if (newlyFinished.length > 0) {
+
+        setNotficationChallengeData(newlyFinished)
         newlyFinished.forEach(ch => prevFinishedIds.current.add(ch.id));
         handleFinishChallenge(newlyFinished).then(() => {
             FetchPersonalChallengesList(); //
@@ -100,6 +116,27 @@ useEffect(() => {
         });
     }
 }, [startedChallengesList]);
+
+
+function setWarningColor(element){
+    let color=''
+    if(element.timeLeft/element.period>=0.5){
+        color = 'hsl(118, 93%, 48%)'
+    }
+    else if(element.timeLeft/element.period>=0.2 &&element.timeLeft/element.period<0.5 ){
+        color ='orange'
+
+    }
+    else{
+        color='red'
+
+    }
+    return color
+
+
+    
+
+}
 
 
     return(
@@ -121,11 +158,19 @@ useEffect(() => {
                 :
                 startedChallengesList.map((element)=>(
                 <div className="SingleChallengeContainer">
+                    <div className="warningContainer">
+
+                        <h3 style={{backgroundColor:setWarningColor(element)}} className="comunicate"> ! {element.timeLeft/element.period<0.2?'Twoje wyzwanie niedługo się zakończy!':`Pozostało już tylko ${element.timeLeft.toFixed(0)} dni`}</h3>
+
+                        <h3 style={{backgroundColor:setWarningColor(element)}} className="exclamation">!</h3>
+
+                    </div>
+
                     <h3>{element.title}</h3>
-                    <p>{element.id}</p>
                     <h4>{element.description}</h4>
                     <p>Punkty do zdobycia: <strong>{element.points.toFixed(0)}</strong></p>
-                    <p>Czas do: <strong>{element.endingDate.toDate().toLocaleDateString()} <strong>{element.endingDate.toDate().getHours()}:{element.endingDate.toDate().getMinutes()}</strong></strong></p>
+                    <p>Czas do: <strong>{element.endingDate.toDate().toLocaleDateString()} <strong>{element.endingDate.toDate().getHours()}:{String(element.endingDate.toDate().getMinutes()).padStart(2,'0')}</strong></strong></p>
+                    <p>Pozostało <strong>{element.timeLeft.toFixed(0)}</strong> dni</p>
                                         {
                         expandedElement===element.id &&
                         <>
