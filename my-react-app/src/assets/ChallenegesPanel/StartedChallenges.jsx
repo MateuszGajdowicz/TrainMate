@@ -8,7 +8,7 @@ import { doc, updateDoc } from "firebase/firestore";
 import { fetchSignInMethodsForEmail } from "firebase/auth";
 import { TrackChallenges } from "./TrackChallenges";
 import './ChallengesList.css'
-function StartedChallenges({setNotficationChallengeData,allChallengesList,activitesList,handleChallengeRemove,setStartedChallengesList,startedChallengesList,handleChallengesSort,trainingOptions,setNewChallengesList,FetchPersonalChallengesList,newChallengesList,user}){
+function StartedChallenges({setIsNotificationDisplayed,setNotficationChallengeData,allChallengesList,activitesList,handleChallengeRemove,setStartedChallengesList,startedChallengesList,handleChallengesSort,trainingOptions,setNewChallengesList,FetchPersonalChallengesList,newChallengesList,user}){
 
         const [expandedElement, setExpandedElement] = useState(null)
 const prevFinishedIds = useRef(new Set());
@@ -60,6 +60,7 @@ async function trackFailed(startedChallenges) {
             try{
                 const docRef = doc(db, "PersonalChallenges", startedChallenges[i].id)
                 await updateDoc(docRef, {status:"failed"})
+                // setNotficationChallengeData(prev=>[...prev, startedChallenges[i]])
             }
             catch(error){
                 console.log(error)
@@ -97,6 +98,7 @@ async function trackFailed(startedChallenges) {
 
         }, [activitesList, user])
 
+
 useEffect(() => {
     const newlyFinished = startedChallengesList.filter(ch =>
         ch.status !== "finished" &&
@@ -109,6 +111,7 @@ useEffect(() => {
     if (newlyFinished.length > 0) {
 
         setNotficationChallengeData(newlyFinished)
+        setIsNotificationDisplayed(true)
         newlyFinished.forEach(ch => prevFinishedIds.current.add(ch.id));
         handleFinishChallenge(newlyFinished).then(() => {
             FetchPersonalChallengesList(); //
@@ -133,11 +136,29 @@ function setWarningColor(element){
     }
     return color
 
-
-    
-
 }
+async function handlePinChallenge(element) {
+    try{
+        const docRef = doc(db, "PersonalChallenges", element.id)
+        if(element.isPinned){
+            await updateDoc(docRef, {isPinned:false})
 
+        }
+        else{
+            await updateDoc(docRef, {isPinned:true})
+
+
+        }
+
+    }
+    catch(error){
+        console.log(error)
+        window.alert("Nie udało się przypiąć wyzwania. Spróbuj ponownie")
+
+    }
+    FetchPersonalChallengesList();
+    
+}
 
     return(
         <div style={{left:'35%'}} className="ChooseChallenge">
@@ -190,6 +211,7 @@ function setWarningColor(element){
 
                         <button onClick={()=>{expandedElement===element.id?setExpandedElement(null):setExpandedElement(element.id)} }>{expandedElement===element.id?"Zwiń":"Rozwiń"}</button>
                         <button onClick={()=>handleChallengeRemove(element.id,setStartedChallengesList, startedChallengesList)}>Usuń</button>
+                        <h2 style={{color:element.isPinned?"hsla(28, 95%, 40%, 1.00)":"black"}} onClick={()=>handlePinChallenge(element)} title={element.isPinned?"Odepnij wyzwanie":"Przypnij wyzwanie"}  className="Pin">⚲</h2>
 
 
 

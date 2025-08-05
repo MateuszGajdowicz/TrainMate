@@ -8,10 +8,11 @@ import { doc, updateDoc } from "firebase/firestore";
 import { fetchSignInMethodsForEmail } from "firebase/auth";
 import { TrackChallenges } from "./TrackChallenges";
 import './ChallengesList.css'
-function FinishedChallenges({setNotficationChallengeData,failedChallengesList,startedChallengesList,setFinishedChallengesList,handleChallengesSort,FetchPersonalChallengesList,user,finishedChallengesList}){
+function FinishedChallenges({handleChallengeRemove,activitesList,setNotficationChallengeData,failedChallengesList,startedChallengesList,setFinishedChallengesList,handleChallengesSort,FetchPersonalChallengesList,user,finishedChallengesList}){
 
         const [expandedElement, setExpandedElement] = useState(null)
         const [displayedList, setDisplayedList] = useState(finishedChallengesList)
+
 
     function isRepeatingChallenges(startedChallenges, challengeElement){
     let matchedDisciplines=startedChallenges.filter(element=>element.disciplines===challengeElement.disciplines && element.disciplines!==null)
@@ -65,6 +66,15 @@ function handleChallengeType(event){
   }
 
 }
+useEffect(() => {
+    setDisplayedList(finishedChallengesList);
+}, [finishedChallengesList]);
+
+useEffect(() => {
+  if (displayedList === failedChallengesList) {
+    setDisplayedList(failedChallengesList);
+  }
+}, [failedChallengesList]);
 
 
     return(
@@ -112,7 +122,7 @@ function handleChallengeType(event){
                         <button onClick={()=>handleRepeatChallenge(element)} >Powtórz</button>
 
                         <button onClick={()=>{expandedElement===element.id?setExpandedElement(null):setExpandedElement(element.id)} }>{expandedElement===element.id?"Zwiń":"Rozwiń"}</button>
-                        <button >Usuń</button>
+                        <button onClick={()=>handleChallengeRemove(element.id, setDisplayedList, displayedList)} >Usuń</button>
                         { displayedList===finishedChallengesList &&
                             <button style={{right:'20px', position:'absolute'}}>Udostępnij</button>
                           }

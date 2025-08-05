@@ -109,42 +109,47 @@ async function handleCreateNewChallenge() {
 
     
 }
-// async function handleAddDefaultChallenges(){
-//     if(newChallengesList.length===0){
-//     for(let i=0;i<defaultChallenges.length;i++){
-//         try{
-//             let newDefaultChallenge =              
-//             {userID:auth.currentUser.uid,
-//                  endingDate:null,
-//                  finishDate:null,
-//                  isOverTime:false,
-//                  ...defaultChallenges[i]}
-//             if(!allChallengesList.includes(newDefaultChallenge)){
-//                 const docRef = await addDoc(collection(db, "PersonalChallenges"),newDefaultChallenge)
+async function handleAddDefaultChallenges(){
+        const querySnapshot = await getDocs(
+        collection(db, "PersonalChallenges")
+    );
 
+    const defaultsExist = querySnapshot.docs.some((doc) =>
+        defaultChallenges.some((def) => doc.data().title === def.title)
+    );
+    if(!defaultsExist){
+    for(let i=0;i<defaultChallenges.length;i++){
+        try{
+            let newDefaultChallenge =              
+            {userID:auth.currentUser.uid,
+                 endingDate:null,
+                 finishDate:null,
+                 isOverTime:false,
+                 addingDate:new Date(),
+                 ...defaultChallenges[i]}
+            if(!allChallengesList.includes(newDefaultChallenge)){
+                const docRef = await addDoc(collection(db, "PersonalChallenges"),newDefaultChallenge)
+            }
 
-//             }
-
-
-//         }
-//         catch(error){
-//             console.log(error)
+        }
+        catch(error){
+            console.log(error)
 
         
-//     }
-//     }
-//         FetchPersonalChallengesList();
+    }
+    }
+        FetchPersonalChallengesList();
 
 
-//     }
+    }
 
 
-// }
-// useEffect(() => {
-//     if (user) {
-//         handleAddDefaultChallenges();
-//     }
-// }, [user]);
+}
+useEffect(() => {
+    if (user) {
+        handleAddDefaultChallenges();
+    }
+}, [user]);
 
 
 function isRepeatingChallenges(startedChallenges, challengeElement){

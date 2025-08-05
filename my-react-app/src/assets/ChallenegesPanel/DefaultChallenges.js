@@ -11,7 +11,8 @@ export const defaultChallenges = [
     progress: 0,
     status: "new",
     startDate: null,
-    isDefault:true,
+    isDefault: true,
+    isPinned: false,
   },
   {
     title: "Treningowy hat-trick",
@@ -25,8 +26,9 @@ export const defaultChallenges = [
     progress: 0,
     status: "new",
     startDate: null,
-        isDefault:true,
-
+    isDefault: true,
+    isPinned: false,
+    timeLeft: null,
   },
   {
     title: "Czas to forma",
@@ -40,8 +42,8 @@ export const defaultChallenges = [
     progress: 0,
     status: "new",
     startDate: null,
-        isDefault:true,
-
+    isDefault: true,
+    isPinned: false,
   },
   {
     title: "Spal 1000 kcal",
@@ -55,8 +57,8 @@ export const defaultChallenges = [
     progress: 0,
     status: "new",
     startDate: null,
-        isDefault:true,
-
+    isDefault: true,
+    isPinned: false,
   },
   {
     title: "Biegacz-amator",
@@ -70,8 +72,8 @@ export const defaultChallenges = [
     progress: 0,
     status: "new",
     startDate: null,
-        isDefault:true,
-
+    isDefault: true,
+    isPinned: false,
   },
   {
     title: "7 dni – 7 treningów",
@@ -85,8 +87,8 @@ export const defaultChallenges = [
     progress: 0,
     status: "new",
     startDate: null,
-        isDefault:true,
-
+    isDefault: true,
+    isPinned: false,
   },
   {
     title: "Poranny bohater",
@@ -100,8 +102,8 @@ export const defaultChallenges = [
     progress: 0,
     status: "new",
     startDate: null,
-        isDefault:true,
-
+    isDefault: true,
+    isPinned: false,
   },
   {
     title: "Siłacz tygodnia",
@@ -115,8 +117,8 @@ export const defaultChallenges = [
     progress: 0,
     status: "new",
     startDate: null,
-        isDefault:true,
-
+    isDefault: true,
+    isPinned: false,
   },
   {
     title: "Wydolnościowiec",
@@ -130,8 +132,8 @@ export const defaultChallenges = [
     progress: 0,
     status: "new",
     startDate: null,
-        isDefault:true,
-
+    isDefault: true,
+    isPinned: false,
   },
   {
     title: "Minutowy maraton",
@@ -145,8 +147,8 @@ export const defaultChallenges = [
     progress: 0,
     status: "new",
     startDate: null,
-        isDefault:true,
-
+    isDefault: true,
+    isPinned: false,
   },
   {
     title: "Kaloryczny spalacz",
@@ -160,8 +162,8 @@ export const defaultChallenges = [
     progress: 0,
     status: "new",
     startDate: null,
-        isDefault:true,
-
+    isDefault: true,
+    isPinned: false,
   },
   {
     title: "Jogging poranny",
@@ -175,8 +177,8 @@ export const defaultChallenges = [
     progress: 0,
     status: "new",
     startDate: null,
-        isDefault:true,
-
+    isDefault: true,
+    isPinned: false,
   },
   {
     title: "Streak maraton",
@@ -190,8 +192,8 @@ export const defaultChallenges = [
     progress: 0,
     status: "new",
     startDate: null,
-        isDefault:true,
-
+    isDefault: true,
+    isPinned: false,
   },
   {
     title: "Szybki rowerzysta",
@@ -205,7 +207,7 @@ export const defaultChallenges = [
     progress: 0,
     status: "new",
     startDate: null,
-        isDefault:true,
-
+    isDefault: true,
+    isPinned: false,
   },
 ];
