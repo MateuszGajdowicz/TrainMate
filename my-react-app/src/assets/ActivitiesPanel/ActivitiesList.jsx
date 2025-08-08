@@ -27,6 +27,7 @@ function ActivitiesList({fetchActivitiesList,trainingOptions,activitesList,setAc
                 const activityDocRef = doc(db,"Activities", activityID)
                 await deleteDoc(activityDocRef) 
                 setDisplayedActivitiesList(displayedActivitiesList.filter(element=>element.id!==activityID))
+                fetchActivitiesList();
                 
 
 

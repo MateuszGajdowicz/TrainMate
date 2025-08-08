@@ -10,16 +10,20 @@ import YourTrainingsPanel from './assets/TrainigsPanel/YourTrainingsPanel'
 import YourActivitiesPanel from './assets/ActivitiesPanel/YourActivitiesPanel'
 import PlanPanel from './assets/PlanPanel/PlanPanel'
 import ChallengesPanel from './assets/ChallenegesPanel/ChallengesPanel'
+import MainPanel from './assets/MainPanel/MainPanel'
 
 import { collection, getDocs, query,where,doc } from 'firebase/firestore'
 import { defaultChallenges } from './assets/ChallenegesPanel/DefaultChallenges'
 
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
 function App() {
   const trainingOptions=["Bieganie","Rower","Pływanie","Siłownia","Joga","Stretching","HIIT","Pilates","Wspinaczka","Nordic Walking","Rolki","Deskorolka","Kajakarstwo","Wioślarstwo","Snowboard","Narciarstwo","Łyżwy","Boks","Kickboxing","Sztuki walki","Krav Maga","CrossFit","Trening funkcjonalny","Spacer","Marszobieg","Taniec","Zumba","Aqua aerobic","Trening obwodowy","Calisthenics","Gimnastyka","Parkour","Triathlon","Piłka nożna","Koszykówka","Siatkówka","Tenis","Tenis stołowy","Badminton","Squash","Golf","Bouldering","Surfing","Kitesurfing","Windsurfing","SUP (Stand Up Paddle)","Łucznictwo","Jeździectwo","Paintball","Airsoft","Żeglarstwo","Turystyka górska","Bieg na orientację"];
 
   const [displayedTrainingsList, setDisplayedTrainingList] = useState([])
   const [trainingsList, setTrainingsList] = useState([])
+  const [todayTrainings, setTodayTrainings] = useState([])
+
 
   const [activitesList, setActivitesList] = useState([])
   const [displayedActivitiesList, setDisplayedActivitiesList] = useState([])
@@ -154,6 +158,7 @@ useEffect(()=>{
           fetchTrainingsList();
           fetchActivitiesList();
           FetchPersonalChallengesList();
+          FetchTrainingPlanList();
 
 
     }
@@ -183,11 +188,18 @@ useEffect(()=>{
         </>
       ) : ( 
         <>
+          <BrowserRouter>
+
           <NavBar LogOut={LogOut}/>
-          {/* <YourTrainingsPanel  favourites={favourites} setFavourites={setFavourites} displayedTrainingsList={displayedTrainingsList} setDisplayedTrainingList={setDisplayedTrainingList} setTrainingsList={setTrainingsList} trainingsList={trainingsList} fetchTrainingsList={fetchTrainingsList} user={user} trainingOptions={trainingOptions}/> */}
-          {/* <YourActivitiesPanel allChallengesList={allChallengesList} trainingOptions={trainingOptions} fetchActivitiesList={fetchActivitiesList}setActivitesList={setActivitesList} activitesList={activitesList} displayedActivitiesList={displayedActivitiesList} setDisplayedActivitiesList={setDisplayedActivitiesList} user={user}/> */}
-          {/* <PlanPanel trainingsList={trainingsList} fetchTrainingsList={fetchTrainingsList} FetchTrainingPlanList={FetchTrainingPlanList} setTrainingPlanData={setTrainingPlanData} trainingPlanData={trainingPlanData} setTrainingPlan={setTrainingPlan} trainingPlan={trainingPlan} user={user} trainingOptions={trainingOptions}/> */}
-          <ChallengesPanel  activitesList={activitesList} trainingOptions={trainingOptions} setAllChallengesList={setAllChallengesList} allChallengesList={allChallengesList} FetchPersonalChallengesList={FetchPersonalChallengesList} user={user}/>
+
+          <Routes>
+            <Route path='/' element={<MainPanel trainingsList={trainingsList} allChallengesList={allChallengesList} activitesList={activitesList}/>}/>
+            <Route path='trainingsPanel' element={<YourTrainingsPanel setTodayTrainings={setTodayTrainings}  favourites={favourites} setFavourites={setFavourites} displayedTrainingsList={displayedTrainingsList} setDisplayedTrainingList={setDisplayedTrainingList} setTrainingsList={setTrainingsList} trainingsList={trainingsList} fetchTrainingsList={fetchTrainingsList} user={user} trainingOptions={trainingOptions}/>}/>
+            <Route path='activitiesPanel' element={<YourActivitiesPanel allChallengesList={allChallengesList} trainingOptions={trainingOptions} fetchActivitiesList={fetchActivitiesList}setActivitesList={setActivitesList} activitesList={activitesList} displayedActivitiesList={displayedActivitiesList} setDisplayedActivitiesList={setDisplayedActivitiesList} user={user}/>}/>
+            <Route path='planPanel' element={<PlanPanel trainingsList={trainingsList} fetchTrainingsList={fetchTrainingsList} FetchTrainingPlanList={FetchTrainingPlanList} setTrainingPlanData={setTrainingPlanData} trainingPlanData={trainingPlanData} setTrainingPlan={setTrainingPlan} trainingPlan={trainingPlan} user={user} trainingOptions={trainingOptions}/>}/>
+            <Route path='challengesPanel' element={<ChallengesPanel  activitesList={activitesList} trainingOptions={trainingOptions} setAllChallengesList={setAllChallengesList} allChallengesList={allChallengesList} FetchPersonalChallengesList={FetchPersonalChallengesList} user={user}/>}/>
+          </Routes>
+        </BrowserRouter>
         </>
       )}
     </>

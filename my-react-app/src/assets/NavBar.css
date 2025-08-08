@@ -18,8 +18,16 @@ nav{
             cursor: pointer;
 
         }
+        li a{
+            text-decoration: none;
+
+        }
         li:hover{
             background-color: hsl(28, 100%, 47%);
+        }
+        li a:visited{
+            color: black;
+
         }
         #logo{
             position: absolute;

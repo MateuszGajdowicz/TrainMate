@@ -165,7 +165,7 @@ async function handlePinChallenge(element) {
             <div className="header">
                 <h1>Zaczęte wyzwania!</h1>
                 <select className="sortSelect" onChange={event=>handleChallengesSort(startedChallengesList, event,setStartedChallengesList )}   name="" id="">
-                    <option value="Najwięcej puntków">Najwięcj puntków</option>
+                    <option value="Najwięcej punktów">Najwięcj punktów</option>
                     <option value="Najmniej punktów">Najmniej punktów</option>
                     <option value="Najkrótsze">Najkrótsze</option>
                     <option value="Najdłuższe">Najdłuższe</option>

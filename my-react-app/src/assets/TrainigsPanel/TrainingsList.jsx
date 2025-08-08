@@ -29,7 +29,7 @@ function TrainingsList({fetchTrainingsList,trainingOptions,displayedTrainingsLis
                 const trainingDocRef = doc(db,"Trainings", trainingID)
                 await deleteDoc(trainingDocRef) 
                 setDisplayedTrainingList(displayedTrainingsList.filter(element=>element.id!==trainingID))
-                
+                fetchTrainingsList();
 
 
             }
@@ -51,14 +51,39 @@ function toDateOnly(date) {
 
 function SeparateTrainings(){
     const today = toDateOnly(new Date());
+    const currentHour = new Date().getHours()
+    const currentMins = new Date().getMinutes()
 
   if (periodOFTrainings === "Nadchodzące treningi") {
     setDisplayedTrainingList(
-      trainingsList.filter(element => toDateOnly(element.trainingDate) >= today)
+      trainingsList.filter(element => {
+        // let [trainingHour, trainingMinute] = element.trainingHour.split(':').map(Number)
+            return (
+                    toDateOnly(element.trainingDate) >= today 
+                    // ||
+                    // (
+                    //     toDateOnly(element.trainingDate) === today &&
+                    //     (trainingHour > currentHour ||
+                    //      (trainingHour === currentHour && trainingMinute > currentMins))
+                    // )
+                );
+  })
     );
   } else if (periodOFTrainings === "Zaległe treningi") {
     setDisplayedTrainingList(
-      trainingsList.filter(element => toDateOnly(element.trainingDate) < today)
+      trainingsList.filter(element => {
+        // let [trainingHour, trainingMinute] = element.trainingHour.split(':').map(Number)
+
+        return (
+                    toDateOnly(element.trainingDate) < today 
+                    // ||
+                    // (
+                    //     toDateOnly(element.trainingDate) === today &&
+                    //     (trainingHour < currentHour ||
+                    //      (trainingHour === currentHour && trainingMinute < currentMins))
+                    // )
+                );
+      })
     );
   } else {
     setDisplayedTrainingList(trainingsList);
