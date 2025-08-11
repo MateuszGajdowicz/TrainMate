@@ -1,0 +1,18 @@
+.confirmContainer{
+    position: absolute;
+    width: 100vh;
+    height: 70vh;
+    background-color: orange;
+    left: 50%;
+    top: 15%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+    gap: 15px;
+    h1,h2{
+        margin: 0px;
+    }
+
+}

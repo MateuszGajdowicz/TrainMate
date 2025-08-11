@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import './TodayTrainings.css'
-function TodayTrainings({trainingsList}){
+function TodayTrainings({trainingsList, setSelectedTraining,setIsConfirmDisplayed}){
     const [todayTrainings, setTodayTrainings] = useState([])
+
 
     useEffect(()=>{
         let today = new Date();
@@ -14,7 +15,8 @@ function TodayTrainings({trainingsList}){
         <div className='TodayTrainingsContainer'> 
         <h2>Dzisiejsze treningi</h2>
         <div className='AllTrainingsContainer'>
-                {todayTrainings.map(element=>(
+            { todayTrainings.length!==0?
+            todayTrainings.map(element=>(
             <div className='SingleTrainingContainer'>
                 <div className='InfoContainer'>
 
@@ -31,13 +33,17 @@ function TodayTrainings({trainingsList}){
                 </div>
 
                 <div className='buttonContainer'>
-                        <button  className='YesButton'>+</button>
-                        <button className='NoButton'>-</button>
+                        <button onClick={()=>{setSelectedTraining(element), setIsConfirmDisplayed(true)}} title='Zrobione' className='YesButton'>+</button>
+                        <button title='Nie tym razem :(' className='NoButton'>-</button>
 
                 </div>
 
             </div>
-        ))}
+        ))
+        :
+        <p className='warning'>Nie masz zaplanownych dzisiaj żadnych treningów. Może pora to zmienić?</p>
+            }
+
 
         </div>
 

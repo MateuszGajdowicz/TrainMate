@@ -92,7 +92,7 @@ function CalculateActivitiesSummary(){
             <p>Spalone kalorie: <strong>{summaryInfo.caloriesBurnt} kcal</strong></p>
             <p>To aż <strong>{(summaryInfo.caloriesBurnt/7200).toFixed(2)}</strong> spalonych kilogramów</p>
             <p>Czas spędzony na treningach: <strong>{summaryInfo.timeSpent} min</strong></p>
-            <p>średni czas na treningach: <strong>{summaryInfo.averageTime.toFixed(2)} min</strong></p>
+            <p>Średni czas na treningach: <strong>{summaryInfo.averageTime.toFixed(2)} min</strong></p>
             <p>Pokonany dystans: <strong>{summaryInfo.totalDistance} km</strong></p>
             <p>Najczęściej wykonywana aktywność: <strong>{summaryInfo.MaxActivity}</strong></p>
             <p>Ukończone wyzwania w tym miesiącu: <strong>{summaryInfo.finishedChallenges}</strong></p>

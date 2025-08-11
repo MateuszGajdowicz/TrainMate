@@ -3,7 +3,7 @@
     left:35%;
     top: 18%;
     position: absolute;
-    width: 30%;
+    width: 25%;
     font-size: 1.2em;
     display: flex;
     flex-direction: column;
@@ -25,6 +25,10 @@
         margin: 0px;
         margin-left: 15px;
     }
+    .warning{
+        margin-left: 15px;
+    }
+    
     .SingleTrainingContainer{
         display: flex;
         justify-content: space-evenly;
@@ -54,7 +58,7 @@
         .buttonContainer{
             display: flex;
             overflow: hidden;
-            width: 40%;
+            width: 32%;
             justify-content: end;
             border-radius: 30px;
             background-color: tan;
