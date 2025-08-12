@@ -82,7 +82,7 @@ function CalculateActivitiesSummary(){
         console.log(summaryInfo)
  
 
-    }, [thisMonthActivities,allChallengesList]
+    }, [thisMonthActivities,allChallengesList, activitesList]
     )
 
     return(

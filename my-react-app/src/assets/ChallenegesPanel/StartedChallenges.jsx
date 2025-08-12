@@ -210,7 +210,7 @@ async function handlePinChallenge(element) {
                             <button onClick={()=>cancelStartedChallenge(element)}>Przerwij</button>
 
                         <button onClick={()=>{expandedElement===element.id?setExpandedElement(null):setExpandedElement(element.id)} }>{expandedElement===element.id?"Zwiń":"Rozwiń"}</button>
-                        <button onClick={()=>handleChallengeRemove(element.id,setStartedChallengesList, startedChallengesList)}>Usuń</button>
+                        <button onClick={()=>askAndRemove(element)}>Usuń</button>
                         <h2 style={{color:element.isPinned?"hsla(28, 95%, 40%, 1.00)":"black"}} onClick={()=>handlePinChallenge(element)} title={element.isPinned?"Odepnij wyzwanie":"Przypnij wyzwanie"}  className="Pin">⚲</h2>
 
 

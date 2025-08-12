@@ -1,18 +1,55 @@
-.confirmContainer{
+.Container{
+    width: 100%;
     position: absolute;
+    height: 100%;
+    background-color: hsla(0, 0%, 0%, 0.479);
+    top: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+.confirmContainer{
     width: 100vh;
-    height: 70vh;
-    background-color: orange;
+    height: auto;
+    background: linear-gradient(135deg, hsl(0, 0%, 100%) 5%, hsl(26, 100%, 50%) 120%);
     left: 50%;
-    top: 15%;
-    transform: translateX(-50%);
     display: flex;
     align-items: center;
     flex-direction: column;
     padding: 20px;
     gap: 15px;
-    h1,h2{
-        margin: 0px;
+    border-radius: 40px;
+    .inputs{
+        border-radius: 20px;
+            border: 3px hsl(28, 100%, 60%) solid;
+            width: 30%;
+
+
     }
 
+    h1,h2{
+        margin: 0px;
+        
+    }
+    .buttonContainer{
+        display: flex;
+        width: 35%;
+        justify-content: space-around;
+        }
+            button{
+            padding: 10px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            background-color:hsl(28, 100%, 60%);
+                    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2); /* cien */;
+                    transition: 0.2s ease;
+        }
+        button:hover{
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4); /* cien */;
+
+            
+
+        }
 }

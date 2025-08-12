@@ -1,0 +1,101 @@
+.pinnedChallengesContainer{
+    position: absolute;
+    top: 52%;
+    left: 35%;
+    background-color: yellow;
+    height: auto;
+    width: 25%;
+    padding: 10px;
+    font-size: 1.2em;
+    h2,h1{
+        margin: 0px;
+    }
+    .SingleChallengeContainer{
+        background: linear-gradient(135deg, hsl(0, 0%, 100%) 15%, hsl(26, 100%, 50%) 150%);
+        padding: 10px;
+        border-radius: 30px;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2); /* cien */;
+        position: relative;
+        transition: 0.15s ease;
+        .buttonContainer{
+        display: flex;
+        width: 10px;
+        justify-content: space-around;
+        background-color: rgb(97, 53, 53);
+        }
+        
+        button{
+            padding: 10px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            background-color:hsl(28, 100%, 60%);
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2); /* cien */;
+            transition: 0.2s ease;
+        }
+        button:hover{
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4); /* cien */;
+
+            
+
+        }
+        h3,h4,p{
+            margin: 5px;
+        }
+        .buttonContainer{
+            width: 50%;
+        }
+        .warningContainer{
+            position: absolute;
+            right: 20px;
+            top: 10px;
+            
+            display: flex;
+            cursor: pointer;
+            gap: 0px;
+            .comunicate{
+                transform: translateX(20%);
+                border-radius: 25px;
+                padding: 0px 10px;
+                box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2); /* cien */;
+
+
+                opacity: 0;
+            transition: transform 0.3s ease, opacity 0.1s ease;
+            }
+            .exclamation{
+                padding: 0px 15px;
+                border-radius: 50%;
+                box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2); /* cien */;
+
+
+            }
+
+
+            
+        
+        }
+        .warningContainer:hover .comunicate{
+                transform: translateX(0%);
+
+            opacity: 1;
+        }
+
+
+    }
+    .SingleChallengeContainer:hover{
+        transform: scale(1.02);
+                box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.33); /* cien */;
+
+    }
+
+
+}
+.Pin{
+    position: absolute;
+    right: 35px;
+    bottom: 10px;
+    margin: 0px;
+    cursor: pointer;
+    font-size: 1.7em;
+    }

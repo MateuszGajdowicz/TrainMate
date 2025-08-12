@@ -193,7 +193,7 @@ useEffect(()=>{
           <NavBar LogOut={LogOut}/>
 
           <Routes>
-            <Route path='/' element={<MainPanel fetchTrainingsList={fetchTrainingsList} trainingsList={trainingsList} allChallengesList={allChallengesList} activitesList={activitesList}/>}/>
+            <Route path='/' element={<MainPanel fetchActivitiesList={fetchActivitiesList} fetchTrainingsList={fetchTrainingsList} trainingsList={trainingsList} allChallengesList={allChallengesList} activitesList={activitesList}/>}/>
             <Route path='trainingsPanel' element={<YourTrainingsPanel setTodayTrainings={setTodayTrainings}  favourites={favourites} setFavourites={setFavourites} displayedTrainingsList={displayedTrainingsList} setDisplayedTrainingList={setDisplayedTrainingList} setTrainingsList={setTrainingsList} trainingsList={trainingsList} fetchTrainingsList={fetchTrainingsList} user={user} trainingOptions={trainingOptions}/>}/>
             <Route path='activitiesPanel' element={<YourActivitiesPanel allChallengesList={allChallengesList} trainingOptions={trainingOptions} fetchActivitiesList={fetchActivitiesList}setActivitesList={setActivitesList} activitesList={activitesList} displayedActivitiesList={displayedActivitiesList} setDisplayedActivitiesList={setDisplayedActivitiesList} user={user}/>}/>
             <Route path='planPanel' element={<PlanPanel trainingsList={trainingsList} fetchTrainingsList={fetchTrainingsList} FetchTrainingPlanList={FetchTrainingPlanList} setTrainingPlanData={setTrainingPlanData} trainingPlanData={trainingPlanData} setTrainingPlan={setTrainingPlan} trainingPlan={trainingPlan} user={user} trainingOptions={trainingOptions}/>}/>

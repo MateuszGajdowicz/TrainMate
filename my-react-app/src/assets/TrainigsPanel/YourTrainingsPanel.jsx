@@ -6,6 +6,11 @@ import TrainingsList from "./TrainingsList"
 function YourTrainingsPanel({setTodayTrainings,favourites,setFavourites,displayedTrainingsList,setDisplayedTrainingList,trainingsList,setTrainingsList,fetchTrainingsList,user,trainingOptions}){
     const [selectedTraining, setSelectedTraining] = useState(null)
 
+    useEffect(()=>{
+        fetchTrainingsList()
+    },[]
+    )
+
 
     return(
         <>

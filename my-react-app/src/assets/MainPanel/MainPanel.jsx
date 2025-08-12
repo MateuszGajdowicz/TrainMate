@@ -2,11 +2,15 @@ import { useEffect, useState } from "react";
 import SummaryPanel from "./SummaryPanel";
 import TodayTrainings from "./TodayTrainings";
 import ConfirmPanel from "./ConfiirmPanel";
+import FailedNotification from "./FailedNotification";
+import MissedTrainings from "./MIssedTrainings";
+import PinnedChallenges from "./PinnedChallenges";
 
-function MainPanel({activitesList,allChallengesList,trainingsList,fetchTrainingsList}){
+function MainPanel({fetchActivitiesList,activitesList,allChallengesList,trainingsList,fetchTrainingsList}){
 
 const [selectedTraining, setSelectedTraining] = useState(null)
 const [isConfirmDisplayed, setIsConfirmDisplayed] = useState(false)
+const [isFailedDisplayed, setIsFailedDisplayed] = useState(false)
 
 
 
@@ -32,17 +36,55 @@ useEffect(()=>{
     setThisMonthActivities(thisMonthActivities)
 
 }, [activitesList])
+    const [todayTrainings, setTodayTrainings] = useState([])
+    const [missedTrainings, setMissedTrainings] = useState([])
 
+
+useEffect(() => {
+  let today = new Date();
+
+  const timeToMinutes = (timeStr) => {
+    const [hours, minutes] = timeStr.split(':').map(Number);
+    return hours * 60 + minutes;
+  };
+
+  let todayTrainings = trainingsList
+    .filter(element => new Date(element.trainingDate).toLocaleDateString('sv-SE') === today.toLocaleDateString('sv-SE'))
+    .sort((a, b) => timeToMinutes(a.trainingHour) - timeToMinutes(b.trainingHour));
+
+  setTodayTrainings(todayTrainings);
+
+  let missedTrainings = trainingsList
+    .filter(element => new Date(element.trainingDate).toLocaleDateString('sv-SE') < today.toLocaleDateString('sv-SE'))
+
+  setMissedTrainings(missedTrainings);
+
+  console.log(todayTrainings);
+}, [trainingsList]);
+
+const [pinnedChallenges, setPinnedChallenges] = useState([])
+
+useEffect(()=>{
+    const pinned = allChallengesList.filter(element=>element.isPinned)
+    setPinnedChallenges(pinned)
+
+}, [allChallengesList]
+)
 
     return(
         <>
         <h1 style={{fontSize:"2.3em",margin:"40px 20px"}}>{randomQuote}</h1>
         <SummaryPanel thisMonthActivities={thisMonthActivities} allChallengesList={allChallengesList}  activitesList={activitesList}/>
-        <TodayTrainings setIsConfirmDisplayed={setIsConfirmDisplayed} setSelectedTraining={setSelectedTraining} trainingsList={trainingsList}/>
+        <TodayTrainings todayTrainings={todayTrainings} setIsFailedDisplayed={setIsFailedDisplayed} setIsConfirmDisplayed={setIsConfirmDisplayed} setSelectedTraining={setSelectedTraining} trainingsList={trainingsList}/>
+        <MissedTrainings missedTrainings={missedTrainings} setIsFailedDisplayed={setIsFailedDisplayed} setIsConfirmDisplayed={setIsConfirmDisplayed} setSelectedTraining={setSelectedTraining} trainingsList={trainingsList}/>
+        <PinnedChallenges allChallengesList={allChallengesList} pinnedChallenges={pinnedChallenges} />
         {isConfirmDisplayed &&
-            <ConfirmPanel fetchTrainingsList={fetchTrainingsList} setSelectedTraining={setSelectedTraining} setIsConfirmDisplayed={setIsConfirmDisplayed} selectedTraining={selectedTraining}/>
+            <ConfirmPanel fetchActivitiesList={fetchActivitiesList} fetchTrainingsList={fetchTrainingsList} setSelectedTraining={setSelectedTraining} setIsConfirmDisplayed={setIsConfirmDisplayed} selectedTraining={selectedTraining}/>
+        }
+        { isFailedDisplayed &&
+            <FailedNotification fetchActivitiesList={fetchActivitiesList} fetchTrainingsList={fetchTrainingsList} selectedTraining={selectedTraining} setIsFailedDisplayed={setIsFailedDisplayed} setSelectedTraining={setSelectedTraining}/>
 
-
+        
         }
         </>
     )

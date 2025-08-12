@@ -1,22 +1,21 @@
 import { useEffect, useState } from 'react'
 import './TodayTrainings.css'
-function TodayTrainings({todayTrainings,setIsFailedDisplayed, trainingsList, setSelectedTraining,setIsConfirmDisplayed}){
+function MissedTrainings({missedTrainings,setIsFailedDisplayed, trainingsList, setSelectedTraining,setIsConfirmDisplayed}){
 
     return(
 
-        <div className='TodayTrainingsContainer'> 
-        <h2>Dzisiejsze treningi</h2>
+        <div style={{left:"65%"}} className='TodayTrainingsContainer'> 
+        <h2>Zaległe treningi</h2>
         <div className='AllTrainingsContainer'>
-            { todayTrainings.length!==0?
-            todayTrainings.map(element=>(
-            <div className='SingleTrainingContainer'>
+            { missedTrainings.length!==0?
+            missedTrainings.map(element=>(
+            <div style={{background:'linear-gradient(135deg, hsl(26, 100%, 92%) 5%, hsl(12, 100%, 50%) 110%)'}} className='SingleTrainingContainer'>
                 <div className='InfoContainer'>
 
                 <h4>{element.trainingType}</h4>
                 <div className='detailsContainer'>
                     <p>{element.trainingGoalValue} {element.trainingUnit}</p>
-                    <p>{element.trainingHour}</p>
-                    <p>{element.points} pkt</p>
+                    <p>{element.trainingDate}</p>
 
 
                 </div>
@@ -33,7 +32,7 @@ function TodayTrainings({todayTrainings,setIsFailedDisplayed, trainingsList, set
             </div>
         ))
         :
-        <p className='warning'>Nie masz zaplanownych dzisiaj żadnych treningów. Może pora to zmienić?</p>
+        <p className='warning'>Nie masz żadnych zaległych treningów! Oby tak dalej!</p>
             }
 
 
@@ -43,4 +42,4 @@ function TodayTrainings({todayTrainings,setIsFailedDisplayed, trainingsList, set
         </div>
     )
 }
-export default TodayTrainings
+export default MissedTrainings
