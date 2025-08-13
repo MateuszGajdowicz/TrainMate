@@ -6,7 +6,7 @@ import FailedNotification from "./FailedNotification";
 import MissedTrainings from "./MIssedTrainings";
 import PinnedChallenges from "./PinnedChallenges";
 
-function MainPanel({fetchActivitiesList,activitesList,allChallengesList,trainingsList,fetchTrainingsList}){
+function MainPanel({FetchPersonalChallengesList,fetchActivitiesList,activitesList,allChallengesList,trainingsList,fetchTrainingsList}){
 
 const [selectedTraining, setSelectedTraining] = useState(null)
 const [isConfirmDisplayed, setIsConfirmDisplayed] = useState(false)
@@ -77,7 +77,7 @@ useEffect(()=>{
         <SummaryPanel thisMonthActivities={thisMonthActivities} allChallengesList={allChallengesList}  activitesList={activitesList}/>
         <TodayTrainings todayTrainings={todayTrainings} setIsFailedDisplayed={setIsFailedDisplayed} setIsConfirmDisplayed={setIsConfirmDisplayed} setSelectedTraining={setSelectedTraining} trainingsList={trainingsList}/>
         <MissedTrainings missedTrainings={missedTrainings} setIsFailedDisplayed={setIsFailedDisplayed} setIsConfirmDisplayed={setIsConfirmDisplayed} setSelectedTraining={setSelectedTraining} trainingsList={trainingsList}/>
-        <PinnedChallenges allChallengesList={allChallengesList} pinnedChallenges={pinnedChallenges} />
+        <PinnedChallenges activitesList={activitesList} FetchPersonalChallengesList={FetchPersonalChallengesList} allChallengesList={allChallengesList} pinnedChallenges={pinnedChallenges} />
         {isConfirmDisplayed &&
             <ConfirmPanel fetchActivitiesList={fetchActivitiesList} fetchTrainingsList={fetchTrainingsList} setSelectedTraining={setSelectedTraining} setIsConfirmDisplayed={setIsConfirmDisplayed} selectedTraining={selectedTraining}/>
         }

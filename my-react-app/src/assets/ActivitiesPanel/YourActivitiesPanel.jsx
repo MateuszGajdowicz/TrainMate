@@ -3,7 +3,7 @@ import { useState,useEffect,useRef, use } from 'react'
 import AddNewActivity from "./AddNewActivity"
 import ActivitiesList from "./ActivitiesList"  
 
-function YourActivitiesPanel({allChallengesList,trainingOptions,user,setActivitesList,activitesList,displayedActivitiesList,setDisplayedActivitiesList,fetchActivitiesList}){
+function YourActivitiesPanel({userInfo,allChallengesList,trainingOptions,user,setActivitesList,activitesList,displayedActivitiesList,setDisplayedActivitiesList,fetchActivitiesList}){
 
     useEffect(()=>{
         fetchActivitiesList();
@@ -11,7 +11,7 @@ function YourActivitiesPanel({allChallengesList,trainingOptions,user,setActivite
     return(
         <>
         <ActivitiesList fetchActivitiesList={fetchActivitiesList} trainingOptions={trainingOptions} activitesList={activitesList} setActivitesList={setActivitesList} displayedActivitiesList={displayedActivitiesList} setDisplayedActivitiesList={setDisplayedActivitiesList}  />
-        <AddNewActivity activitesList={activitesList} allChallengesList={allChallengesList} user={user} trainingOptions={trainingOptions}  fetchActivitiesList={fetchActivitiesList}/>
+        <AddNewActivity userInfo={userInfo} activitesList={activitesList} allChallengesList={allChallengesList} user={user} trainingOptions={trainingOptions}  fetchActivitiesList={fetchActivitiesList}/>
         </>
     )
 

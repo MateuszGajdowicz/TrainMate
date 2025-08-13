@@ -37,6 +37,7 @@ async function handleRepeatChallenge(element) {
         ...challengeWithoutId,
         status: "started",
         progress: 0,
+        isPinned:false,
         startDate: new Date(),
         endingDate: endDate,
         finishDate: null,

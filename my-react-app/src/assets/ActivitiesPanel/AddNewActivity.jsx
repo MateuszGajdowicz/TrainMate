@@ -7,7 +7,7 @@ import { CalculatePointsForTrainings } from '../pointsCalculatorTrainings';
 import { TrackChallenges } from '../ChallenegesPanel/TrackChallenges';
 
 import { useState, useEffect } from 'react'
-function AddNewActivity({activitesList,allChallengesList,trainingOptions,user,fetchActivitiesList}) {
+function AddNewActivity({userInfo,activitesList,allChallengesList,trainingOptions,user,fetchActivitiesList}) {
     const [activityType, setActivityType] = useState('')
     const [activityGoal, setActivityGoal] = useState('Czas')
     const [activityGoalValue, setActivityTGoalValue] = useState('')
@@ -95,6 +95,7 @@ function ClearInputs(){
                 window.alert("Uzupełnij wszystkie dane")
 
             }
+
 
             
 

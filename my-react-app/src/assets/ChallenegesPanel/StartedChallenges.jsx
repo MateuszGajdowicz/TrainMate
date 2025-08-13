@@ -13,8 +13,13 @@ function StartedChallenges({setIsNotificationDisplayed,setNotficationChallengeDa
         const [expandedElement, setExpandedElement] = useState(null)
 const prevFinishedIds = useRef(new Set());
 
+useEffect(()=>{
 
-        function askAndRemove(element){
+    FetchPersonalChallengesList();
+},[])
+
+
+function askAndRemove(element){
             let confirm = window.confirm("Czy na pewno chcesz usunąć to wyzwanie? Stracisz wtedy cały postęp.")
             if(confirm){
                 handleChallengeRemove(element.id,setStartedChallengesList, startedChallengesList)
@@ -22,10 +27,10 @@ const prevFinishedIds = useRef(new Set());
         }   
 
 
-        async function cancelStartedChallenge(element){
+async function cancelStartedChallenge(element){
             let confirm = window.confirm("Czy na pewno chcesz przerwać to wyzwanie? Stracisz wtedy cały postęp. ")
             if(confirm){
-                let canceledChallenge = {status:"new", startDate:null, progress:0,endingDate:null,timeLeft:null}
+                let canceledChallenge = {status:"new",isPinned:false ,startDate:null, progress:0,endingDate:null,timeLeft:null}
                 
                 try{
                     const docRef = doc(db, "PersonalChallenges", element.id)
@@ -43,7 +48,7 @@ const prevFinishedIds = useRef(new Set());
     }
 async function handleFinishChallenge(challengesToFinish) {
     const updatePromises = challengesToFinish.map(async ch => {
-        let finishedChallenge = {status: "finished", finishDate:new Date(),timeLeft:null };
+        let finishedChallenge = {status: "finished", finishDate:new Date(),timeLeft:null, isPinned:false };
         try {
             const docRef = doc(db, "PersonalChallenges", ch.id);
             await updateDoc(docRef, finishedChallenge);
@@ -55,11 +60,11 @@ async function handleFinishChallenge(challengesToFinish) {
     await Promise.all(updatePromises); 
 }
 async function trackFailed(startedChallenges) {
-    for(let i=0;i<startedChallenges;i++){
+    for(let i=0;i<startedChallenges.length;i++){
         if(startedChallenges[i].timeLeft<=0){
             try{
                 const docRef = doc(db, "PersonalChallenges", startedChallenges[i].id)
-                await updateDoc(docRef, {status:"failed"})
+                await updateDoc(docRef, {status:"failed", isPinned:false})
                 // setNotficationChallengeData(prev=>[...prev, startedChallenges[i]])
             }
             catch(error){
@@ -76,6 +81,7 @@ async function trackFailed(startedChallenges) {
             async function UploadChallengesProgress() {
                 for(let i =0;i<trackedChallenges.length;i++){
                     let updatedChallenge = trackedChallenges[i]
+                
                 try{
                     const docRef = doc(db, "PersonalChallenges", updatedChallenge.challengeID)
                     await updateDoc(docRef,updatedChallenge.data)
@@ -88,9 +94,15 @@ async function trackFailed(startedChallenges) {
 
                 }     
             }
-                UploadChallengesProgress();
-                trackFailed(startedChallengesList)
-                FetchPersonalChallengesList();
+            async function UpdateAll() {
+                await UploadChallengesProgress();
+                 await trackFailed(startedChallengesList)
+                await FetchPersonalChallengesList();
+                
+            }
+
+            UpdateAll();
+
 
 
 
@@ -98,8 +110,7 @@ async function trackFailed(startedChallenges) {
 
         }, [activitesList, user])
 
-
-useEffect(() => {
+function handle(){
     const newlyFinished = startedChallengesList.filter(ch =>
         ch.status !== "finished" &&
 
@@ -118,7 +129,14 @@ useEffect(() => {
             
         });
     }
-}, [startedChallengesList]);
+
+    }
+useEffect(() => {
+    if (startedChallengesList && startedChallengesList.length > 0) {
+        handle();
+    }
+}, [startedChallengesList]); // odpali się gdy lista się zmieni i jest niepusta
+
 
 
 function setWarningColor(element){
