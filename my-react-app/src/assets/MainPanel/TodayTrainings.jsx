@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react'
 import './TodayTrainings.css'
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+
 function TodayTrainings({todayTrainings,setIsFailedDisplayed, trainingsList, setSelectedTraining,setIsConfirmDisplayed}){
 
     return(
 
-        <div className='TodayTrainingsContainer'> 
+        <div style={{height:"33%"}} className='TodayTrainingsContainer'> 
         <h2>Dzisiejsze treningi</h2>
         <div className='AllTrainingsContainer'>
             { todayTrainings.length!==0?
@@ -33,7 +35,12 @@ function TodayTrainings({todayTrainings,setIsFailedDisplayed, trainingsList, set
             </div>
         ))
         :
-        <p className='warning'>Nie masz zaplanownych dzisiaj żadnych treningów. Może pora to zmienić?</p>
+        <>
+            <h3 className='warning'>Nie masz zaplanownych dzisiaj żadnych treningów</h3>
+            <p className='warning'>Może pora to zmienić?</p>
+            <Link to='/trainingsPanel'> <button className='noDisplayButton'>Dodaj trening</button></Link>
+
+        </>
             }
 
 

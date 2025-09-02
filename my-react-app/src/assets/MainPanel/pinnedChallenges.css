@@ -2,10 +2,10 @@
     position: absolute;
     top: 54%;
     left: 35%;
-    height: auto;
+    height: 35%;
     width: 25%;
     padding: 10px;
-            background: linear-gradient(135deg, hsl(0, 0%, 100%) 5%, hsl(26, 100%, 50%) 150%);
+            background: linear-gradient(-135deg, hsl(0, 0%, 100%) 5%, hsl(26, 100%, 50%) 200%);
     border-radius: 30px;
     font-size: 1.2em;
                 box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4); /* cien */;
@@ -13,6 +13,24 @@
     h2,h1,h3,h4{
         margin: 0px;
     }
+    .noChallengesDiplay{
+        padding: 7px 5px;
+    }
+    .noChallengeButton {
+            padding: 10px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            background-color:hsl(28, 100%, 60%);
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2); /* cien */;
+            transition: 0.2s ease;
+        }
+        .noChallengeButton:hover{
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4); /* cien */;
+
+            
+
+        }
     .Header{
         display: flex;
         gap:17px;
@@ -51,7 +69,7 @@
         justify-content: space-around;
         }
         
-        button{
+        button {
             padding: 10px;
             border-radius: 20px;
             border: none;

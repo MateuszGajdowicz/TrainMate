@@ -4,6 +4,7 @@ import { db, auth } from '../../firebase'
 import { doc, updateDoc } from "firebase/firestore";
 import './pinnedChallenges.css'
 import { TrackChallenges } from '../ChallenegesPanel/TrackChallenges';
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
 function PinnedChallenges({activitesList,FetchPersonalChallengesList,pinnedChallenges, allChallengesList}){
     const [displayedChallengeIndex, setDispayedChallengeIndex] = useState(0)
@@ -178,8 +179,14 @@ async function handleChallengeRemove(element){
                     </div>
                 </div>
                     :
-                <h3>Nie masz żadnych przypiętych wyzwań</h3>
+                    <>
+                <h3 className='noChallengesDiplay'>Nie masz żadnych 
+                 przypiętych wyzwań</h3>
 
+                <p className='noChallengesDiplay'>Nie zwlekaj i zacznij nowe wyzwanie już teraz! </p>
+                <Link to='/challengesPanel'><button className='noChallengeButton' >Dodaj wyzwanie</button></Link>
+
+                    </>
 
             }
 

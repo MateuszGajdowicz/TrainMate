@@ -4,9 +4,8 @@ import {auth} from '../firebase'
 
 import { sendEmailVerification,createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 
-function SignUp({setIsRegistered, setIsEmailConfirmDisplayed}){
+function SignUp({username, setUsername,setIsRegistered, setIsEmailConfirmDisplayed}){
     const [email,setEmail] = useState('');
-    const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('');
     const [message, setMessage] = useState('')
@@ -27,7 +26,7 @@ function SignUp({setIsRegistered, setIsEmailConfirmDisplayed}){
 
 
                 await updateProfile(user,{
-                    displayName:username
+                    displayName:username,
                 } )
                 
             await sendEmailVerification(user)

@@ -4,8 +4,8 @@ function MissedTrainings({missedTrainings,setIsFailedDisplayed, trainingsList, s
 
     return(
 
-        <div style={{left:"65%"}} className='TodayTrainingsContainer'> 
-        <h2>Zaległe treningi</h2>
+        <div style={{left:"65%", height:"33%"}} className='TodayTrainingsContainer'> 
+        <h2>Zaległe treningi - {missedTrainings.length}</h2>
         <div className='AllTrainingsContainer'>
             { missedTrainings.length!==0?
             missedTrainings.map(element=>(

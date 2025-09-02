@@ -1,3 +1,4 @@
+
 .TodayTrainingsContainer{
     position: absolute;
     left:35%;
@@ -9,10 +10,8 @@
     flex-direction: column;
     padding: 10px;
     border-radius: 30px;
-            background: linear-gradient(-135deg, hsl(0, 0%, 100%) 15%, hsl(26, 100%, 50%) 300%);
+            background: linear-gradient(-135deg, hsl(0, 0%, 100%) 5%, hsl(26, 100%, 50%) 200%);
         box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3); /* cien */;
-    max-height: 30vh;
-    min-height: 140px;
     height: auto;
     .AllTrainingsContainer{
         height: 80%;
@@ -22,13 +21,30 @@
         overflow: scroll;
     }
 
-    h2{
+    h3, h2{
         margin: 0px;
-        margin-left: 15px;
     }
     .warning{
-        margin-left: 15px;
+        padding: 2px;
+
     }
+    .noDisplayButton {
+            padding: 10px;
+            width: 30%;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            background-color:hsl(28, 100%, 60%);
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2); /* cien */;
+            transition: 0.2s ease;
+            margin-left: 5px;
+        }
+        .noDisplayButton:hover{
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4); /* cien */;
+
+            
+
+        }
     
     .SingleTrainingContainer{
         display: flex;
