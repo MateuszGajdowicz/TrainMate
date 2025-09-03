@@ -1,0 +1,31 @@
+.usersRankingContainer{
+    position: absolute;
+    top: 4%;
+    right: 5%;
+    width: 30%;
+    padding: 10px;
+    height: 85%;
+    .usersContainer{
+        display: flex;
+        flex-direction: column;
+        height: 85%;
+        overflow: scroll;
+        align-items: center;
+        
+        .singleUserContainer{
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3); /* cien */;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0px 10px;
+            border-radius: 25px;
+            margin: 5px;
+            width: 92%;
+        }
+    }
+}
+.usersContainer::-webkit-scrollbar {
+  display: none;                 /* Chrome, Safari */
+  
+}

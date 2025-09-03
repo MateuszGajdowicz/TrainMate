@@ -8,42 +8,36 @@ function LogIn({setIsRegistered,setIsLoggedIn, user}){
     const [message, setMessage] =useState('')
 
     async function LogInUser() {
-        if(user){
-            await user.reload()
-            if(user.emailVerified){
-                try{
-                    await signInWithEmailAndPassword(auth,email,password)
-                    window.alert("Pomyślnie zalogowano");
-                    setIsLoggedIn(true)
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
 
-                }
-                catch(error){
-                    setMessage("Coś poszło nie tak. Spróbuj jeszcze raz.")
+    await user.reload();
 
-                }
-                }
-            else{
-                    setMessage("Twój email nie został zweryfikowany")
-                }
-                    
-                }
-        else{
-                try{
-                    await signInWithEmailAndPassword(auth,email,password)
-                    window.alert("Pomyślnie zalogowano");
-                    setIsLoggedIn(true)
-
-                }
-                catch(error){
-                    setMessage("Coś poszło nie tak. Spróbuj jeszcze raz.")
-
-                }
-                
-
-            }
-        
-
+    if (user.emailVerified) {
+      window.alert("Pomyślnie zalogowano ✅");
+      setIsLoggedIn(true);
+    } else {
+      setMessage("Twój email nie został zweryfikowany ❌");
+      await auth.signOut();
     }
+  } catch (error) {
+    switch (error.code) {
+      case "auth/invalid-email":
+        setMessage("Nieprawidłowy email.");
+        break;
+      case "auth/user-not-found":
+        setMessage("Nie znaleziono użytkownika o tym adresie.");
+        break;
+      case "auth/wrong-password":
+        setMessage("Błędne hasło.");
+        break;
+      default:
+        setMessage("Coś poszło nie tak. Spróbuj ponownie.");
+    }
+  }
+}
+
     return(
         <div className="LogInContainer" style={{top:"25%"}}>
         <div className="Logo"> 
