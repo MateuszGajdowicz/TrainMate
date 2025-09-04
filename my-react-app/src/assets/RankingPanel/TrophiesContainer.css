@@ -1,0 +1,32 @@
+.trophiesContainer{
+    position: absolute;
+    right: 1%;
+    top: 8%;
+    height: 90%;
+    width: 30%;
+    background-color: rgb(231, 189, 189);
+    overflow: scroll;
+    .AllTrophiesContainer{
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* 3 kolumny o równej szerokości */
+
+        gap: 10px;
+
+    }
+    .singleTrophyContainer{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+    .trophyIcon{
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+    }
+
+}

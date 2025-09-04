@@ -1,8 +1,8 @@
 .usersRankingContainer{
     position: absolute;
     top: 4%;
-    right: 5%;
-    width: 30%;
+    left: 35%;
+    width: 32%;
     padding: 10px;
     height: 85%;
     .usersContainer{
@@ -21,7 +21,11 @@
             padding: 0px 10px;
             border-radius: 25px;
             margin: 5px;
-            width: 92%;
+            width: 87%;
+            transition: 0.2s ease;
+        }
+        .singleUserContainer:hover{
+            transform: scale(1.04);
         }
     }
 }

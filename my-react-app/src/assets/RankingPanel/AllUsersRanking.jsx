@@ -1,7 +1,11 @@
 import './AllUsersRanking.css'
+import { auth } from "../../firebase"
+
 function AllUsersRanking({allUsersInfo}){
 
     function setColor(index){
+
+
         switch(index){
             case 0: 
                 return 'linear-gradient(135deg, hsl(0, 0%, 100%) 2%, hsla(51,100%, 50%, 1.00) 100%)';
@@ -27,7 +31,7 @@ function AllUsersRanking({allUsersInfo}){
             <div className='usersContainer'>
                 {
                     allUsersInfo?.map((element,index)=>(
-                        <div style={{background:setColor(index)}} className='singleUserContainer'>
+                        <div  style={{background:setColor(index), border:index ===allUsersInfo.findIndex(user=>user.username===auth.currentUser.displayName)?"5px solid hsla(214, 72%, 76%, 1.00) ":"1em"}} className='singleUserContainer'>
                             <h2>{index+1}. {element.username}</h2>
                             <h3>{element.userPoints} pkt</h3>
                         </div>
