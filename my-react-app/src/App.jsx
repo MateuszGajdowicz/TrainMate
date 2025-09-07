@@ -274,7 +274,7 @@ useEffect(()=>{
             <Route path='activitiesPanel' element={<YourActivitiesPanel userInfo={userInfo} allChallengesList={allChallengesList} trainingOptions={trainingOptions} fetchActivitiesList={fetchActivitiesList}setActivitesList={setActivitesList} activitesList={activitesList} displayedActivitiesList={displayedActivitiesList} setDisplayedActivitiesList={setDisplayedActivitiesList} user={user}/>}/>
             <Route path='planPanel' element={<PlanPanel trainingsList={trainingsList} fetchTrainingsList={fetchTrainingsList} FetchTrainingPlanList={FetchTrainingPlanList} setTrainingPlanData={setTrainingPlanData} trainingPlanData={trainingPlanData} setTrainingPlan={setTrainingPlan} trainingPlan={trainingPlan} user={user} trainingOptions={trainingOptions}/>}/>
             <Route path='challengesPanel' element={<ChallengesPanel  activitesList={activitesList} trainingOptions={trainingOptions} setAllChallengesList={setAllChallengesList} allChallengesList={allChallengesList} FetchPersonalChallengesList={FetchPersonalChallengesList} user={user}/>}/>
-          <Route path='rankingPanel' element={<RankingPanel allUsersInfo={allUsersInfo} userInfo={userInfo}/>
+          <Route path='rankingPanel' element={<RankingPanel activitesList={activitesList} allUsersInfo={allUsersInfo} userInfo={userInfo}/>
 }/>
           </Routes>
         </BrowserRouter>

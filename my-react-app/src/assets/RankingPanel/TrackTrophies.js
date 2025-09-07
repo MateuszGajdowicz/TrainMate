@@ -2,28 +2,48 @@ import { TrophiesList } from "./TrophiesList";
 
 export function TrackTrophies(trophiesList, activitiesList){
     let trophiesProgressArray = []
-    let inCompleteTrophies = trophiesList.filter(element=>!element.isFinished)
-    for(let i =0; i<inCompleteTrophies.length;i++){
-        for(let j =0;j<activitiesList.length;i++){
-            switch(inCompleteTrophies[i].goalType){
-                case "points":
-                    inCompleteTrophies[i].progress+=activitiesList[j].points
+    for(let i =0; i<trophiesList.length;i++){
+        let temporaryTrophy = {...trophiesList[i]}
+        for(let j =0;j<activitiesList.length;j++){
+            switch(temporaryTrophy.goalType){
+                case "Punkty":
+                    temporaryTrophy.progress+=Number(activitiesList[j].points)
                     break;
-                case "sessions":
-                    inCompleteTrophies[i].progress+=1
+                case "Treningi":
+                    temporaryTrophy.progress+=1
                     break;
-                case "time":
-                    if(activitiesList[j].activityGoal==="Dystans" || activitiesList[j].activityGoal==="Kalorie"){
-                        inCompleteTrophies[i].progress+=activitiesList[j].activitySecondGoalValue
+                case "Kalorie":
+                    temporaryTrophy.progress+=Number(activitiesList[j].estimatedCalories)
+                    break;
+                    case "Czas":
+                    if(activitiesList[j].activityGoal === "Czas"){
+                        temporaryTrophy.progress+=Number(activitiesList[j].activityGoalValue)
                     }
-                    else if(){
-                        
+                    else if(activitiesList[j].activityGoal==="Dystans" || activitiesList[j].activityGoal==="Kalorie"){
+                        temporaryTrophy.progress+=Number(activitiesList[j].activitySecondGoalValue)
                     }
+                    break
+                case "Dystans":
+                    if(activitiesList[j].activityGoal==="Dystans"){
+                        temporaryTrophy.progress+=Number(activitiesList[j].activityGoalValue)
+                    }
+                    else if(activitiesList[j].activityGoal==="Czas"){
+                        temporaryTrophy.progress+=Number(activitiesList[j].activitySecondGoalValue) 
+                   }
+
+                   break
+
+
 
             }
         }
+        if(temporaryTrophy.progress/temporaryTrophy.goalValue>=1){
+            temporaryTrophy.isFinished=true
+        }
+        trophiesProgressArray.push(temporaryTrophy)
 
         
 
     }
+    return trophiesProgressArray
 }

@@ -135,7 +135,7 @@ useEffect(() => {
     if (startedChallengesList && startedChallengesList.length > 0) {
         handle();
     }
-}, [startedChallengesList]); // odpali się gdy lista się zmieni i jest niepusta
+}, [startedChallengesList]); 
 
 
 

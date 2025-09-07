@@ -1,7 +1,7 @@
 export let TrophiesList = [
 {
     title: "Nowicjusz",
-    goalType: "points",
+    goalType: "Punkty",
     goalValue: 50,
     progress: 0,
     isFinished: false,
@@ -11,7 +11,7 @@ export let TrophiesList = [
 },
 {
     title: "Rozgrzewka",
-    goalType: "points",
+    goalType: "Punkty",
     goalValue: 100,
     progress: 0,
     isFinished: false,
@@ -21,7 +21,7 @@ export let TrophiesList = [
 },
 {
     title: "Średniak wymiata",
-    goalType: "points",
+    goalType: "Punkty",
     goalValue: 250,
     progress: 0,
     isFinished: false,
@@ -31,7 +31,7 @@ export let TrophiesList = [
 },
 {
     title: "Pół-boss",
-    goalType: "points",
+    goalType: "Punkty",
     goalValue: 500,
     progress: 0,
     isFinished: false,
@@ -41,7 +41,7 @@ export let TrophiesList = [
 },
 {
     title: "Legendy nie umierają",
-    goalType: "points",
+    goalType: "Punkty",
     goalValue: 1000,
     progress: 0,
     isFinished: false,
@@ -51,7 +51,7 @@ export let TrophiesList = [
 },
 {
     title: "Mistrz punktów",
-    goalType: "points",
+    goalType: "Punkty",
     goalValue: 2000,
     progress: 0,
     isFinished: false,
@@ -61,7 +61,7 @@ export let TrophiesList = [
 },
 {
     title: "Legenda rankingu",
-    goalType: "points",
+    goalType: "Punkty",
     goalValue: 5000,
     progress: 0,
     isFinished: false,
@@ -71,7 +71,7 @@ export let TrophiesList = [
 },
 {
     title: "Pierwsza krew",
-    goalType: "sessions",
+    goalType: "Treningi",
     goalValue: 1,
     progress: 0,
     isFinished: false,
@@ -81,7 +81,7 @@ export let TrophiesList = [
 },
 {
     title: "Maszynka do ćwiczeń",
-    goalType: "sessions",
+    goalType: "Treningi",
     goalValue: 10,
     progress: 0,
     isFinished: false,
@@ -91,7 +91,7 @@ export let TrophiesList = [
 },
 {
     title: "Nie do zatrzymania (treningi)",
-    goalType: "sessions",
+    goalType: "Treningi",
     goalValue: 100,
     progress: 0,
     isFinished: false,
@@ -101,7 +101,7 @@ export let TrophiesList = [
 },
 {
     title: "Nieugięty",
-    goalType: "sessions",
+    goalType: "Treningi",
     goalValue: 250,
     progress: 0,
     isFinished: false,
@@ -111,7 +111,7 @@ export let TrophiesList = [
 },
 {
     title: "Żelazny wojownik",
-    goalType: "sessions",
+    goalType: "Treningi",
     goalValue: 500,
     progress: 0,
     isFinished: false,
@@ -121,7 +121,7 @@ export let TrophiesList = [
 },
 {
     title: "Nieśmiertelny",
-    goalType: "sessions",
+    goalType: "Treningi",
     goalValue: 1000,
     progress: 0,
     isFinished: false,
@@ -131,7 +131,7 @@ export let TrophiesList = [
 },
 {
     title: "Pierwszy czas treningu",
-    goalType: "time",
+    goalType: "Czas",
     goalValue: 30,
     progress: 0,
     isFinished: false,
@@ -141,7 +141,7 @@ export let TrophiesList = [
 },
 {
     title: "Maraton minut",
-    goalType: "time",
+    goalType: "Czas",
     goalValue: 300,
     progress: 0,
     isFinished: false,
@@ -151,7 +151,7 @@ export let TrophiesList = [
 },
 {
     title: "Nie do zatrzymania (czas)",
-    goalType: "time",
+    goalType: "Czas",
     goalValue: 1000,
     progress: 0,
     isFinished: false,
@@ -161,7 +161,7 @@ export let TrophiesList = [
 },
 {
     title: "Pierwsze kroki",
-    goalType: "distance",
+    goalType: "Dystans",
     goalValue: 1,
     progress: 0,
     isFinished: false,
@@ -171,7 +171,7 @@ export let TrophiesList = [
 },
 {
     title: "Rozbiegany",
-    goalType: "distance",
+    goalType: "Dystans",
     goalValue: 5,
     progress: 0,
     isFinished: false,
@@ -181,7 +181,7 @@ export let TrophiesList = [
 },
 {
     title: "Biegacz weekendowy",
-    goalType: "distance",
+    goalType: "Dystans",
     goalValue: 10,
     progress: 0,
     isFinished: false,
@@ -191,7 +191,7 @@ export let TrophiesList = [
 },
 {
     title: "Sprinter",
-    goalType: "distance",
+    goalType: "Dystans",
     goalValue: 25,
     progress: 0,
     isFinished: false,
@@ -201,7 +201,7 @@ export let TrophiesList = [
 },
 {
     title: "Maratończyk w powijakach",
-    goalType: "distance",
+    goalType: "Dystans",
     goalValue: 42,
     progress: 0,
     isFinished: false,
@@ -211,7 +211,7 @@ export let TrophiesList = [
 },
 {
     title: "Nie do zatrzymania (km)",
-    goalType: "distance",
+    goalType: "Dystans",
     goalValue: 100,
     progress: 0,
     isFinished: false,
@@ -221,7 +221,7 @@ export let TrophiesList = [
 },
 {
     title: "Żelazne nogi",
-    goalType: "distance",
+    goalType: "Dystans",
     goalValue: 250,
     progress: 0,
     isFinished: false,
@@ -231,7 +231,7 @@ export let TrophiesList = [
 },
 {
     title: "Legenda asfaltu",
-    goalType: "distance",
+    goalType: "Dystans",
     goalValue: 500,
     progress: 0,
     isFinished: false,
@@ -241,7 +241,7 @@ export let TrophiesList = [
 },
 {
     title: "Nieśmiertelny biegacz",
-    goalType: "distance",
+    goalType: "Dystans",
     goalValue: 1000,
     progress: 0,
     isFinished: false,
@@ -251,7 +251,7 @@ export let TrophiesList = [
 },
 {
     title: "Pierwsze poty",
-    goalType: "calories",
+    goalType: "Kalorie",
     goalValue: 100,
     progress: 0,
     isFinished: false,
@@ -261,7 +261,7 @@ export let TrophiesList = [
 },
 {
     title: "Rozgrzewka ognia",
-    goalType: "calories",
+    goalType: "Kalorie",
     goalValue: 500,
     progress: 0,
     isFinished: false,
@@ -271,7 +271,7 @@ export let TrophiesList = [
 },
 {
     title: "Pocisk energetyczny",
-    goalType: "calories",
+    goalType: "Kalorie",
     goalValue: 1000,
     progress: 0,
     isFinished: false,
@@ -281,7 +281,7 @@ export let TrophiesList = [
 },
 {
     title: "Maszynka kaloryczna",
-    goalType: "calories",
+    goalType: "Kalorie",
     goalValue: 2500,
     progress: 0,
     isFinished: false,
@@ -291,7 +291,7 @@ export let TrophiesList = [
 },
 {
     title: "Nie do zatrzymania (kalorie)",
-    goalType: "calories",
+    goalType: "Kalorie",
     goalValue: 5000,
     progress: 0,
     isFinished: false,
@@ -301,7 +301,7 @@ export let TrophiesList = [
 },
 {
     title: "Kaloryczny legendarny",
-    goalType: "calories",
+    goalType: "Kalorie",
     goalValue: 10000,
     progress: 0,
     isFinished: false,
@@ -311,7 +311,7 @@ export let TrophiesList = [
 },
 {
     title: "Żelazny metabolizm",
-    goalType: "calories",
+    goalType: "Kalorie",
     goalValue: 25000,
     progress: 0,
     isFinished: false,
@@ -321,7 +321,7 @@ export let TrophiesList = [
 },
 {
     title: "Nieśmiertelny spalacz",
-    goalType: "calories",
+    goalType: "Kalorie",
     goalValue: 50000,
     progress: 0,
     isFinished: false,

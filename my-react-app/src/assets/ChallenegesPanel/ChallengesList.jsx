@@ -31,30 +31,30 @@ function ChallengesList({startedChallengesList,handleChallengeRemove,allChalleng
         switch(challengeGoal){
             case "Dystans (km)":
                 setInputPlaceholder("Ile kilometrów chcesz pokonać?")
-                setChallengeType("distance")
+                setChallengeType("Dystans")
                 setChallengeUnit("km")
                 break;
             case "Czas (min)":
                 setInputPlaceholder("Ile czasu chcesz spędzić na treningach (min)?")
-                setChallengeType("time")
+                setChallengeType("Czas")
                  setChallengeUnit("min")
 
                 break;
             case "Kalorie (kcal)":
                 setInputPlaceholder("Ile kalorii sumarycznie chcesz spalić?")
-                setChallengeType("calories")
+                setChallengeType("Kalorie")
                 setChallengeUnit("kcal")
 
                 break;
             case "Liczba treningów":
                 setInputPlaceholder("Ile treningów chcesz wykonać?")
-                setChallengeType("sessions")
+                setChallengeType("Treningi")
                 setChallengeUnit("treningi")
 
                 break;
             case "Treningi z rzędu":
                 setInputPlaceholder('Ile treningów z rzędu chcesz wykonać?')
-                setChallengeType("streak")
+                setChallengeType("Streak")
                 setChallengeUnit("dni")
 
                 break;

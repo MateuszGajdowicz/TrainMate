@@ -1,14 +1,29 @@
 import './TrophiesContainer.css'
-import { TrophiesList } from './TrophiesList'
-function TrophiesContainer(){
+import  {TrophiesList}  from './TrophiesList'
+import { TrackTrophies } from './TrackTrophies'
+import { useEffect, useState } from 'react'
+function TrophiesContainer({activitesList}){
+
+    const [incompleteTrophiesList, setIncompleteTrophiesList] = useState(TrophiesList.filter(element=>!element.isFinished))
+
+    useEffect(()=>{
+
+        let trophiesTrackingResult = TrackTrophies(incompleteTrophiesList,activitesList)
+        console.log(trophiesTrackingResult)
+        setIncompleteTrophiesList(trophiesTrackingResult.filter(element=>!element.isFinished))
+
+
+        }
+            
+    , [activitesList])
     return(
         <>
         <div className='trophiesContainer'>
             <h1>Twoje osiągnięcia!</h1>
             <div className='AllTrophiesContainer'> 
 
-            {TrophiesList.filter(element=>!element.isFinished).map((element, index)=>(
-                <div    title={`${element.description}. Postęp: ${element.progress}`}
+            {incompleteTrophiesList.map((element, index)=>(
+                <div    title={`${element.description}. Postęp: ${element.progress}/${element.goalValue}`}
 className='singleTrophyContainer'>
                     <p>{element.title}</p>
 

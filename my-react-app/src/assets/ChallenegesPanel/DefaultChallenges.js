@@ -2,7 +2,7 @@ export const defaultChallenges = [
   {
     title: "Pierwszy krok – 1 trening!",
     description: "Wykonaj swój pierwszy trening",
-    type: "sessions",
+    type: "Treningi",
     goalValue: 1,
     unit: "treningi",
     period: 7,
@@ -17,7 +17,7 @@ export const defaultChallenges = [
   {
     title: "Treningowy hat-trick",
     description: "Wykonaj 3 treningi w ciągu tygodnia.",
-    type: "sessions",
+    type: "Treningi",
     goalValue: 3,
     unit: "treningi",
     period: 7,
@@ -33,7 +33,7 @@ export const defaultChallenges = [
   {
     title: "Czas to forma",
     description: "Spędź 60 minut na treningach w tym tygodniu.",
-    type: "time",
+    type: "Czas",
     goalValue: 60,
     unit: "min",
     period: 7,
@@ -48,7 +48,7 @@ export const defaultChallenges = [
   {
     title: "Spal 1000 kcal",
     description: "Spal razem 1000 kalorii w ciągu 2 tygodni.",
-    type: "calories",
+    type: "Kalorie",
     goalValue: 1000,
     unit: "kcal",
     period: 14,
@@ -63,7 +63,7 @@ export const defaultChallenges = [
   {
     title: "Biegacz-amator",
     description: "Przebiegnij 10 km w tym miesiącu.",
-    type: "distance",
+    type: "Dystans",
     goalValue: 10,
     unit: "km",
     period: 30,
@@ -78,7 +78,7 @@ export const defaultChallenges = [
   {
     title: "7 dni – 7 treningów",
     description: "Zrób trening każdego dnia przez tydzień.",
-    type: "streak",
+    type: "Streak",
     goalValue: 7,
     unit: "treningi",
     period: 7,
@@ -108,7 +108,7 @@ export const defaultChallenges = [
   {
     title: "Siłacz tygodnia",
     description: "Wykonaj 5 treningów siłowych w ciągu 14 dni.",
-    type: "sessions",
+    type: "Treningi",
     goalValue: 5,
     unit: "treningi",
     period: 14,
@@ -123,7 +123,7 @@ export const defaultChallenges = [
   {
     title: "Wydolnościowiec",
     description: "Przebiegnij 50 km w ciągu miesiąca.",
-    type: "distance",
+    type: "Dystans",
     goalValue: 50,
     unit: "km",
     period: 30,
@@ -138,7 +138,7 @@ export const defaultChallenges = [
   {
     title: "Minutowy maraton",
     description: "Spędź 120 minut na treningach w ciągu 7 dni.",
-    type: "time",
+    type: "Czas",
     goalValue: 120,
     unit: "min",
     period: 7,
@@ -153,7 +153,7 @@ export const defaultChallenges = [
   {
     title: "Kaloryczny spalacz",
     description: "Spal 2000 kcal w ciągu 14 dni.",
-    type: "calories",
+    type: "Kalorie",
     goalValue: 2000,
     unit: "kcal",
     period: 14,
@@ -183,7 +183,7 @@ export const defaultChallenges = [
   {
     title: "Streak maraton",
     description: "Trenuj codziennie przez 30 dni.",
-    type: "streak",
+    type: "Streak",
     goalValue: 30,
     unit: "dni",
     period: 30,
@@ -198,7 +198,7 @@ export const defaultChallenges = [
   {
     title: "Szybki rowerzysta",
     description: "Przejedź 100 km na rowerze w ciągu miesiąca.",
-    type: "distance",
+    type: "Dystans",
     goalValue: 100,
     unit: "km",
     period: 30,

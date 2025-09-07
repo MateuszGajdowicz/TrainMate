@@ -2,19 +2,19 @@ export function calculatePoints(challengeType, value, period){
 
     let challengeTypeWeights = 0;
     switch(challengeType){
-        case 'sessions':
+        case 'Treningi':
             challengeTypeWeights = 1;
             break;
-        case 'time':
+        case 'Czas':
             challengeTypeWeights = 1.1;
             break;
-        case 'calories':
+        case 'Kalorie':
             challengeTypeWeights = 1.1;
             break;
-        case 'distance':
+        case 'Dystans':
             challengeTypeWeights = 1.1;
             break;
-        case 'streak':
+        case 'Streak':
             challengeTypeWeights = 1.5;
             break;
         case 'time-of-day':

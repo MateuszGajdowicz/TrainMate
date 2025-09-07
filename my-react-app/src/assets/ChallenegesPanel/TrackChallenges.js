@@ -40,43 +40,58 @@ let activitiesAfterStartDate = activitiesArray.filter(element=>(element.addingDa
 
         for(let j=0; j<activitiesAfterStartDate.length;j++){
 
-            if(challenge.data.disciplines!==null  && activitiesAfterStartDate[j].activityType===challenge.data.disciplines ){
+            if((challenge.data.disciplines!==null  && activitiesAfterStartDate[j].activityType===challenge.data.disciplines) || challenge.data.disciplines===null){
+                switch(challenge.data.type){
+                    case "Dystans":
+                        if(activitiesAfterStartDate[j].activityGoal==="Dystans"){
+                            challenge.data.progress+=Number(activitiesAfterStartDate[j].activityGoalValue)
+                        }
+                        else if(activitiesAfterStartDate[j].activityGoal==="Czas"){
+                            challenge.data.progress+=Number(activitiesAfterStartDate[j].activitySecondGoalValue)
 
-            if(challenge.data.unit==="treningi" || challenge.data.unit === "dni"){
-                challenge.data.progress+=1;
-            }
-            else if(activitiesAfterStartDate[j].activityUnit===challenge.data.unit && challenge.data.unit!=="kcal"){
-                challenge.data.progress+=Number(activitiesAfterStartDate[j].activityGoalValue);
+                        }
 
-            }
-            else if(challenge.data.unit === 'kcal'){
-                challenge.data.progress+= Number(activitiesAfterStartDate[j].estimatedCalories)
+                        break;
+                    case "Czas":
+                        if(activitiesAfterStartDate[j].activityGoal==="Czas"){
+                            challenge.data.progress+=Number(activitiesAfterStartDate[j].activityGoalValue)
 
-            }
-            else if(activitiesAfterStartDate[j].activityUnit!== challenge.data.unit && challenge.data.unit!=='kcal'){
-                challenge.data.progress+= Number(activitiesAfterStartDate[j].activitySecondGoalValue)
-            }
+                        }
+                        else if(activitiesAfterStartDate[j].activityGoal==="Dystans" || activitiesAfterStartDate[j].activityGoal==="Kalorie"){
+                            challenge.data.progress+=Number(activitiesAfterStartDate[j].activitySecondGoalValue)
+
+                        }
+
+                    case "Treningi":
+                        case "time-of-day":
+                            case "Streak":
+                                challenge.data.progress+=1
+                                break;
+                    case "Kalorie":
+                        challenge.data.progress+=Number(activitiesAfterStartDate[j].estimatedCalories)
+
+
+
+                }
+
+            // if(challenge.data.unit==="treningi" || challenge.data.unit === "dni"){
+            //     challenge.data.progress+=1;
+            // }
+            // else if(activitiesAfterStartDate[j].activityUnit===challenge.data.unit && challenge.data.unit!=="kcal"){
+            //     challenge.data.progress+=Number(activitiesAfterStartDate[j].activityGoalValue);
+
+            // }
+            // else if(challenge.data.unit === 'kcal'){
+            //     challenge.data.progress+= Number(activitiesAfterStartDate[j].estimatedCalories)
+
+            // }
+            // else if(activitiesAfterStartDate[j].activityUnit!== challenge.data.unit && challenge.data.unit!=='kcal'){
+            //     challenge.data.progress+= Number(activitiesAfterStartDate[j].activitySecondGoalValue)
+            // }
 
             
 
             }
-            else if(challenge.data.disciplines===null){
-                if(challenge.data.unit==="treningi" || challenge.data.unit ==="dni"){
-                    challenge.data.progress+=1;
-                }
-                else if(activitiesAfterStartDate[j].activityUnit===challenge.data.unit && challenge.data.unit!=='kcal'){
-                    challenge.data.progress+=Number(activitiesAfterStartDate[j].activityGoalValue)
-                }
-                else if(challenge.data.unit==="kcal"){
-                    challenge.data.progress+=Number(activitiesAfterStartDate[j].estimatedCalories)
-                }
-                else if(activitiesAfterStartDate[j].activityUnit!==challenge.data.unit && challenge.data.unit!=='kcal'){
-                    challenge.data.progress+=Number(activitiesAfterStartDate[j].activitySecondGoalValue)
-                }
-            }
-
-
-
         }
 
         progressArray.push(challenge)
