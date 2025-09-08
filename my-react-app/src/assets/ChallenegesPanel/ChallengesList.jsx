@@ -110,15 +110,9 @@ async function handleCreateNewChallenge() {
     
 }
 async function handleAddDefaultChallenges(){
-        const querySnapshot = await getDocs(
-        collection(db, "PersonalChallenges")
-    );
+    let temporaryDefaultChallenges = [...defaultChallenges]
 
-    const defaultsExist = querySnapshot.docs.some((doc) =>
-        defaultChallenges.some((def) => doc.data().title === def.title)
-    );
-    if(!defaultsExist){
-    for(let i=0;i<defaultChallenges.length;i++){
+    for(let i=0;i<temporaryDefaultChallenges.length;i++){
         try{
             let newDefaultChallenge =              
             {userID:auth.currentUser.uid,
@@ -126,10 +120,9 @@ async function handleAddDefaultChallenges(){
                  finishDate:null,
                  isOverTime:false,
                  addingDate:new Date(),
-                 ...defaultChallenges[i]}
-            if(!allChallengesList.includes(newDefaultChallenge)){
+                 ...temporaryDefaultChallenges[i]}
                 const docRef = await addDoc(collection(db, "PersonalChallenges"),newDefaultChallenge)
-            }
+            
 
         }
         catch(error){
@@ -144,12 +137,15 @@ async function handleAddDefaultChallenges(){
     }
 
 
-}
+
 useEffect(() => {
-    if (user) {
+    let newChallenges = allChallengesList.filter(element=>element.status==="new")
+    let defaultNew = newChallenges.filter(element=>element.isDefault)
+    if(defaultNew.length===0){
         handleAddDefaultChallenges();
     }
-}, [user]);
+
+}, [allChallengesList,user]);
 
 
 function isRepeatingChallenges(startedChallenges, challengeElement){
@@ -258,7 +254,7 @@ async function handleStartChallenge(element){
         }
         <div style={{height:toggleAdd?"27%":"90%"}} className="AllChallengesContainer">
             { newChallengesList.length===0?
-            <h3>Wygląda na to, że nie masz żadnych wyzwań do dodania. Stwórz jakieś i zdobywaj punkty!</h3>
+            <h3>Zaczekaj. Trwa ładowanie przykładowych wyzwań...</h3>
         :
             newChallengesList.map((element)=>(
                 <div className="SingleChallengeContainer">

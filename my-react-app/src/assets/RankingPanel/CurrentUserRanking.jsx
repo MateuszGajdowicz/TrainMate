@@ -27,8 +27,7 @@ useEffect(() => {
         <h2>W rakingu użytkowników zajmujesz </h2>
         <h2 style={{fontSize:'2.4em'}}>{allUsersInfo.findIndex(user=>user.username===defaultUserInfoPoints.username)+1} miejsce</h2>
         <h2>na {allUsersInfo.length} użytkowników</h2>
-        <h1></h1>
-        <h1></h1>
+
 
     </div>
     </>)

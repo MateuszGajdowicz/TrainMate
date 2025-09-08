@@ -76,7 +76,6 @@ async function FetchAllUsers() {
       }))
       const sortedUsers = userInfo.sort((a,b)=>b.userPoints - a.userPoints)
 setAllUsersInfo(sortedUsers)
-console.log(sortedUsers) // debug
 
 
 
@@ -213,7 +212,6 @@ useEffect(()=>{
     summedPoints = activitiesPoints+challengesPoints
 
     try{
-      console.log(userInfo.length)
       if(userInfo.length===0){
         let points = {userID:auth.currentUser.uid, 
           username:auth.currentUser.displayName,
@@ -222,7 +220,7 @@ useEffect(()=>{
       }
       else{
         const docRef = doc(db, "UserInformation", userInfo[0].id);
-        await updateDoc(docRef, { userPoints:summedPoints})
+        await updateDoc(docRef, {username:auth.currentUser.displayName, userPoints:summedPoints})
       }
       FetchUserInformation();
       FetchAllUsers();

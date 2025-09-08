@@ -1,16 +1,25 @@
 .trophiesContainer{
     position: absolute;
-    right: 1%;
+    right: 2%;
     top: 8%;
-    height: 90%;
+    height: 85%;
     width: 30%;
-    background-color: rgb(231, 189, 189);
-    overflow: scroll;
-    .AllTrophiesContainer{
+    padding: 0px 15px;
+    background: linear-gradient(135deg, hsl(0, 0%, 100%) 2%, hsl(26, 100%, 50%) 140%);
+    border-radius: 40px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3); /* cien */;
+    h1{
+        margin: 0px;
+        margin-bottom: 30px;
+    }
+
+    .CompleteTrophiesContainer{
         display: grid;
         grid-template-columns: repeat(3, 1fr); /* 3 kolumny o równej szerokości */
 
         gap: 10px;
+        overflow: scroll;
+        height: 30%;
 
     }
     .singleTrophyContainer{
@@ -19,6 +28,12 @@
         align-items: center;
         justify-content: center;
         text-align: center;
+        width: auto;
+        progress{
+            width: 50%;
+            accent-color: orange;
+        }
+        
     }
     .trophyIcon{
         background-repeat: no-repeat;
@@ -29,4 +44,8 @@
         cursor: pointer;
     }
 
+}
+.CompleteTrophiesContainer::-webkit-scrollbar {
+  display: none;                 /* Chrome, Safari */
+  
 }
