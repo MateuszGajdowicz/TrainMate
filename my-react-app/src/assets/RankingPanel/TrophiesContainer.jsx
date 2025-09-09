@@ -2,6 +2,7 @@ import './TrophiesContainer.css'
 import  {TrophiesList}  from './TrophiesList'
 import { TrackTrophies } from './TrackTrophies'
 import { useEffect, useState } from 'react'
+
 function TrophiesContainer({activitesList}){
 
     const [incompleteTrophiesList, setIncompleteTrophiesList] = useState(TrophiesList.filter(element=>!element.isFinished))

@@ -11,6 +11,7 @@ function NavBar({LogOut}){
                 <li><Link className='link' to='/challengesPanel'>WYZWANIA</Link></li>
                 <li><Link className='link' to='/trainingsPanel'>TRENINGI</Link></li>
                 <li><Link className='link' to='/planPanel'>PLANY</Link></li>
+                <li><Link className='link' to='/chartsPanel'>WYKRESY</Link></li>
                 <li><Link className='link' to='/rankingPanel'>RANKING</Link></li>
                 <li>PROFIL</li>
                 <li onClick={LogOut}>WYLOGUJ</li>

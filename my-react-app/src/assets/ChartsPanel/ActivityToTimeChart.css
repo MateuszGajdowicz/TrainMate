@@ -1,0 +1,14 @@
+.ChartContainer{
+    border: 5px solid black;
+    position: absolute;
+    left: 2%;
+    .chartHeader{
+        display: flex;
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+        left: 2%;
+
+
+    }
+}
