@@ -4,7 +4,7 @@ function ChartsPanel({activitesList,trainingOptions}){
     return(
         <>
         <h1>Analizuj Twoje postępy!</h1>
-        <ActivityToTimeChart trainingOptions={trainingOptions}/>
+        <ActivityToTimeChart activitesList={activitesList} trainingOptions={trainingOptions}/>
         </>
     )
 }

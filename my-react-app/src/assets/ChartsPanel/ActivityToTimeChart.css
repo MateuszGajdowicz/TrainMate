@@ -1,14 +1,26 @@
 .ChartContainer{
     border: 5px solid black;
     position: absolute;
+    display: flex;
     left: 2%;
-    .chartHeader{
+    width: 90%;
+    height: 600px;
+    h1,h2,h3,h4{
+        margin: 0px;
+    }
+    .chartSettings{
         display: flex;
         align-items: flex-start;
         flex-direction: column;
         gap: 10px;
         left: 2%;
+        min-width: 20%;
 
+
+    }
+    .LineChartContainer{
+        width: 90%;
+        height:100%;
 
     }
 }
