@@ -32,7 +32,8 @@ useEffect(() => {
         analyzedActivitiesGoalValues = activitesList.filter(element =>
             selectedActivities.some(activity => activity.value === element.activityType)
         );
-    } 
+    }
+
 
     console.log("loool"  +analyzedActivitiesGoalValues)
     // if(activitiesAnalyzedGoal!=="Wszystkie" && activitiesAnalyzedGoal!=="Kalorie"){
@@ -83,34 +84,77 @@ useEffect(() => {
             }
         }
 
-        return {date:element.activityDate, value:Number(finalGoal)}
+        return {date:element.activityDate, value:Number(finalGoal), activityType:element.activityType}
 
     })
 
-    let finalDisplayedChartData = []
+    console.log("tablca:",displayedChartData)
 
-    for(let i=0;i<displayedChartData.length;i++){
-        if(displayedChartData[i].date !== displayedChartData[i+1]?.date){
-            finalDisplayedChartData.push(displayedChartData[i])
+    let groupedByType = {}
 
-            
+    for(let i=0; i<displayedChartData.length; i++){
+        if(!groupedByType[displayedChartData[i].activityType]){
+            groupedByType[displayedChartData[i].activityType]=[]
         }
-        else{
-            let sumValue = Number(displayedChartData[i].value)
-            let date = displayedChartData[i].date
-
-
-            while(date===displayedChartData[i+1]?.date){
-                sumValue+=Number(displayedChartData[i+1]?.value)    
-                i++
-            }
-            let singleTemporaryChartData = {date:displayedChartData[i].date, value:sumValue}
-            finalDisplayedChartData.push(singleTemporaryChartData)
+        groupedByType[displayedChartData[i].activityType].push(displayedChartData[i])
 
     }
-    console.log(finalDisplayedChartData)
-    setDisplayedChartData(finalDisplayedChartData)
-}}, [selectedActivities, radioActivityValue, activitesList,activitiesAnalyzedGoal,periodStart,periodEnd, standardPeriod ]);
+    console.log('wrrr',groupedByType)
+
+    let finalGroupedByType =[]
+
+for (let type in groupedByType) {
+    let currentArray = groupedByType[type];
+        let temporaryTypeArray = []
+        for(let j =0;j<currentArray.length;j++){
+            if(currentArray[j].date!==currentArray[j+1]?.date){
+                temporaryTypeArray.push(currentArray[j])
+            }
+            else{
+                let sumValue = Number(currentArray[j].value)
+                let date = currentArray[j].date
+                while(date===currentArray[j+1]?.date){
+                    sumValue+=Number(currentArray[j+1]?.value)
+                    j++
+                }
+                let singleTemporaryInfo = {date:currentArray[j].date, value:sumValue, activityType:currentArray[j].activityType}
+                temporaryTypeArray.push(singleTemporaryInfo)
+                
+
+            }
+
+        }
+        finalGroupedByType.push(temporaryTypeArray)
+
+
+    }
+    console.log(finalGroupedByType)
+    setDisplayedChartData(finalGroupedByType)
+//     let finalDisplayedChartData = []
+
+//     for(let i=0;i<displayedChartData.length;i++){
+//         if(displayedChartData[i].date !== displayedChartData[i+1]?.date){
+//             finalDisplayedChartData.push(displayedChartData[i])
+
+            
+//         }
+//         else{
+//             let sumValue = Number(displayedChartData[i].value)
+//             let date = displayedChartData[i].date
+
+
+//             while(date===displayedChartData[i+1]?.date){
+//                 sumValue+=Number(displayedChartData[i+1]?.value)    
+//                 i++
+//             }
+//             let singleTemporaryChartData = {date:displayedChartData[i].date, value:sumValue}
+//             finalDisplayedChartData.push(singleTemporaryChartData)
+
+//     }
+//     console.log(finalDisplayedChartData)
+//     setDisplayedChartData(finalDisplayedChartData)
+// }
+}, [selectedActivities, radioActivityValue, activitesList,activitiesAnalyzedGoal,periodStart,periodEnd, standardPeriod ]);
 
     return(
         <>
@@ -138,7 +182,7 @@ useEffect(() => {
                 }
                 <h4>Wybierz analizowaną jednostkę</h4>
                 <select onChange={event=>setActivitiesAnalyzedGoal(event.target.value)} name="" id="">
-                    <option value="Wszystkie">Wszystkie</option>
+                    {/* <option value="Wszystkie">Wszystkie</option> */}
                     <option selected value="Dystans">Dystans</option>
                     <option value="Czas">Czas</option>
                     <option value="Kalorie">Kalorie</option>
@@ -181,16 +225,42 @@ useEffect(() => {
 
             </div>
     <div className='LineChartContainer'> 
-        <ResponsiveContainer>
-        <LineChart data={displayedChartData} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="date" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Line type="monotone" dataKey="value" stroke="orange" strokeWidth={3} activeDot={{ r: 8 }} />
-        </LineChart>
-      </ResponsiveContainer>
+        {displayedChartData.length > 0 && (
+  <ResponsiveContainer width="100%" >
+    <LineChart
+      data={
+    [...new Set(displayedChartData.flat().map(item => item.date))]
+      .sort()
+      .map(date => {
+        const point = { date };
+        displayedChartData.forEach(activityArray => {
+          const found = activityArray.find(item => item.date === date);
+          point[activityArray[0].activityType] = found ? found.value : 0;
+        });
+        return point;
+      })
+  }
+      margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
+    >
+      <CartesianGrid strokeDasharray="3 3" />
+      <XAxis dataKey="date" />
+      <YAxis />
+      <Tooltip />
+      <Legend />
+      {displayedChartData.map((activityArray, idx) => (
+        <Line
+          key={idx}
+          type="monotone"
+          dataKey={activityArray[0]?.activityType}
+          stroke={['#8884d8', '#82ca9d', '#ffc658', '#ff7300', '#0088FE'][idx % 5]}
+          strokeWidth={3}
+          activeDot={{ r: 8 }}
+        />
+      ))}
+    </LineChart>
+  </ResponsiveContainer>
+)}
+
             </div>
         </div>
 
