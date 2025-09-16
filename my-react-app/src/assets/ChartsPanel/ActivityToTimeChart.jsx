@@ -3,7 +3,7 @@ import './ActivityToTimeChart.css'
 import Select from 'react-select';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-function ActivityToTimeChart({activitesList,trainingOptions}){
+function ActivityToTimeChart({getSortedByData,FormatActivities,setDisplayedChartData,displayedChartData,activitesList,trainingOptions}){
     let trainingOptionsForSelect = trainingOptions.map(element=>({value:element, label:element}))
 
     const [radioActivityValue, setRadioActivityValue] = useState('all')
@@ -18,13 +18,34 @@ function ActivityToTimeChart({activitesList,trainingOptions}){
     const [activitiesPeriod, setActivitiesPeriod] = useState()
     const [activitiesAnalyzedGoal, setActivitiesAnalyzedGoal] = useState('Dystans')
 
-    const [displayedChartData, setDisplayedChartData] = useState([])
+    const [unit, setUnit] = useState('km')
+
+    const [message, setMessage] = useState('Wygląda na to, że żadne aktywności nie spełniają podanych wymagań')
 
 useEffect(()=>{
     console.log(standardPeriod)
 }, [standardPeriod])
 
 
+
+function getUnit(){
+    switch(activitiesAnalyzedGoal){
+        case "Dystans":
+            setUnit('km')
+            break
+        case 'Czas':
+            setUnit('min')
+            break
+        case 'Kalorie':
+            setUnit('kcal')
+            break
+        case 'Punkty':
+            setUnit('pkt')
+            break
+        
+        }
+
+}
 useEffect(() => {
     let analyzedActivitiesGoalValues = activitesList.sort((a,b)=>new Date(a.activityDate)-new Date(b.activityDate));
 
@@ -36,59 +57,17 @@ useEffect(() => {
 
 
     console.log("loool"  +analyzedActivitiesGoalValues)
-    // if(activitiesAnalyzedGoal!=="Wszystkie" && activitiesAnalyzedGoal!=="Kalorie"){
-    //     analyzedActivitiesGoalValues = analyzedActivitiesGoalValues.filter(element=>
-    //         (element.activityGoal===activitiesAnalyzedGoal || element.activitySecondGoal===activitiesAnalyzedGoal))
 
-    // }
-    let today = new Date();
-    if(radioDataValue === 'standard'){
-        analyzedActivitiesGoalValues = analyzedActivitiesGoalValues.filter(element=>{
-            let daysDiff = (today-new Date(element.activityDate))/(1000 * 60 * 60 * 24)
 
-            switch(standardPeriod){
-                case 'Ostatni tydzień':
-                    return daysDiff<=7 && daysDiff>=0
-                    break;
-                case 'Ostatni miesiąc':
-                    return daysDiff<=30 && daysDiff>=0
-                    break;
-                case 'Ostatni rok':
-                    return daysDiff<=365 && daysDiff>=0
-                    break;
-            }
 
-        })
-    }
-    else if(radioDataValue==='not-standard' && periodStart!==null && periodEnd!==null){
-        analyzedActivitiesGoalValues = analyzedActivitiesGoalValues.filter(element=>new Date(element.activityDate)>=new Date(periodStart)&&new Date(element.activityDate)<=new Date(periodEnd))
-    }
+    analyzedActivitiesGoalValues = getSortedByData(analyzedActivitiesGoalValues,radioDataValue,standardPeriod,periodStart,periodEnd)
 
 
     // console.log(analyzedActivitiesGoalValues);
 
-    let displayedChartData = analyzedActivitiesGoalValues.map(element=>{
-        let finalGoal;
-        if(activitiesAnalyzedGoal==="Kalorie"){
-            finalGoal = element.estimatedCalories
-        }
-        else if(activitiesAnalyzedGoal === "Punkty"){
-            finalGoal = element.points
-        }
-        else{
-            if(element.activityGoal===activitiesAnalyzedGoal){
-                finalGoal = element.activityGoalValue
-            }
-            else if(element.activitySecondGoal===activitiesAnalyzedGoal) {
-                finalGoal = element.activitySecondGoalValue
-            }
-        }
-
-        return {date:element.activityDate, value:Number(finalGoal), activityType:element.activityType}
-
-    })
-
-    console.log("tablca:",displayedChartData)
+    let displayedChartData = FormatActivities(analyzedActivitiesGoalValues, activitiesAnalyzedGoal)
+    
+    
 
     let groupedByType = {}
 
@@ -130,30 +109,9 @@ for (let type in groupedByType) {
     }
     console.log(finalGroupedByType)
     setDisplayedChartData(finalGroupedByType)
-//     let finalDisplayedChartData = []
+    getUnit();
 
-//     for(let i=0;i<displayedChartData.length;i++){
-//         if(displayedChartData[i].date !== displayedChartData[i+1]?.date){
-//             finalDisplayedChartData.push(displayedChartData[i])
-
-            
-//         }
-//         else{
-//             let sumValue = Number(displayedChartData[i].value)
-//             let date = displayedChartData[i].date
-
-
-//             while(date===displayedChartData[i+1]?.date){
-//                 sumValue+=Number(displayedChartData[i+1]?.value)    
-//                 i++
-//             }
-//             let singleTemporaryChartData = {date:displayedChartData[i].date, value:sumValue}
-//             finalDisplayedChartData.push(singleTemporaryChartData)
-
-//     }
-//     console.log(finalDisplayedChartData)
-//     setDisplayedChartData(finalDisplayedChartData)
-// }
+    
 }, [selectedActivities, radioActivityValue, activitesList,activitiesAnalyzedGoal,periodStart,periodEnd, standardPeriod ]);
 
     return(
@@ -181,7 +139,7 @@ for (let type in groupedByType) {
 
                 }
                 <h4>Wybierz analizowaną jednostkę</h4>
-                <select onChange={event=>setActivitiesAnalyzedGoal(event.target.value)} name="" id="">
+                <select className='Inputs' style={{width:"40%"}}  onChange={event=>setActivitiesAnalyzedGoal(event.target.value)} name="" id="">
                     {/* <option value="Wszystkie">Wszystkie</option> */}
                     <option selected value="Dystans">Dystans</option>
                     <option value="Czas">Czas</option>
@@ -203,17 +161,17 @@ for (let type in groupedByType) {
 
                 {
                     radioDataValue==="standard" ?     
-                    <select onChange = {(event)=>setStandardPeriod(event.target.value)}>
+                    <select className='Inputs' onChange = {(event)=>setStandardPeriod(event.target.value)}>
                         <option value="Ostatni tydzień">Ostatni tydzień</option>
                         <option selected value="Ostatni miesiąc">Ostatni miesiąc</option>
                         <option value="Ostatni rok">Ostatni rok</option>
 
                     </select>:
                     <div>
-                        <p>Wybierz datę początkową</p>
-                        <input onChange={event=>setPeriodStart(event.target.value)} type="date" />
-                        <p>Wybierz datę końcową</p>
-                        <input onChange={event=>setPeriodEnd(event.target.value)} type="date" />
+                        <h4>Wybierz datę początkową</h4>
+                        <input className='Inputs' onChange={event=>setPeriodStart(event.target.value)} type="date" />
+                        <h4>Wybierz datę końcową</h4>
+                        <input className='Inputs' onChange={event=>setPeriodEnd(event.target.value)} type="date" />
                     </div>
 
 
@@ -225,8 +183,8 @@ for (let type in groupedByType) {
 
             </div>
     <div className='LineChartContainer'> 
-        {displayedChartData.length > 0 && (
-  <ResponsiveContainer width="100%" >
+        {displayedChartData.length!==0?
+          <ResponsiveContainer width="100%" >
     <LineChart
       data={
     [...new Set(displayedChartData.flat().map(item => item.date))]
@@ -244,7 +202,8 @@ for (let type in groupedByType) {
     >
       <CartesianGrid strokeDasharray="3 3" />
       <XAxis dataKey="date" />
-      <YAxis />
+      <YAxis 
+  label={{ value: unit, angle: -90, position: "insideLeft", dx:-3}}/>
       <Tooltip />
       <Legend />
       {displayedChartData.map((activityArray, idx) => (
@@ -253,13 +212,17 @@ for (let type in groupedByType) {
           type="monotone"
           dataKey={activityArray[0]?.activityType}
           stroke={['#8884d8', '#82ca9d', '#ffc658', '#ff7300', '#0088FE'][idx % 5]}
-          strokeWidth={3}
+          strokeWidth={5}
           activeDot={{ r: 8 }}
         />
       ))}
     </LineChart>
   </ResponsiveContainer>
-)}
+  :
+  <h1 className='message'>{message}</h1>
+        }
+
+
 
             </div>
         </div>
