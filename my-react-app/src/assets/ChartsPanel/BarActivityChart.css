@@ -1,8 +1,8 @@
-.AllChartContainer{
+.BarChartContainer{
     position: relative;
     display: flex;
     left: 2%;
-    width: 43%;
+    width: 90%;
     height: 400px;
     top: 50px;
     background-color: rgba(255, 255, 255, 0.9);
@@ -24,7 +24,7 @@
         flex-direction: column;
         gap: 10px;
         left: 2%;
-        min-width: 36%;
+        min-width: 20%;
         background-color: orange;
         border-radius: 30px 0px 0px 30px;
         padding: 20px;

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import ActivityToTimeChart from './ActivityToTimeChart';
 import SpiderActivityChart from './SpiderActivityChart';
+import BarActivityChart from './BarActivityChart';
 function ChartsPanel({activitesList,trainingOptions}){
         const [displayedChartData, setDisplayedChartData] = useState([]) //moze jeszcze przerzuce do jednego komponentu    
     
@@ -71,7 +72,9 @@ function ChartsPanel({activitesList,trainingOptions}){
         <>
         <h1>Analizuj Twoje postępy!</h1>
         <ActivityToTimeChart getSortedByData={getSortedByData} FormatActivities={FormatActivities} displayedChartData={displayedChartData} setDisplayedChartData={setDisplayedChartData} activitesList={activitesList} trainingOptions={trainingOptions}/>
+        
         <SpiderActivityChart getSortedByData={getSortedByData} activitesList={activitesList}/>
+        <BarActivityChart getSortedByData={getSortedByData} activitesList={activitesList}/>
         </>
     )
 }

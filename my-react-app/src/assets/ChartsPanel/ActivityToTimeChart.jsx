@@ -22,6 +22,8 @@ function ActivityToTimeChart({getSortedByData,FormatActivities,setDisplayedChart
 
     const [message, setMessage] = useState('Wygląda na to, że żadne aktywności nie spełniają podanych wymagań')
 
+    const [isChecked, setIsChecked] = useState(false)
+
 useEffect(()=>{
     console.log(standardPeriod)
 }, [standardPeriod])
@@ -66,9 +68,39 @@ useEffect(() => {
     // console.log(analyzedActivitiesGoalValues);
 
     let displayedChartData = FormatActivities(analyzedActivitiesGoalValues, activitiesAnalyzedGoal)
-    
-    
 
+    console.log('gowno',displayedChartData)
+
+    if(isChecked){
+    let finalScaledChartData = []
+
+    for(let i=0;i<displayedChartData.length;i++){
+        if(displayedChartData[i].date !== displayedChartData[i+1]?.date){
+            finalScaledChartData.push(displayedChartData[i])
+
+            
+        }
+        else{
+            let sumValue = Number(displayedChartData[i].value)
+            let date = displayedChartData[i].date
+
+
+            while(date===displayedChartData[i+1]?.date){
+                sumValue+=Number(displayedChartData[i+1]?.value)    
+                i++
+            }
+            let singleTemporaryChartData = {date:displayedChartData[i].date, value:sumValue}
+            finalScaledChartData.push(singleTemporaryChartData)
+
+    }
+
+
+
+    }
+        console.log(finalScaledChartData)
+    setDisplayedChartData([finalScaledChartData])
+}
+    else{
     let groupedByType = {}
 
     for(let i=0; i<displayedChartData.length; i++){
@@ -109,10 +141,16 @@ for (let type in groupedByType) {
     }
     console.log(finalGroupedByType)
     setDisplayedChartData(finalGroupedByType)
+
+    }
+    
+    
+
+
     getUnit();
 
     
-}, [selectedActivities, radioActivityValue, activitesList,activitiesAnalyzedGoal,periodStart,periodEnd, standardPeriod ]);
+}, [isChecked,selectedActivities, radioActivityValue, activitesList,activitiesAnalyzedGoal,periodStart,periodEnd, standardPeriod ]);
 
     return(
         <>
@@ -162,6 +200,7 @@ for (let type in groupedByType) {
                 {
                     radioDataValue==="standard" ?     
                     <select className='Inputs' onChange = {(event)=>setStandardPeriod(event.target.value)}>
+                        <option value="Wszystkie">Wszystkie</option>
                         <option value="Ostatni tydzień">Ostatni tydzień</option>
                         <option selected value="Ostatni miesiąc">Ostatni miesiąc</option>
                         <option value="Ostatni rok">Ostatni rok</option>
@@ -176,6 +215,12 @@ for (let type in groupedByType) {
 
 
                 }
+                <div style={{marginTop:"20px"}}>
+                <input checked={isChecked} type="checkbox" id='check' onChange={event=>setIsChecked(event.target.checked)}/>
+                <label htmlFor="check">Scal wszystkie aktywności</label>
+
+                </div>
+
 
 
             
@@ -185,7 +230,19 @@ for (let type in groupedByType) {
     <div className='LineChartContainer'> 
         {displayedChartData.length!==0?
           <ResponsiveContainer width="100%" >
-    <LineChart
+
+            {
+                isChecked?
+                  <LineChart data={displayedChartData[0]} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
+    <CartesianGrid strokeDasharray="3 3" />
+    <XAxis dataKey="date" />
+    <YAxis label={{ value: unit, angle: -90, position: "insideLeft", dx:-3}}/>
+    <Tooltip />
+    <Legend />
+    <Line type="monotone" dataKey="value" stroke="#8884d8" strokeWidth={5} activeDot={{ r: 8 }} />
+  </LineChart>
+  :
+      <LineChart
       data={
     [...new Set(displayedChartData.flat().map(item => item.date))]
       .sort()
@@ -193,7 +250,7 @@ for (let type in groupedByType) {
         const point = { date };
         displayedChartData.forEach(activityArray => {
           const found = activityArray.find(item => item.date === date);
-          point[activityArray[0].activityType] = found ? found.value : 0;
+          point[activityArray[0]?.activityType] = found ? found.value : 0;
         });
         return point;
       })
@@ -210,13 +267,17 @@ for (let type in groupedByType) {
         <Line
           key={idx}
           type="monotone"
-          dataKey={activityArray[0]?.activityType}
+          dataKey={activityArray[0]?.activityType || "Wszystkie"}
           stroke={['#8884d8', '#82ca9d', '#ffc658', '#ff7300', '#0088FE'][idx % 5]}
           strokeWidth={5}
           activeDot={{ r: 8 }}
         />
       ))}
     </LineChart>
+
+                
+            }
+
   </ResponsiveContainer>
   :
   <h1 className='message'>{message}</h1>

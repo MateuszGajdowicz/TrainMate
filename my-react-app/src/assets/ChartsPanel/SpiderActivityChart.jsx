@@ -10,14 +10,7 @@ function SpiderActivityChart({getSortedByData,activitesList,getDataForSpiderChar
                 
         const [chartData, setChartData] = useState([])
         
-    const data = [
-  { subject: 'Matma', A: 120},
-  { subject: 'Fizyka', A: 98 },
-  { subject: 'Programowanie', A: 86},
-  { subject: 'Mechanika', A: 99},
-  { subject: 'Elektronika', A: 85},
-  { subject: 'Sen', A: 65},
-];
+
 
 function getDataForSpiderChart(){
     // let onlyActivitiesNames = activitesList.map(element=>(
@@ -49,6 +42,7 @@ useEffect(()=>{
         <>
         <div className='AllChartContainer'>
             <div className='ChartSettingContainer'>
+                <h2>Popularność aktywności</h2>
                                 <h4>Wybierz przedział czasu</h4>
                 <div>
                 <input value='standard' checked={radioDataValue==='standard'} onChange={event=>setRadioDataValue(event.target.value)} type="radio" id='standard2' name='radio3' />
@@ -81,20 +75,27 @@ useEffect(()=>{
 
                 }
             </div>
-                    <div className="SpiderChartContainer">
-            <RadarChart outerRadius={90} width={500} height={400} data={chartData}>
+            {
+                chartData.length!==0?
+            <div className="SpiderChartContainer">
+            <RadarChart outerRadius={110} width={420} height={400} data={chartData}>
       <PolarGrid />
       <PolarAngleAxis dataKey="activity" />
       <PolarRadiusAxis />
       <Radar 
         name="Student" 
         dataKey="count" 
-        stroke="#8884d8" 
-        fill="#8884d8" 
+        stroke="hsl(28, 100%, 60%)" 
+        fill="orange" 
         fillOpacity={0.6} 
       />
     </RadarChart>
         </div>
+                :
+                <h1 className='message'>Wygląda na to, że żadne aktywności nie spełniają podanych wymagań</h1>
+
+            }
+
 
 
         </div>
