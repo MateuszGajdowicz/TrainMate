@@ -48,4 +48,18 @@
     .message{
         margin: 40px ;
     }
+    .StatsContainer{
+        width: 400px;
+    }
+}
+.StatsContainer{
+    position: relative;
+    height: 400px;
+    background-color: rgb(150, 218, 136);
+    width: 90%;
+    left: 2%;
+    h1,h2,h3,h4,h5{
+        margin: 0px;
+
+    }
 }

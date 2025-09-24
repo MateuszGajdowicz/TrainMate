@@ -11,6 +11,9 @@ function ChartsPanel({activitesList,trainingOptions}){
         if(activitiesGoal==="Kalorie"){
             finalGoal = element.estimatedCalories
         }
+        if(activitiesGoal==="Ilość treningów"){
+            finalGoal=1
+        }
         else if(activitiesGoal === "Punkty"){
             finalGoal = element.points
         }
@@ -74,7 +77,7 @@ function ChartsPanel({activitesList,trainingOptions}){
         <ActivityToTimeChart getSortedByData={getSortedByData} FormatActivities={FormatActivities} displayedChartData={displayedChartData} setDisplayedChartData={setDisplayedChartData} activitesList={activitesList} trainingOptions={trainingOptions}/>
         
         <SpiderActivityChart getSortedByData={getSortedByData} activitesList={activitesList}/>
-        <BarActivityChart getSortedByData={getSortedByData} activitesList={activitesList}/>
+        <BarActivityChart FormatActivities={FormatActivities} getSortedByData={getSortedByData} activitesList={activitesList}/>
         </>
     )
 }

@@ -24,6 +24,79 @@ function ActivityToTimeChart({getSortedByData,FormatActivities,setDisplayedChart
 
     const [isChecked, setIsChecked] = useState(false)
 
+    const [summaryInfo, setSummaryInfo] = useState({
+        summedDistance:0,
+        summedCalories:0,
+        summedTime:0,
+        averageTime:0,
+        LongestActivityTime:0,
+        longestActivity:''
+
+
+    })
+
+    function getChartsStats(sortedActivityList){
+        if(sortedActivityList.length!==0){
+            let addedDistance = sortedActivityList.reduce((prev, next)=>{
+            if(next.activityGoal==="Dystans"){
+                return prev+ Number(next.activityGoalValue)
+            }
+            else if(next.activityGoal==="Czas"){
+                return prev+Number(next.activitySecondGoalValue)
+            }
+        },0)
+            
+        
+
+        let summedCalories = sortedActivityList.reduce((prev, next)=>prev+Number(next.estimatedCalories),0)
+
+
+        let summedTime = sortedActivityList.reduce((prev, next)=>{
+            if(next.activityGoal==="Czas"){
+                return prev + Number(next.activityGoalValue)
+            }
+            else{
+                return prev+Number(next.activitySecondGoalValue)
+            }
+
+        },0)
+
+        let longestActivity;
+        let LongestActivityTime = 0
+
+        for(let i = 0;i<sortedActivityList.length;i++){
+            if(sortedActivityList[i].activityGoal==="Czas"){
+                if(sortedActivityList[i].activityGoalValue>LongestActivityTime){
+                    longestActivity = sortedActivityList[i]
+                    LongestActivityTime=sortedActivityList[i].activityGoalValue
+                }
+                
+            }
+             else{
+                if(sortedActivityList[i].activitySecondGoalValue>LongestActivityTime){
+                        longestActivity = sortedActivityList[i]
+                        LongestActivityTime = sortedActivityList[i].activitySecondGoalValue
+                    }
+                }
+
+        }
+
+        let averageTime = summedTime/sortedActivityList.length
+            setSummaryInfo({summedDistance:addedDistance,
+                        summedCalories:summedCalories,
+                        summedTime:summedTime,
+                        averageTime:averageTime,
+                        longestActivity:longestActivity,
+                        LongestActivityTime:LongestActivityTime
+        })
+    }
+
+
+
+
+    }
+
+
 useEffect(()=>{
     console.log(standardPeriod)
 }, [standardPeriod])
@@ -58,13 +131,15 @@ useEffect(() => {
     }
 
 
-    console.log("loool"  +analyzedActivitiesGoalValues)
 
 
 
     analyzedActivitiesGoalValues = getSortedByData(analyzedActivitiesGoalValues,radioDataValue,standardPeriod,periodStart,periodEnd)
 
 
+        console.log("loool"  +analyzedActivitiesGoalValues)
+
+    getChartsStats(analyzedActivitiesGoalValues)
     // console.log(analyzedActivitiesGoalValues);
 
     let displayedChartData = FormatActivities(analyzedActivitiesGoalValues, activitiesAnalyzedGoal)
@@ -286,6 +361,17 @@ for (let type in groupedByType) {
 
 
             </div>
+        </div>
+        <div className='StatsContainer'>
+            <h1>Statystyki</h1>
+            <h2>W podanym okresie:</h2>
+            <h3>Pokonałeś dystans {summaryInfo.summedDistance} km</h3>
+            <h3>Spaliłeś {summaryInfo.summedCalories} kcal</h3>
+            <h3>Ćwiczyłeś przez {summaryInfo.summedTime} min</h3>
+            <h3>Średnio twój trening trwał {summaryInfo.averageTime.toFixed(2,0)} min</h3>
+            <h3>Twój najdłuższy trening to {summaryInfo.longestActivity.activityType} - {summaryInfo.LongestActivityTime} min - {summaryInfo.longestActivity.activityDate} </h3>
+            <h3></h3>
+
         </div>
 
         </>
