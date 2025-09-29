@@ -3,7 +3,7 @@ import './ActivityToTimeChart.css'
 import Select from 'react-select';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-function ActivityToTimeChart({getSortedByData,FormatActivities,setDisplayedChartData,displayedChartData,activitesList,trainingOptions}){
+function ActivityToTimeChart({getUnit,getSortedByData,FormatActivities,setDisplayedChartData,displayedChartData,activitesList,trainingOptions}){
     let trainingOptionsForSelect = trainingOptions.map(element=>({value:element, label:element}))
 
     const [radioActivityValue, setRadioActivityValue] = useState('all')
@@ -103,24 +103,7 @@ useEffect(()=>{
 
 
 
-function getUnit(){
-    switch(activitiesAnalyzedGoal){
-        case "Dystans":
-            setUnit('km')
-            break
-        case 'Czas':
-            setUnit('min')
-            break
-        case 'Kalorie':
-            setUnit('kcal')
-            break
-        case 'Punkty':
-            setUnit('pkt')
-            break
-        
-        }
 
-}
 useEffect(() => {
     let analyzedActivitiesGoalValues = activitesList.sort((a,b)=>new Date(a.activityDate)-new Date(b.activityDate));
 
@@ -222,7 +205,7 @@ for (let type in groupedByType) {
     
 
 
-    getUnit();
+    setUnit(getUnit(activitiesAnalyzedGoal));
 
     
 }, [isChecked,selectedActivities, radioActivityValue, activitesList,activitiesAnalyzedGoal,periodStart,periodEnd, standardPeriod ]);
@@ -363,8 +346,7 @@ for (let type in groupedByType) {
             </div>
         </div>
         <div className='StatsContainer'>
-            <h1>Statystyki</h1>
-            <h2>W podanym okresie:</h2>
+            <h1>W podanym okresie:</h1>
             <h3>Pokonałeś dystans {summaryInfo.summedDistance} km</h3>
             <h3>Spaliłeś {summaryInfo.summedCalories} kcal</h3>
             <h3>Ćwiczyłeś przez {summaryInfo.summedTime} min</h3>

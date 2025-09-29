@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import ActivityToTimeChart from './ActivityToTimeChart';
 import SpiderActivityChart from './SpiderActivityChart';
 import BarActivityChart from './BarActivityChart';
+import MonthBarChart from './MonthBarChart';
 function ChartsPanel({activitesList,trainingOptions}){
         const [displayedChartData, setDisplayedChartData] = useState([]) //moze jeszcze przerzuce do jednego komponentu    
     
@@ -67,6 +68,26 @@ function ChartsPanel({activitesList,trainingOptions}){
     })
     return timeFilteredActivities
 }
+function getUnit(activitiesAnalyzedGoal){
+    let unit=''
+    switch(activitiesAnalyzedGoal){
+        case "Dystans":
+            unit= 'km'
+            break
+        case 'Czas':
+            unit= 'min'
+            break
+        case 'Kalorie':
+            unit= 'kcal'
+            break
+        case 'Punkty':
+            unit='pkt' 
+            break
+        
+        }
+        return unit
+
+}
 
 
     
@@ -74,10 +95,11 @@ function ChartsPanel({activitesList,trainingOptions}){
         
         <>
         <h1>Analizuj Twoje postępy!</h1>
-        <ActivityToTimeChart getSortedByData={getSortedByData} FormatActivities={FormatActivities} displayedChartData={displayedChartData} setDisplayedChartData={setDisplayedChartData} activitesList={activitesList} trainingOptions={trainingOptions}/>
+        <ActivityToTimeChart getUnit={getUnit} getSortedByData={getSortedByData} FormatActivities={FormatActivities} displayedChartData={displayedChartData} setDisplayedChartData={setDisplayedChartData} activitesList={activitesList} trainingOptions={trainingOptions}/>
         
-        <SpiderActivityChart getSortedByData={getSortedByData} activitesList={activitesList}/>
-        <BarActivityChart FormatActivities={FormatActivities} getSortedByData={getSortedByData} activitesList={activitesList}/>
+        {/* <SpiderActivityChart getSortedByData={getSortedByData} activitesList={activitesList}/> */}
+        <BarActivityChart getUnit={getUnit} FormatActivities={FormatActivities} getSortedByData={getSortedByData} activitesList={activitesList}/>
+        <MonthBarChart FormatActivities={FormatActivities} activitesList={activitesList} trainingOptions={trainingOptions}/>
         </>
     )
 }

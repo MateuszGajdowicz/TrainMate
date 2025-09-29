@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import './BarActivityChart.css'
+import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis } from 'recharts';
+
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Cell, ResponsiveContainer } from "recharts";
 
-function BarActivityChart({activitesList, getSortedByData,FormatActivities}){
+function BarActivityChart({getUnit,activitesList, getSortedByData,FormatActivities}){
             const [radioDataValue, setRadioDataValue] = useState('standard')
             const [standardPeriod, setStandardPeriod] = useState('Wszystkie')
             const [periodEnd, setPeriodEnd] = useState(null)
@@ -11,10 +13,30 @@ function BarActivityChart({activitesList, getSortedByData,FormatActivities}){
 
             const [displayedChartData, setDisplayedChartData] = useState([])
             const [unit, setUnit] = useState('')
+            const [analyzedSportArray, setAnalyzedSportArray] = useState([])
+            const [notAnalyzedSportArray, setNotAnalyzedSportArray] = useState([])
+
+            const [finalAnalyzedSport, setFinalAnalyzedSport] = useState(null)
+
+            const [statsInfo, setStatsInfo] = useState({
+              biggestActivity:'',
+              biggestValue:0,
+              lowestActivity:'',
+              lowestvalue:0,
+            })
+
+            const [analyzedSport, setAnalyzedSport] = useState(null)
 
             function getDataForBarChart(activitesList,activitiesGoal){
                 let dataSortedActivities = getSortedByData(activitesList,radioDataValue,standardPeriod,periodStart,periodEnd)
                 console.log(dataSortedActivities)
+
+                const analyzedSportActivities = dataSortedActivities.filter(element=>element.activityType===analyzedSport)
+                setAnalyzedSportArray(analyzedSportActivities)
+
+                const notAnalyzedSportActivities = dataSortedActivities.filter(element=>element.activityType!==analyzedSport)
+                setNotAnalyzedSportArray(notAnalyzedSportActivities)
+                
 
                let formatedActivitiesData =FormatActivities(dataSortedActivities,activitiesGoal)
 
@@ -36,37 +58,79 @@ function BarActivityChart({activitesList, getSortedByData,FormatActivities}){
                }
                               console.log(displayedActivitiesData)
 
+              getBarChartStats(displayedActivitiesData)
+
                return displayedActivitiesData
             }
 
-            function getUnit(){
-                switch(activitiesGoal){
-        case "Dystans":
-            setUnit('km')
-            break
-        case 'Czas':
-            setUnit('min')
-            break
-        case 'Kalorie':
-            setUnit('kcal')
-            break
-        case 'Punkty':
-            setUnit('pkt')
-            break
-        case("Ilość treningów"):
-            setUnit("Treningi")
-        
-        }
+          
+
+function getBarChartStats(sortedList){
+  let biggestActivity;
+  let biggestValue=0;
+  let lowestActivity;
+  let lowestvalue = Infinity
+  for(let i = 0; i<sortedList.length;i++){
+    if(sortedList[i].value>biggestValue){
+      biggestActivity = sortedList[i].activityType
+      biggestValue = sortedList[i].value
+    }
+    if(sortedList[i].value<lowestvalue){
+      lowestActivity=sortedList[i].activityType
+      lowestvalue = sortedList[i].value 
+    }
+
+  }
+  setStatsInfo({
+    biggestActivity:biggestActivity,
+    biggestValue:biggestValue,
+    lowestActivity:lowestActivity,
+    lowestvalue:lowestvalue
+
+  })
 
 }
 
 
             useEffect(()=>{
                 setDisplayedChartData(getDataForBarChart(activitesList,activitiesGoal))
-                getUnit();
-            },[activitesList,radioDataValue,standardPeriod,periodStart,periodEnd, activitiesGoal])
+                setUnit(getUnit(activitiesGoal))
+            },[activitesList,radioDataValue,standardPeriod,periodStart,periodEnd, activitiesGoal, analyzedSport])
+
+useEffect(()=>{
+  const analyzed = displayedChartData.find(element=>element.activityType===analyzedSport)
+  setFinalAnalyzedSport(analyzed)
+  
+},[displayedChartData, analyzedSport])
+
     return(
         <>
+        <div className='BarStatsContainer'>
+          <div>
+                      <h1>Analiza dla aktywności:</h1>
+          <h2>{finalAnalyzedSport? finalAnalyzedSport.activityType: 'Dotknij aby wybrać konkretny sport'}</h2>
+          <h3>Łącznie - {finalAnalyzedSport?.value} {unit}</h3>
+          {activitiesGoal!=="Ilość treningów" &&
+          <>
+          <h3>Liczba treningów - {analyzedSportArray.length}</h3>
+          <h3>Średnio na trening  - {finalAnalyzedSport?.value/analyzedSportArray.length} {unit}  </h3>
+          </>
+          
+          }
+
+          <h3>{finalAnalyzedSport?.activityType} to {(analyzedSportArray.length *100/(notAnalyzedSportArray.length+analyzedSportArray.length)).toFixed(1,0)} % wszystkich treningów</h3>
+
+          </div>
+          <div>
+                      <h1>Najwięcej: </h1>
+                      <h2>{statsInfo.biggestActivity} - {statsInfo.biggestValue} {unit}</h2>
+          <h1>Najmniej: </h1>
+          <h2>{statsInfo.lowestActivity} - {statsInfo.lowestvalue} {unit}</h2>
+
+          </div>
+
+
+        </div>
         <div className="BarChartContainer"> 
             <div className="ChartSettingContainer">
                 <h2>Wyniki dla aktywności</h2>
@@ -114,6 +178,7 @@ function BarActivityChart({activitesList, getSortedByData,FormatActivities}){
             {displayedChartData.length===0?
             <h1 className='message'>Wygląda na to, że żadne aktywności nie spełniają podanych wymagań</h1>
             :
+            <>
             <div className="BarChartContainer2">
   <ResponsiveContainer width="100%" height="100%">
     <BarChart
@@ -136,8 +201,8 @@ function BarActivityChart({activitesList, getSortedByData,FormatActivities}){
       <Legend />
 
       <Bar dataKey="value" radius={[10, 10, 0, 0]}>
-        {displayedChartData.map((_, index) => (
-          <Cell
+        {displayedChartData.map((element, index) => (
+          <Cell 
             key={`cell-${index}`}
             fill={[
               "#82ca9d",
@@ -146,12 +211,30 @@ function BarActivityChart({activitesList, getSortedByData,FormatActivities}){
               "#ff7f50",
               "#00c49f"
             ][index % 5]}
+            onClick={()=>setAnalyzedSport(element.activityType)}
           />
         ))}
       </Bar>
     </BarChart>
   </ResponsiveContainer>
 </div>
+            <div className="SpiderChartContainer">
+            <RadarChart outerRadius={110} width={420} height={400} data={displayedChartData}>
+      <PolarGrid />
+      <PolarAngleAxis dataKey="activityType" />
+      <PolarRadiusAxis />
+      <Radar 
+        name="Student" 
+        dataKey="value" 
+        stroke="hsl(28, 100%, 60%)" 
+        fill="orange" 
+        fillOpacity={0.6} 
+      />
+    </RadarChart>
+        </div>
+            
+            </>
+            
             
             }
             
