@@ -7,6 +7,7 @@ nav{
     background-color: hsl(28, 100%, 60%);
     left: 0;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.20);
+    z-index: 999999;
 
     ul{
         display: flex;

@@ -109,16 +109,28 @@ useEffect(()=>{
           <div>
                       <h1>Analiza dla aktywności:</h1>
           <h2>{finalAnalyzedSport? finalAnalyzedSport.activityType: 'Dotknij aby wybrać konkretny sport'}</h2>
-          <h3>Łącznie - {finalAnalyzedSport?.value} {unit}</h3>
+          {
+            finalAnalyzedSport && 
+            <>
+                    <h3>Łącznie - {finalAnalyzedSport?.value} {unit}</h3>
+                      <h3>{finalAnalyzedSport?.activityType} to {(analyzedSportArray.length *100/(notAnalyzedSportArray.length+analyzedSportArray.length)).toFixed(1,0)} % wszystkich treningów</h3>
+
+            </>
+              
+          }
           {activitiesGoal!=="Ilość treningów" &&
           <>
           <h3>Liczba treningów - {analyzedSportArray.length}</h3>
           <h3>Średnio na trening  - {finalAnalyzedSport?.value/analyzedSportArray.length} {unit}  </h3>
+
           </>
           
           }
 
-          <h3>{finalAnalyzedSport?.activityType} to {(analyzedSportArray.length *100/(notAnalyzedSportArray.length+analyzedSportArray.length)).toFixed(1,0)} % wszystkich treningów</h3>
+
+
+
+          
 
           </div>
           <div>

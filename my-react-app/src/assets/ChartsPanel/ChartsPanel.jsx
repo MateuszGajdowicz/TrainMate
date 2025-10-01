@@ -99,7 +99,7 @@ function getUnit(activitiesAnalyzedGoal){
         
         {/* <SpiderActivityChart getSortedByData={getSortedByData} activitesList={activitesList}/> */}
         <BarActivityChart getUnit={getUnit} FormatActivities={FormatActivities} getSortedByData={getSortedByData} activitesList={activitesList}/>
-        <MonthBarChart FormatActivities={FormatActivities} activitesList={activitesList} trainingOptions={trainingOptions}/>
+        <MonthBarChart getUnit={getUnit} FormatActivities={FormatActivities} activitesList={activitesList} trainingOptions={trainingOptions}/>
         </>
     )
 }
