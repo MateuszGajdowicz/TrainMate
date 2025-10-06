@@ -175,7 +175,7 @@ export let TrophiesList = [
     progress: 0,
     isFinished: false,
     unit: "km",
-    icon: '/TrophiesIcons/1st-prize.png',
+    icon: '/TrophiesIcons/newbie.png',
     description: "Przebiegnij pięć kilometrów"
   },
   {

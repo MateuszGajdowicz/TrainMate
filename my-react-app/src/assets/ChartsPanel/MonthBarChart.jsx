@@ -29,22 +29,43 @@ const months = [
               lowestMonth:'',
               lowestvalue:0,
             })
+            const [statsInfoMonth, setStatsInfoMonth] = useState({
+              allTrainingsCount:0,
+              biggestActivity:'',
+              biggestCount:0,
+              lowestAcitivity:'',
+              lowestCount:0,
+            })
+
+            const [caloriesInfo, setCaloriesInfo] = useState({
+              biggestCaloriesActivity:'',
+              biggestCaloriesActivityValue:0,
+              summedCalories:0,
+              averageCalories:0
+            })
+
+            const [timeInfo, setTimeInfo] = useState({
+              longestActivity:'',
+              LongestActivityTime:0,
+              summedTime:0,
+              averageTime:0,
+            })
 
 
         const [radioActivityValue, setRadioActivityValue] = useState('all')
         const [selectedActivities, setSelectedActivities] = useState([])
-        const [activitiesAnalyzedGoal, setActivitiesAnalyzedGoal] = useState('Dystans')
+        const [activitiesAnalyzedGoal, setActivitiesAnalyzedGoal] = useState('Ilość treningów')
 
         const [displayedChartData, setDisplayedChartData] = useState(activitesList)
 
-        const [firstMonthSelect, setFirstMonthSelect] = useState(null)
-        const [secondMonthSelect, setSecondMonthSelect] = useState(null)
+        const [firstMonthSelect, setFirstMonthSelect] = useState("Wybierz miesiąc")
+        const [secondMonthSelect, setSecondMonthSelect] = useState("Wybierz miesiąc")
         const [monthDiff, setMonthDiff] = useState(0)
         const [change, setChange] = useState('Progres')
         const [isWarningDisplayed, setIsWarningDisplayed] = useState(false)
         const [unit, setUnit] = useState('')
 
-        const [selectedMonth, setSelectedMonth] = useState('Styczeń')
+        const [selectedMonth, setSelectedMonth] = useState(null)
 
         function getBarChartStats(sortedList){
   let biggestMonth;
@@ -103,10 +124,11 @@ const months = [
     useEffect(()=>{
       setUnit(getUnit(activitiesAnalyzedGoal))
         setDisplayedChartData(handleActivitiesByMonths(activitesList, activitiesAnalyzedGoal))
+        console.log({displayedChartData})
     }, [activitiesAnalyzedGoal, radioActivityValue, selectedActivities, activitesList])
 
     function CompareMonths(){
-      if(firstMonthSelect && secondMonthSelect){
+      if(firstMonthSelect!=="Wybierz miesiąc" && secondMonthSelect!=="Wybierz miesiąc"){
         let FirstMonthInfo = displayedChartData.find(element=>element.month===firstMonthSelect)
         let SecondMonthInfo = displayedChartData.find(element=>element.month===secondMonthSelect)
 
@@ -153,26 +175,113 @@ const months = [
     },[firstMonthSelect, secondMonthSelect, activitiesAnalyzedGoal, selectedActivities,activitesList])
 
     function analyzeSelectedMonth(selectedMonth){
+      if (!selectedMonth) return; 
+
       let selectedMonthInfo = months.find(element=>element.name===selectedMonth)
       let monthFilteredActivities = activitesList.filter(element=>new Date(element.activityDate).getMonth()+1===selectedMonthInfo.id)
 
-      console.log(monthFilteredActivities)
+      console.log({monthFilteredActivities})
+
+
+      let longestActivity;
+      let LongestActivityTime=0;
+      let summedTime=0;
+      for(let i =0;i<monthFilteredActivities.length;i++){
+        if(monthFilteredActivities[i].activityGoal==="Czas"){
+          summedTime+=Number(monthFilteredActivities[i].activityGoalValue)
+
+          if(monthFilteredActivities[i].activityGoalValue>LongestActivityTime){
+            LongestActivityTime = monthFilteredActivities[i].activityGoalValue
+            longestActivity = monthFilteredActivities[i]
+          }
+        }
+          else{
+            summedTime+= Number(monthFilteredActivities[i].activitySecondGoalValue)
+
+            if(monthFilteredActivities[i].activitySecondGoalValue>LongestActivityTime){
+              LongestActivityTime = monthFilteredActivities[i].activitySecondGoalValue
+              longestActivity = monthFilteredActivities[i]
+            }
+          }
+        
+      }
+      let averageTime = summedTime/monthFilteredActivities.length
+      setTimeInfo({
+        longestActivity:longestActivity,
+        LongestActivityTime:LongestActivityTime,
+        summedTime:summedTime,
+        averageTime:averageTime
+      })
+      
 
       let formatedActivities = FormatActivities(monthFilteredActivities, activitiesAnalyzedGoal)
+      console.log({formatedActivities})
 
+      let biggestCaloriesActivityValue=0
+      let biggestCaloriesActivity;
+      for(let i=0;i<formatedActivities.length;i++){
+        if(formatedActivities[i].estimatedCalories>biggestCaloriesActivityValue){
+          biggestCaloriesActivityValue=formatedActivities[i].estimatedCalories
+          biggestCaloriesActivity = formatedActivities[i]
+        }
+
+      }
+
+
+      let summedCalories = formatedActivities.reduce((prev, next)=>prev+next.estimatedCalories, 0)
+      let averageCalories = summedCalories/formatedActivities.length
+
+
+      setCaloriesInfo({
+        biggestCaloriesActivity:biggestCaloriesActivity,
+        biggestCaloriesActivityValue:biggestCaloriesActivityValue,
+        summedCalories:summedCalories,
+        averageCalories:averageCalories
+        
+        
+      })
       let sortedActivities = []
       for(let i=0;i<formatedActivities.length;i++){
         if(!sortedActivities?.some(element=>element.activityType===formatedActivities[i].activityType)){
-          sortedActivities?.push({activityType:formatedActivities[i].activityType, count:1, value:formatedActivities[i].value})
+          sortedActivities?.push({activityType:formatedActivities[i].activityType, count:1, value:formatedActivities[i].value, estimatedCalories: formatedActivities[i].estimatedCalories})
         }
         else{
           let currentActivity = sortedActivities?.find(element=>element.activityType===monthFilteredActivities[i].activityType)
           currentActivity.count++
           currentActivity.value+=Number(formatedActivities[i].value)
+          currentActivity.estimatedCalories+=Number(formatedActivities[i].estimatedCalories)
         }
 
       }
-      console.log(sortedActivities)
+      console.log({sortedActivities})
+
+
+        let biggestActivity;
+      let biggestCount=0;
+      let lowestAcitivity;
+      let lowestCount = Infinity
+
+      for(let i = 0; i<sortedActivities.length;i++){
+    if(sortedActivities[i].count>biggestCount){
+      biggestActivity = sortedActivities[i].activityType
+      biggestCount = sortedActivities[i].count
+    }
+    if(sortedActivities[i].count<lowestCount){
+      lowestAcitivity=sortedActivities[i].activityType
+      lowestCount= sortedActivities[i].count 
+    }
+
+
+  }
+    setStatsInfoMonth({
+      allTrainingsCount:monthFilteredActivities.length,
+
+    biggestActivity:biggestActivity,
+    biggestCount:biggestCount,
+    lowestAcitivity:lowestAcitivity,
+    lowestCount:lowestCount,
+
+  })
 
     }
     useEffect(()=>{
@@ -181,8 +290,8 @@ const months = [
     
     return(
         <>
-        <div className='BarChartContainer' style={{marginBottom:'0px'}}>
-            <div className='ChartSettingContainer'>
+        <div className='BarChartContainer' style={{marginBottom:'0px', borderRadius:'30px 30px 0px 0px'}}>
+            <div className='ChartSettingContainer'  style={{marginBottom:'0px', borderRadius:'30px 0px 0px 0px'}}>
                 <h2>Twoja aktywność <br /> w ostatnich miesiącach</h2>
                 <h4>Wybierz analizowane aktywności:</h4>
                 <div>
@@ -203,16 +312,17 @@ const months = [
 
                 }
                 <h4>Wybierz analizowaną jednostkę</h4>
-                <select  className='Inputs' style={{width:"40%"}}  onChange={event=>setActivitiesAnalyzedGoal(event.target.value)} name="" id="">
+                <select  className='Inputs' style={{width:"50%"}}  onChange={event=>setActivitiesAnalyzedGoal(event.target.value)} name="" id="">
                     {/* <option value="Wszystkie">Wszystkie</option> */}
-                    <option selected value="Dystans">Dystans</option>
+                    <option selected value="Ilość treningów">Ilość treningów</option>
+                    <option  value="Dystans">Dystans</option>
                     <option value="Czas">Czas</option>
                     <option value="Kalorie">Kalorie</option>
                     <option value="Punkty">Punkty</option>
                 </select>
 
             </div>
-                        {displayedChartData.length===0?
+                        {displayedChartData.reduce((prev, next)=>prev+next.value, 0)===0?
                         <h1 className='message'>Wygląda na to, że żadne aktywności nie spełniają podanych wymagań</h1>
                         :
                         <>
@@ -283,7 +393,8 @@ const months = [
           <div className='selectDiv'>
             <p>Od</p>
 
-              <select value={firstMonthSelect || ''} onChange={event=>setFirstMonthSelect(event.target.value)} className='Inputs' name="" id="">
+              <select  value={firstMonthSelect || ''} onChange={event=>setFirstMonthSelect(event.target.value)} className='Inputs' name="" id="">
+                <option disabled value="Wybierz miesiąc">Wybierz miesiąc</option>
             {months.map(element=>(
               <option value={element.name}>{element.name}</option>
 
@@ -295,6 +406,7 @@ const months = [
           <div className='selectDiv'>
           <p>Do</p>
           <select value={secondMonthSelect || ''} onChange={event=>setSecondMonthSelect(event.target.value)} className='Inputs' name="" id="">
+            <option disabled value="Wybierz miesiąc">Wybierz miesiąc</option>
             {months.map(element=>(
               <option value={element.name}>{element.name}</option>
 
@@ -307,18 +419,55 @@ const months = [
                         <h1>{change} o {monthDiff} %</h1>
 
  }
-
-          </div>
-          <div className='biggestDiv'>
+                  <div className='biggestDiv'>
             <h1>Najlepszy miesiąc:</h1>
-            <h2>{statsInfo.biggestMonth} - {statsInfo.biggestValue} {unit}</h2>
+            <p>{statsInfo.biggestMonth} - <strong>{statsInfo.biggestValue}</strong> {unit}</p>
             <h1>Najgorszy miesiąc</h1>
-            <h2>{statsInfo.lowestMonth} - {statsInfo.lowestvalue} {unit}</h2>
+            <p>{statsInfo.lowestMonth} - <strong>{statsInfo.lowestvalue}</strong> {unit}</p>
           </div>
+          </div>
+
           <div className='singleMonthContainer'>
-            <h2>Kliknij na wykresie, by wybrać miesiąc</h2>
-            <h2>Najchętniej wybierany przez ciebie sport sport:</h2>
+            {selectedMonth===null?
+            <h1>Kliknij na wykresie, by wybrać miesiąc</h1>
+            :
+            <>
+              <div>
+              <h1>{selectedMonth}</h1>
+              <p>Liczba wszystkich treningów: <strong>{statsInfoMonth.allTrainingsCount}</strong></p>
+              <h2>Najchętniej wybierany przez ciebie sport:</h2>
+            <p><strong>{statsInfoMonth.biggestActivity}</strong> - liczba treningów : <strong>{statsInfoMonth.biggestCount}</strong></p>
             <h2>Najrzadziej wybierany przez ciebie sport:</h2>
+            <p><strong>{statsInfoMonth.lowestAcitivity}</strong> - liczba treningów : <strong>{statsInfoMonth.lowestCount}</strong></p>
+            <h2>Najdłuższy trening:</h2>
+            <p>{timeInfo.longestActivity.activityType} - <strong>{timeInfo.LongestActivityTime} min</strong> - {timeInfo.longestActivity.activityDate}</p>
+            <h2>Najwięcej spalonych kalorii : </h2>
+            <p>{caloriesInfo.biggestCaloriesActivity.activityType} - <strong>{caloriesInfo.biggestCaloriesActivityValue} kcal</strong>  - {caloriesInfo.biggestCaloriesActivity.date}  </p>
+
+              </div>
+
+            <div>
+            <h2>Łącznie w miesiącu {selectedMonth}:</h2>
+            <p>Ćwiczyłeś przez : <strong>{timeInfo.summedTime} </strong>min</p>
+            <p>Daje to <strong>{timeInfo.averageTime.toFixed(0)} </strong>min na trening</p>
+            <p>Spaliłeś: <strong>{caloriesInfo.summedCalories}</strong> kcal</p>
+            <p>To aż <strong>{(caloriesInfo.summedCalories/7700).toFixed(1)}</strong> zrzuconych kilogramów!</p>
+            <p>Daje to <strong>{caloriesInfo.averageCalories.toFixed(0)}</strong> kcal na trening</p>
+              
+
+            </div>
+
+              </>
+
+            }
+            
+
+            
+            
+
+            
+
+
 
           </div>
 

@@ -11,12 +11,19 @@
     top: 20px;
     padding: 30px;
     display: flex;
-    gap: 40px;
+    gap:80px;
+    .singleMonthContainer{
+        display: flex;
+        gap: 70px;
+    }
 
     
     h1,h2,h3,h4,h5{
         margin: 0px;
 
+    }
+    p{
+        font-size: 1.3em;
     }
     .CompareDiv{
         display: flex;

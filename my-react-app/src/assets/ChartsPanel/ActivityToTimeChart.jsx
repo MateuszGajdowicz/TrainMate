@@ -155,7 +155,7 @@ useEffect(() => {
 
 
     }
-        console.log(finalScaledChartData)
+        console.log({finalScaledChartData})
     setDisplayedChartData([finalScaledChartData])
 }
     else{

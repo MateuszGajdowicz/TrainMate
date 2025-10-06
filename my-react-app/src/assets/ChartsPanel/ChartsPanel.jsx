@@ -27,7 +27,7 @@ function ChartsPanel({activitesList,trainingOptions}){
             }
         }
 
-        return {date:element.activityDate, value:Number(finalGoal), activityType:element.activityType}
+        return {date:element.activityDate, value:Number(finalGoal), activityType:element.activityType, estimatedCalories:element.estimatedCalories}
 
     })
         console.log("tablca:",displayedChartData)
