@@ -13,6 +13,7 @@ import ChallengesPanel from './assets/ChallenegesPanel/ChallengesPanel'
 import MainPanel from './assets/MainPanel/MainPanel'
 import RankingPanel from './assets/RankingPanel/RankingPanel'
 import ChartsPanel from './assets/ChartsPanel/ChartsPANEL.JSX'
+import UserProfilePanel from './assets/UserProfilePanel/UserProfilePanel'
 
 import { collection, getDocs, query,where,doc, addDoc, updateDoc } from 'firebase/firestore'
 import { defaultChallenges } from './assets/ChallenegesPanel/DefaultChallenges'
@@ -55,7 +56,7 @@ function App() {
 
 // 
 
-async function FetchUserInformation() {
+  async function FetchUserInformation() {
     const q = query(
       collection(db, "UserInformation"),
       where("userID", "==", user.uid));
@@ -67,6 +68,9 @@ async function FetchUserInformation() {
       setUserInfo(userInfo)
   
 }
+useEffect(()=>{
+  FetchUserInformation()
+},[])
 async function FetchAllUsers() {
         const q = query(
       collection(db, "UserInformation"));
@@ -213,16 +217,10 @@ useEffect(()=>{
     summedPoints = activitiesPoints+challengesPoints
 
     try{
-      if(userInfo.length===0){
-        let points = {userID:auth.currentUser.uid, 
-          username:auth.currentUser.displayName,
-                      userPoints:summedPoints}
-        const docRef = await addDoc(collection(db, "UserInformation"),points )
-      }
-      else{
+      
         const docRef = doc(db, "UserInformation", userInfo[0].id);
-        await updateDoc(docRef, {username:auth.currentUser.displayName, userPoints:summedPoints})
-      }
+        await updateDoc(docRef, {userPoints:summedPoints})
+      
       FetchUserInformation();
       FetchAllUsers();
 
@@ -275,7 +273,7 @@ useEffect(()=>{
             <Route path='challengesPanel' element={<ChallengesPanel  activitesList={activitesList} trainingOptions={trainingOptions} setAllChallengesList={setAllChallengesList} allChallengesList={allChallengesList} FetchPersonalChallengesList={FetchPersonalChallengesList} user={user}/>}/>
           <Route path='rankingPanel' element={<RankingPanel activitesList={activitesList} allUsersInfo={allUsersInfo} userInfo={userInfo}/>}/>
           <Route path='chartsPanel' element={<ChartsPanel trainingOptions={trainingOptions} activitesList={activitesList}/>} />
-
+          <Route path='userProfilePanel' element={<UserProfilePanel userInfo={userInfo}/>}/>
           </Routes>
         </BrowserRouter>
 

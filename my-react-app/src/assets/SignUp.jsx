@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import './LogIn.css'
-import {auth} from '../firebase'
+import {auth, db} from '../firebase'
+import { collection, addDoc } from 'firebase/firestore'
 
 import { sendEmailVerification,createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 
@@ -27,10 +28,25 @@ function SignUp({username, setUsername,setIsRegistered, setIsEmailConfirmDisplay
 
                 await updateProfile(user,{
                     displayName:username,
+
+
                 } )
                 
             await sendEmailVerification(user)
             setIsEmailConfirmDisplayed(true)
+
+        await addDoc(collection(db, "UserInformation"), {
+          userID: user.uid,
+          username: user.displayName,
+          email: user.email,
+          userPoints: 0,
+          addDate: user.metadata.creationTime,
+          lastLogin: user.metadata.lastSignInTime,
+          userSex:null,
+          userAge:null,
+          userHeight:null,
+          userWeight:null,
+        });
 
             setConfirmPassword("")
             setEmail("")

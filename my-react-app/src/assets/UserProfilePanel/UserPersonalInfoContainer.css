@@ -1,0 +1,37 @@
+.UserPersonalInfoContainer{
+    position: absolute;
+    left:50%;
+    top: 10%;
+    transform: translateX(-50%);
+    background-color: rgb(130, 162, 190);
+    width: 30%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    .infoContainer{
+        display: flex;
+        gap: 20px;
+        position: relative;
+        left: 7%;
+        .data{
+            background-color: aliceblue;
+            border-radius: 20px;
+            width: 80px;
+            max-width: 200px;
+        }
+    }
+    h1,h2,h3,h4{
+        margin: 0px;
+    }
+    .ProfilePicture{
+        width: 100px;
+        height: 100px;
+        background-color: red;
+        }
+    .settingsButton{
+        margin: 20px;
+    }
+
+}
