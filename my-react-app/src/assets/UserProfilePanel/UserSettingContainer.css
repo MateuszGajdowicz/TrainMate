@@ -1,0 +1,107 @@
+.UserSettingsContainer{
+        position: absolute;
+    left: 17%;
+    top: 10%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, hsl(0, 0%, 100%) -9%, hsl(26, 100%, 50%) 120%);
+    width: 30%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    border-radius: 40px;
+      box-shadow: 5px 0 25px rgba(0, 0, 0, 0.4);
+          h1,h2,h3,h4{
+        margin: 0px;
+    }
+      h1{
+        margin-bottom: 30px;
+      }
+          .infoContainer{
+        display: flex;
+        gap: 20px;
+        position: relative;
+        left: 7%;
+        .data{
+            background-color: hsl(26, 100%, 60%);
+            border-radius: 20px;
+            width: auto;
+            min-width: 80px;
+            padding: 0px 10px;
+        }
+    }
+    .resetButton{
+        padding: 10px 20px;
+        border: none;
+        background-color: hsl(26, 100%, 60%);
+        border-radius: 20px;
+              box-shadow: 5px 0 25px rgba(0, 0, 0, 0.2);
+              cursor: pointer;
+              transition: 0.2s ease;
+
+
+    }
+    .resetButton:hover{
+        transform: scale(1.1);
+    }
+        .deleteButton{
+        margin-top: 30px;
+        padding: 20px;
+        background-color:hsl(26, 100%, 45%) ;
+        border: none;
+        border-radius: 20px;
+              box-shadow: 5px 0 25px rgba(0, 0, 0, 0.3);
+              transition: 0.3s ease;
+              font-weight: 600;
+              cursor:pointer
+
+    }
+    .deleteButton:hover{
+        transform: scale(1.1);
+        background-color:red ;
+
+    }
+
+}
+.toggle-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: sans-serif;
+}
+
+.toggle-switch {
+  width: 60px;
+  height: 30px;
+  background-color: #bbb;
+  border-radius: 30px;
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.toggle-switch.on {
+  background-color: #4ade80; 
+}
+
+.toggle-thumb {
+  width: 24px;
+  height: 24px;
+  background-color: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  transition: transform 0.3s ease;
+}
+
+.toggle-switch.on .toggle-thumb {
+  transform: translateX(30px);
+}
+
+.toggle-label {
+  font-size: 0.95rem;
+  user-select: none;
+}

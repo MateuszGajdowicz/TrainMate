@@ -3,20 +3,24 @@
     left:50%;
     top: 10%;
     transform: translateX(-50%);
-    background-color: rgb(130, 162, 190);
+    background: linear-gradient(135deg, hsl(0, 0%, 100%) -9%, hsl(26, 100%, 50%) 120%);
     width: 30%;
     height: 80%;
     display: flex;
     flex-direction: column;
     text-align: center;
+    justify-content: center;
     align-items: center;
+    border-radius: 40px;
+      box-shadow: 5px 0 25px rgba(0, 0, 0, 0.4);
+
     .infoContainer{
         display: flex;
         gap: 20px;
         position: relative;
         left: 7%;
         .data{
-            background-color: aliceblue;
+            background-color: hsl(26, 100%, 60%);
             border-radius: 20px;
             width: 80px;
             max-width: 200px;
@@ -31,7 +35,7 @@
         background-color: red;
         }
     .settingsButton{
-        margin: 20px;
+        margin-top: 60px;
     }
 
 }

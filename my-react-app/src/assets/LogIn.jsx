@@ -7,8 +7,11 @@ function LogIn({setIsRegistered,setIsLoggedIn, user}){
     const [password,setPassword] = useState('')
     const [message, setMessage] =useState('')
 
+    const [isLoading, setIsLoading] = useState(false)
+
     async function LogInUser() {
   try {
+    setMessage('Loading...')
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
@@ -21,6 +24,7 @@ function LogIn({setIsRegistered,setIsLoggedIn, user}){
       setMessage("Twój email nie został zweryfikowany ❌");
       await auth.signOut();
     }
+    setMessage('')
   } catch (error) {
     switch (error.code) {
       case "auth/invalid-email":

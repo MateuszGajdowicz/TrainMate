@@ -273,7 +273,7 @@ useEffect(()=>{
             <Route path='challengesPanel' element={<ChallengesPanel  activitesList={activitesList} trainingOptions={trainingOptions} setAllChallengesList={setAllChallengesList} allChallengesList={allChallengesList} FetchPersonalChallengesList={FetchPersonalChallengesList} user={user}/>}/>
           <Route path='rankingPanel' element={<RankingPanel activitesList={activitesList} allUsersInfo={allUsersInfo} userInfo={userInfo}/>}/>
           <Route path='chartsPanel' element={<ChartsPanel trainingOptions={trainingOptions} activitesList={activitesList}/>} />
-          <Route path='userProfilePanel' element={<UserProfilePanel userInfo={userInfo}/>}/>
+          <Route path='userProfilePanel' element={<UserProfilePanel userInfo={userInfo}FetchUserInformation={FetchUserInformation}/>}/>
           </Routes>
         </BrowserRouter>
 

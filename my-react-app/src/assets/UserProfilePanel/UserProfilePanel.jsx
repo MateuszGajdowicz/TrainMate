@@ -1,8 +1,10 @@
 import UserPersonalInfoContainer from "./UserPersonalnfoContainer"
-function UserProfilePanel({userInfo}){
+import UserSettingsContainer from "./UserSettingContainer"
+function UserProfilePanel({userInfo,FetchUserInformation}){
     return(
 <>
-<UserPersonalInfoContainer userInfo={userInfo}/>
+<UserPersonalInfoContainer FetchUserInformation={FetchUserInformation} userInfo={userInfo}/>
+<UserSettingsContainer userInfo={userInfo}/>
 </>    )
 }
 export default UserProfilePanel

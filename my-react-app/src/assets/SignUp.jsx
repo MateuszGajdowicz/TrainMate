@@ -46,6 +46,7 @@ function SignUp({username, setUsername,setIsRegistered, setIsEmailConfirmDisplay
           userAge:null,
           userHeight:null,
           userWeight:null,
+          userProfilePic:null
         });
 
             setConfirmPassword("")
