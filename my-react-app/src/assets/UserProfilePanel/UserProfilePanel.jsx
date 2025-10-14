@@ -4,7 +4,7 @@ function UserProfilePanel({userInfo,FetchUserInformation}){
     return(
 <>
 <UserPersonalInfoContainer FetchUserInformation={FetchUserInformation} userInfo={userInfo}/>
-<UserSettingsContainer userInfo={userInfo}/>
+<UserSettingsContainer userInfo={userInfo} FetchUserInformation={FetchUserInformation}/>
 </>    )
 }
 export default UserProfilePanel

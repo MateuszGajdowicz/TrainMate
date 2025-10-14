@@ -1,30 +1,139 @@
 import './UserSettingContainer.css'
 import { useEffect, useState } from 'react'
+import { collection, getDocs, query,where,doc, addDoc, updateDoc } from 'firebase/firestore'
+import { db, auth } from '../../firebase';
+import { getAuth, sendPasswordResetEmail, updateEmail,sendEmailVerification ,verifyBeforeUpdateEmail    } from "firebase/auth";
 
-function UserSettingsContainer({userInfo}){
+
+function UserSettingsContainer({userInfo,FetchUserInformation}){
       const [isNotificationOn, setIsNotificationOn] = useState(false);
       const [isDarkOn, setIsDarkOn] = useState(false)
 
       const [selectedElement, setSelectedElement] = useState(null)
 
+      const [selectedUsername, setSelectedUsername] = useState('')
+      const [selectedEmail, setSelectedEmail] = useState('')
+
+
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+
+      async function hadleSettingChange(){
+        try{
+          const docRef = doc(db, 'UserInformation', userInfo[0].id)
+          switch(selectedElement){
+            case 'username':
+              await updateDoc(docRef, {username:selectedUsername})
+              break;
+            // case 'email':
+            //   if(emailRegex.test(selectedEmail)){
+            //         handleEmailChange();
+
+            //   }
+            //   else{
+            //     window.alert("Podaj poprawny adres e-mail np. twojemail@domena.com")
+            //   }
+            //   break;
+
+            
+            
+          }
+        FetchUserInformation();
+        setSelectedElement(null)
+
+        }
+        catch(error){
+          console.log(error)
+        }
+
+
+      }
+
+      useEffect(()=>{
+
+      },)
+
+      // async function handleEmailChange(){
+      //   try{
+      //     const auth = getAuth()
+      //     const user = auth.currentUser
+      //     await updateEmail(user, selectedEmail)
+         
+      //     await updateDoc(docRef,{email:selectedEmail} )
+      //     FetchUserInformation();
+
+
+      //   }
+      //   catch(error){
+      //     console.log(error)
+      //   }
+      // }
+
+      async function handlePasswordReset(){
+        let resetConfirm = window.confirm("Czy na pewno chcesz zresetować hasło?")
+        if(resetConfirm){
+          const auth = getAuth(); 
+          const userEmail = userInfo[0].email;
+          try{
+            await sendPasswordResetEmail(auth, userEmail)
+            window.alert(`Mail do resetu hasła został wysłany na adres ${userInfo[0].email}`)
+
+          }
+          catch(error){
+            console.log(error)
+          }
+
+        }
+      }
+      
+
     return(
         <>
+        
         <div className="UserSettingsContainer">
             <h1>Ustawienia konta</h1>
             <h3>Nazwa użytkownika</h3>
             <div className='infoContainer'>
-                <p className='data'>{userInfo[0].username}</p>
-                <p>Edytuj</p>
+              {
+                selectedElement==='username'?
+                <>
+                <input value={selectedUsername} onChange={event=>setSelectedUsername(event.target.value)} type="text" className='data' style={{backgroundColor:'white'}}/>
+                <p onClick={()=>hadleSettingChange()}>Zapisz</p>
+                <p onClick={()=>setSelectedElement(null)}>Anuluj</p>
+                </>
+                :
+                <>
+                <p className='data'>{userInfo[0]?.username}</p>
+                <p onClick={()=>setSelectedElement('username')}>Edytuj</p>
+                </>
+                
+              }
+
 
             </div>
             <h3>Adres e-mail</h3>
             <div className='infoContainer'>
-                <p className='data'>{userInfo[0].email}</p>
-                <p>Edytuj</p>
+                {selectedElement==='email'?
+                <>
+                <input  value={selectedEmail} onChange={event=>setSelectedEmail(event.target.value)} style={{backgroundColor:'white'}} className='data'  type="email" />
+
+                <p onClick={()=>hadleSettingChange()}>Zapisz</p>
+                <p onClick={()=>setSelectedElement(null)}>Anuluj</p>
+                </>
+                :
+                <>
+              <p className='data'>{userInfo[0]?.email}</p>
+              <p onClick={()=>setSelectedElement('email')}>Edytuj</p>
+
+
+                </>
+
+
+                }
 
             </div>
             <h3>Zresetuj hasło</h3>
-            <button className='resetButton'>Zresetuj</button>
+            <button onClick={handlePasswordReset} className='resetButton'>Zresetuj</button>
 
 
             <h3>Włącz powiadomienia mailowe</h3>
