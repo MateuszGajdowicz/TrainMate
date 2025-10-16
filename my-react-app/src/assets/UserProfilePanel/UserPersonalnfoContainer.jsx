@@ -5,7 +5,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 
 import { collection, getDocs, query,where,doc, addDoc, updateDoc } from 'firebase/firestore'
 
-function UserPersonalInfoContainer({userInfo, FetchUserInformation}){
+function UserPersonalInfoContainer({userInfo, FetchUserInformation,setIsSettingDisplayed}){
 
     const [changedData, setChangedData] = useState(null)
     const [selectedSex, setSelectedSex] = useState(userInfo? userInfo[0].userSex: '')
@@ -157,7 +157,7 @@ function UserPersonalInfoContainer({userInfo, FetchUserInformation}){
                     <p onClick={()=>setChangedData('userHeight')}>Edytuj</p>                }
 
             </div>           
-            <h2 className='settingsButton'>Ustawienia konta</h2>
+            <h2 onClick={()=>setIsSettingDisplayed(true)} className='settingsButton'>Ustawienia konta</h2>
 
 
         </div>

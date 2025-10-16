@@ -14,6 +14,7 @@
     border-radius: 40px;
       box-shadow: 5px 0 25px rgba(0, 0, 0, 0.4);
 
+
     .infoContainer{
         display: flex;
         gap: 20px;
@@ -22,7 +23,7 @@
         .data{
             background-color: hsl(26, 100%, 60%);
             border-radius: 20px;
-            width: 80px;
+            padding: 0px 20px;
             max-width: 200px;
         }
     }
@@ -36,6 +37,15 @@
         }
     .settingsButton{
         margin-top: 60px;
+        padding: 5px 15px;
+        transition: 0.2s ease;
+        border-radius: 30px;
+    }
+    .settingsButton:hover{
+        background-color:hsla(26, 100%, 60%, 0.7) ;
+                box-shadow: 5px 0 25px rgba(0, 0, 0, 0.3);
+                cursor: pointer;
+
     }
 
 }

@@ -2,10 +2,16 @@ import { signInWithEmailAndPassword } from "firebase/auth"
 import { useState } from "react"
 import { auth } from "../firebase";
 
-function LogIn({setIsRegistered,setIsLoggedIn, user}){
+function LogIn({setIsRegistered,setIsLoggedIn, user, setIsPasswordBeingReset}){
     const [email,setEmail] = useState('')
     const [password,setPassword] = useState('')
     const [message, setMessage] =useState('')
+
+    const [isResetDisplayed, setIsResetDisplayed] = useState(false)
+
+    function resetPadssword(){
+
+    }
 
     const [isLoading, setIsLoading] = useState(false)
 
@@ -26,6 +32,7 @@ function LogIn({setIsRegistered,setIsLoggedIn, user}){
     }
     setMessage('')
   } catch (error) {
+    console.log(error)
     switch (error.code) {
       case "auth/invalid-email":
         setMessage("Nieprawidłowy email.");
@@ -33,8 +40,9 @@ function LogIn({setIsRegistered,setIsLoggedIn, user}){
       case "auth/user-not-found":
         setMessage("Nie znaleziono użytkownika o tym adresie.");
         break;
-      case "auth/wrong-password":
-        setMessage("Błędne hasło.");
+      case "auth/invalid-credential":
+        setMessage("Błędne hasło. Spróbuj ponownie");
+        setIsResetDisplayed(true)
         break;
       default:
         setMessage("Coś poszło nie tak. Spróbuj ponownie.");
@@ -52,6 +60,12 @@ function LogIn({setIsRegistered,setIsLoggedIn, user}){
             <p onClick={()=>setIsRegistered(false)}>Nie masz konta? <span className='span'>Zarejestruj się</span></p>
             <button onClick={LogInUser}>Zaloguj</button>
             <p>{message}</p>
+            {
+              isResetDisplayed &&
+            
+            <p onClick={()=>setIsPasswordBeingReset(true)}>Nie pamiętasz hasła? <span className="span">Zresetuj je tutaj!</span> </p>
+
+            }
 
         </div>
     )

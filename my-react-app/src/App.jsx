@@ -14,6 +14,8 @@ import MainPanel from './assets/MainPanel/MainPanel'
 import RankingPanel from './assets/RankingPanel/RankingPanel'
 import ChartsPanel from './assets/ChartsPanel/ChartsPANEL.JSX'
 import UserProfilePanel from './assets/UserProfilePanel/UserProfilePanel'
+import ResetPasswordContainer from './assets/ResetPasswordContainer'
+
 
 import { collection, getDocs, query,where,doc, addDoc, updateDoc } from 'firebase/firestore'
 import { defaultChallenges } from './assets/ChallenegesPanel/DefaultChallenges'
@@ -42,6 +44,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(true)
   const [isRegistered, setIsRegistered] = useState(true)
   const [isEmailConfirmDisplayed, setIsEmailConfirmDisplayed] = useState(false)
+  const [isPasswordBeingReset, setIsPasswordBeingReset] =useState(false)
 
   const [allChallengesList, setAllChallengesList] = useState([])
 
@@ -256,7 +259,11 @@ useEffect(()=>{
               />
             )
           ) : (
-            <LogIn user={user}setIsRegistered={setIsRegistered} setIsLoggedIn={setIsLoggedIn} />
+            !isPasswordBeingReset? 
+                  (<LogIn setIsPasswordBeingReset={setIsPasswordBeingReset} user={user}setIsRegistered={setIsRegistered} setIsLoggedIn={setIsLoggedIn} />)
+                  :
+                  (<ResetPasswordContainer setIsPasswordBeingReset={setIsPasswordBeingReset}/>)
+            
           )}
         </>
       ) : ( 
@@ -271,7 +278,7 @@ useEffect(()=>{
             <Route path='activitiesPanel' element={<YourActivitiesPanel userInfo={userInfo} allChallengesList={allChallengesList} trainingOptions={trainingOptions} fetchActivitiesList={fetchActivitiesList}setActivitesList={setActivitesList} activitesList={activitesList} displayedActivitiesList={displayedActivitiesList} setDisplayedActivitiesList={setDisplayedActivitiesList} user={user}/>}/>
             <Route path='planPanel' element={<PlanPanel trainingsList={trainingsList} fetchTrainingsList={fetchTrainingsList} FetchTrainingPlanList={FetchTrainingPlanList} setTrainingPlanData={setTrainingPlanData} trainingPlanData={trainingPlanData} setTrainingPlan={setTrainingPlan} trainingPlan={trainingPlan} user={user} trainingOptions={trainingOptions}/>}/>
             <Route path='challengesPanel' element={<ChallengesPanel  activitesList={activitesList} trainingOptions={trainingOptions} setAllChallengesList={setAllChallengesList} allChallengesList={allChallengesList} FetchPersonalChallengesList={FetchPersonalChallengesList} user={user}/>}/>
-          <Route path='rankingPanel' element={<RankingPanel activitesList={activitesList} allUsersInfo={allUsersInfo} userInfo={userInfo}/>}/>
+          <Route path='rankingPanel' element={<RankingPanel activitesList={activitesList} allUsersInfo={allUsersInfo} userInfo={userInfo} FetchAllUsers={FetchAllUsers}/>}/>
           <Route path='chartsPanel' element={<ChartsPanel trainingOptions={trainingOptions} activitesList={activitesList}/>} />
           <Route path='userProfilePanel' element={<UserProfilePanel userInfo={userInfo}FetchUserInformation={FetchUserInformation}/>}/>
           </Routes>

@@ -1,6 +1,6 @@
 .UserSettingsContainer{
         position: absolute;
-    left: 17%;
+    left: 50%;
     top: 10%;
     transform: translateX(-50%);
     background: linear-gradient(135deg, hsl(0, 0%, 100%) -9%, hsl(26, 100%, 50%) 120%);
@@ -13,6 +13,25 @@
     align-items: center;
     border-radius: 40px;
       box-shadow: 5px 0 25px rgba(0, 0, 0, 0.4);
+    .arrowLeft{
+        position: absolute;
+        left: 30px;
+        top: 30px;
+        font-size: 2em;
+        border: none;
+        padding:0px 10px;
+        border-radius: 20px;
+              cursor: pointer;
+              transition: 0.2s ease;
+        
+    }
+    .arrowLeft:hover{
+        box-shadow: 5px 0 25px rgba(0, 0, 0, 0.3);
+        background-color: hsla(26, 100%, 60%, 0.8);
+
+
+
+    }
           h1,h2,h3,h4{
         margin: 0px;
     }

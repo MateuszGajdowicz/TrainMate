@@ -2,10 +2,10 @@ import './UserSettingContainer.css'
 import { useEffect, useState } from 'react'
 import { collection, getDocs, query,where,doc, addDoc, updateDoc } from 'firebase/firestore'
 import { db, auth } from '../../firebase';
-import { getAuth, sendPasswordResetEmail, updateEmail,sendEmailVerification ,verifyBeforeUpdateEmail    } from "firebase/auth";
+import { getAuth,updateProfile, sendPasswordResetEmail, updateEmail,sendEmailVerification ,verifyBeforeUpdateEmail    } from "firebase/auth";
 
 
-function UserSettingsContainer({userInfo,FetchUserInformation}){
+function UserSettingsContainer({userInfo,FetchUserInformation,setIsSettingDisplayed}){
       const [isNotificationOn, setIsNotificationOn] = useState(false);
       const [isDarkOn, setIsDarkOn] = useState(false)
 
@@ -23,17 +23,11 @@ function UserSettingsContainer({userInfo,FetchUserInformation}){
           const docRef = doc(db, 'UserInformation', userInfo[0].id)
           switch(selectedElement){
             case 'username':
+              const auth = getAuth()
+              const user = auth.currentUser
               await updateDoc(docRef, {username:selectedUsername})
+              await updateProfile(user, {displayName:selectedUsername})
               break;
-            // case 'email':
-            //   if(emailRegex.test(selectedEmail)){
-            //         handleEmailChange();
-
-            //   }
-            //   else{
-            //     window.alert("Podaj poprawny adres e-mail np. twojemail@domena.com")
-            //   }
-            //   break;
 
             
             
@@ -91,6 +85,7 @@ function UserSettingsContainer({userInfo,FetchUserInformation}){
         <>
         
         <div className="UserSettingsContainer">
+          <p onClick={()=>setIsSettingDisplayed(false)} className='arrowLeft'>&#x2190;</p>
             <h1>Ustawienia konta</h1>
             <h3>Nazwa użytkownika</h3>
             <div className='infoContainer'>
@@ -111,7 +106,7 @@ function UserSettingsContainer({userInfo,FetchUserInformation}){
 
 
             </div>
-            <h3>Adres e-mail</h3>
+            {/* <h3>Adres e-mail</h3>
             <div className='infoContainer'>
                 {selectedElement==='email'?
                 <>
@@ -131,7 +126,7 @@ function UserSettingsContainer({userInfo,FetchUserInformation}){
 
                 }
 
-            </div>
+            </div> */}
             <h3>Zresetuj hasło</h3>
             <button onClick={handlePasswordReset} className='resetButton'>Zresetuj</button>
 
