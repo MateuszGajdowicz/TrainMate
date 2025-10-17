@@ -5,7 +5,7 @@ import { collection, addDoc } from 'firebase/firestore'
 
 import { sendEmailVerification,createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 
-function SignUp({username, setUsername,setIsRegistered, setIsEmailConfirmDisplayed}){
+function SignUp({username, setUsername,setIsRegistered, setIsEmailConfirmDisplayed,allUsersInfo}){
     const [email,setEmail] = useState('');
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -19,6 +19,11 @@ function SignUp({username, setUsername,setIsRegistered, setIsEmailConfirmDisplay
         else if(password!==confirmPassword){
             setMessage("Podane hasła różnią się od siebie")
             return;
+        }
+        else if(allUsersInfo.some(element=>element.username===username)){
+            setMessage("Ta nazwa użytkownika jest już zajęta")
+            return
+
         }
         else{
             try{

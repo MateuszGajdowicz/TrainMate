@@ -86,7 +86,9 @@ async function FetchAllUsers() {
 setAllUsersInfo(sortedUsers)
 
 
-
+useEffect(()=>{
+  FetchAllUsers();
+},[])
 
   
 
@@ -247,6 +249,7 @@ useEffect(()=>{
           {!isRegistered ? (
             !isEmailConfirmDisplayed ? (
               <SignUp 
+              allUsersInfo={allUsersInfo}
               username={username}
               setUsername={setUsername}
                 setIsRegistered={setIsRegistered} 
@@ -280,7 +283,7 @@ useEffect(()=>{
             <Route path='challengesPanel' element={<ChallengesPanel  activitesList={activitesList} trainingOptions={trainingOptions} setAllChallengesList={setAllChallengesList} allChallengesList={allChallengesList} FetchPersonalChallengesList={FetchPersonalChallengesList} user={user}/>}/>
           <Route path='rankingPanel' element={<RankingPanel activitesList={activitesList} allUsersInfo={allUsersInfo} userInfo={userInfo} FetchAllUsers={FetchAllUsers}/>}/>
           <Route path='chartsPanel' element={<ChartsPanel trainingOptions={trainingOptions} activitesList={activitesList}/>} />
-          <Route path='userProfilePanel' element={<UserProfilePanel userInfo={userInfo}FetchUserInformation={FetchUserInformation}/>}/>
+          <Route path='userProfilePanel' element={<UserProfilePanel LogOut={LogOut}  userInfo={userInfo}FetchUserInformation={FetchUserInformation}/>}/>
           </Routes>
         </BrowserRouter>
 

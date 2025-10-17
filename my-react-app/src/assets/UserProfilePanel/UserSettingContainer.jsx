@@ -1,11 +1,11 @@
 import './UserSettingContainer.css'
 import { useEffect, useState } from 'react'
-import { collection, getDocs, query,where,doc, addDoc, updateDoc } from 'firebase/firestore'
+import { collection, getDocs, query,where,doc, addDoc, updateDoc, deleteDoc } from 'firebase/firestore'
 import { db, auth } from '../../firebase';
-import { getAuth,updateProfile, sendPasswordResetEmail, updateEmail,sendEmailVerification ,verifyBeforeUpdateEmail    } from "firebase/auth";
+import { getAuth,updateProfile, sendPasswordResetEmail, updateEmail,sendEmailVerification , deleteUser    } from "firebase/auth";
 
 
-function UserSettingsContainer({userInfo,FetchUserInformation,setIsSettingDisplayed}){
+function UserSettingsContainer({userInfo,FetchUserInformation,setIsSettingDisplayed, LogOut}){
       const [isNotificationOn, setIsNotificationOn] = useState(false);
       const [isDarkOn, setIsDarkOn] = useState(false)
 
@@ -15,7 +15,6 @@ function UserSettingsContainer({userInfo,FetchUserInformation,setIsSettingDispla
       const [selectedEmail, setSelectedEmail] = useState('')
 
 
-          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 
       async function hadleSettingChange(){
@@ -43,25 +42,32 @@ function UserSettingsContainer({userInfo,FetchUserInformation,setIsSettingDispla
 
       }
 
-      useEffect(()=>{
+      async function handleAccountDelete(){
+        const auth = getAuth();
+        const user = auth.currentUser;
+        let confirm= window.confirm("Czy na pewno chcesz usunąć konto? Ta akcja nie będzie mogła być cofnięta, a wszystkie dane użytkownika zostaną usunięte")
+        if(confirm){
+          try{
 
-      },)
-
-      // async function handleEmailChange(){
-      //   try{
-      //     const auth = getAuth()
-      //     const user = auth.currentUser
-      //     await updateEmail(user, selectedEmail)
-         
-      //     await updateDoc(docRef,{email:selectedEmail} )
-      //     FetchUserInformation();
+            await deleteDoc(doc(db,"UserInformation", userInfo[0].id ))
+            await LogOut();
 
 
-      //   }
-      //   catch(error){
-      //     console.log(error)
-      //   }
-      // }
+            await deleteUser(user)
+
+
+          }
+          catch(error){
+            console.log(error)
+
+
+          }
+        }
+
+      }
+
+
+
 
       async function handlePasswordReset(){
         let resetConfirm = window.confirm("Czy na pewno chcesz zresetować hasło?")
@@ -161,7 +167,7 @@ function UserSettingsContainer({userInfo,FetchUserInformation,setIsSettingDispla
 
 
             </div>
-            <button className='deleteButton'>Usuń konto</button>
+            <button className='deleteButton' onClick={handleAccountDelete}>Usuń konto</button>
         </div>
         </>
     )

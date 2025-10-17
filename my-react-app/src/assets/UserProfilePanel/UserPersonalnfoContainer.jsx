@@ -8,10 +8,10 @@ import { collection, getDocs, query,where,doc, addDoc, updateDoc } from 'firebas
 function UserPersonalInfoContainer({userInfo, FetchUserInformation,setIsSettingDisplayed}){
 
     const [changedData, setChangedData] = useState(null)
-    const [selectedSex, setSelectedSex] = useState(userInfo? userInfo[0].userSex: '')
-    const [selectedAge, setSelectedAge] = useState(userInfo? userInfo[0].userAge:0)
-    const [selectedWeight, setSelectedWeight] = useState(userInfo?userInfo[0].userWeight:0)
-    const [selectedHeight, setSelectedHeight] =useState(userInfo?userInfo[0].userHeight:0)
+    const [selectedSex, setSelectedSex] = useState(userInfo? userInfo[0]?.userSex: '')
+    const [selectedAge, setSelectedAge] = useState(userInfo? userInfo[0]?.userAge:0)
+    const [selectedWeight, setSelectedWeight] = useState(userInfo?userInfo[0]?.userWeight:0)
+    const [selectedHeight, setSelectedHeight] =useState(userInfo?userInfo[0]?.userHeight:0)
 
     const [selectedPicture, setSelectedPicture] = useState('')
     const [pictureUrl, setPictureUrl] = useState('')
@@ -75,8 +75,8 @@ function UserPersonalInfoContainer({userInfo, FetchUserInformation,setIsSettingD
             {/* <div className='ProfilePicture'>
                 <input type="file" onChange={event=>setSelectedPicture(event.target.files[0])}/>
             </div> */}
-            <h1>{userInfo[0].username}</h1>
-            <h2>{userInfo[0].email}</h2>
+            <h1>{userInfo[0]?.username}</h1>
+            <h2>{userInfo[0]?.email}</h2>
             
             <p>Informacje o Tobie</p>
             <h3>Płeć</h3>
@@ -89,7 +89,7 @@ function UserPersonalInfoContainer({userInfo, FetchUserInformation,setIsSettingD
                         <option value="Inne">Inne</option>
                     </select>
                     :
-                    <p className='data' >{userInfo[0].userSex===null?'Brak':userInfo[0].userSex}</p>
+                    <p className='data' >{userInfo[0]?.userSex===null?'Brak':userInfo[0]?.userSex}</p>
                 }
                 {changedData==='userSex'?
                     <>
@@ -108,7 +108,7 @@ function UserPersonalInfoContainer({userInfo, FetchUserInformation,setIsSettingD
                     changedData==='userAge'?
                     <input className='data' value={selectedAge} type="number" min='0' onChange={event=>setSelectedAge(event.target.value)}/>
                     :
-                    <p className='data' >{userInfo[0].userAge===null?'Brak':userInfo[0].userAge}</p>
+                    <p className='data' >{userInfo[0]?.userAge===null?'Brak':userInfo[0]?.userAge}</p>
                 }
                 {changedData==='userAge' ?
                     <>
@@ -126,7 +126,7 @@ function UserPersonalInfoContainer({userInfo, FetchUserInformation,setIsSettingD
                     changedData==='userWeight'?
                     <input value={selectedWeight} onChange={event=>setSelectedWeight(event.target.value)} className='data' type="number" min='0'/>
                     :
-                    <p className='data' >{userInfo[0].userWeight===null?'Brak':userInfo[0].userWeight}</p>
+                    <p className='data' >{userInfo[0]?.userWeight===null?'Brak':userInfo[0]?.userWeight}</p>
                 }
                 {changedData==='userWeight'?
                     <>
@@ -145,7 +145,7 @@ function UserPersonalInfoContainer({userInfo, FetchUserInformation,setIsSettingD
                     <input value={selectedHeight} onChange={event=>setSelectedHeight(event.target.value)} className='data' type="number" min='0'/>
                     :
                     
-                    <p className='data' >{userInfo[0].userHeight===null?'Brak':userInfo[0].userHeight}</p>
+                    <p className='data' >{userInfo[0]?.userHeight===null?'Brak':userInfo[0]?.userHeight}</p>
                 }
                 {changedData==='userHeight' ?
                     <>
