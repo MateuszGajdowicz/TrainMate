@@ -1,3 +1,6 @@
+require('dotenv').config(); // jeśli .env w tym samym folderze
+
+
 const admin = require('firebase-admin');
 const cron = require('node-cron');
 const sgMail = require('@sendgrid/mail');
