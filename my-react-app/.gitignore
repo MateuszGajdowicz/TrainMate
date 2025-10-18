@@ -22,3 +22,17 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+# dependencies
+node_modules/
+# build output
+dist/
+# Firebase hosting cache
+.firebase/
+hosting.cache
+# environment variables
+# secrets
+.env
+my-react-app/backend/serviceAccountKey.json
+
+# system
+.DS_Store

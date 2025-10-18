@@ -135,9 +135,21 @@ useEffect(()=>{
           </div>
           <div>
                       <h1>Najwięcej: </h1>
+                      {
+                        displayedChartData.length===0?
+                        <h2>Brak danych</h2>
+                        :
                       <h2>{statsInfo.biggestActivity} - {statsInfo.biggestValue} {unit}</h2>
+
+                      }
           <h1>Najmniej: </h1>
-          <h2>{statsInfo.lowestActivity} - {statsInfo.lowestvalue} {unit}</h2>
+          {
+            displayedChartData.length===0?
+            <h2>Brak danych</h2>
+            :
+            <h2>{statsInfo.lowestActivity} - {statsInfo.lowestvalue} {unit}</h2>
+
+          }
 
           </div>
 

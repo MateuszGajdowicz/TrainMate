@@ -6,7 +6,7 @@ import { getAuth,updateProfile, sendPasswordResetEmail, updateEmail,sendEmailVer
 
 
 function UserSettingsContainer({userInfo,FetchUserInformation,setIsSettingDisplayed, LogOut}){
-      const [isNotificationOn, setIsNotificationOn] = useState(false);
+      const [isNotificationOn, setIsNotificationOn] = useState(userInfo[0]?.areNotificationSent);
       const [isDarkOn, setIsDarkOn] = useState(false)
 
       const [selectedElement, setSelectedElement] = useState(null)
@@ -41,6 +41,24 @@ function UserSettingsContainer({userInfo,FetchUserInformation,setIsSettingDispla
 
 
       }
+
+      async function handleTurnOnNotification(){
+        const docRef = doc(db,'UserInformation', userInfo[0].id)
+
+        try{
+          await updateDoc(docRef, {areNotificationSent:isNotificationOn})
+    
+        }
+        catch(error){
+
+          console.log(error)
+        }
+      }
+
+      useEffect(()=>{
+        handleTurnOnNotification();
+        FetchUserInformation();
+      },[isNotificationOn])
 
       async function handleAccountDelete(){
         const auth = getAuth();
@@ -112,27 +130,7 @@ function UserSettingsContainer({userInfo,FetchUserInformation,setIsSettingDispla
 
 
             </div>
-            {/* <h3>Adres e-mail</h3>
-            <div className='infoContainer'>
-                {selectedElement==='email'?
-                <>
-                <input  value={selectedEmail} onChange={event=>setSelectedEmail(event.target.value)} style={{backgroundColor:'white'}} className='data'  type="email" />
 
-                <p onClick={()=>hadleSettingChange()}>Zapisz</p>
-                <p onClick={()=>setSelectedElement(null)}>Anuluj</p>
-                </>
-                :
-                <>
-              <p className='data'>{userInfo[0]?.email}</p>
-              <p onClick={()=>setSelectedElement('email')}>Edytuj</p>
-
-
-                </>
-
-
-                }
-
-            </div> */}
             <h3>Zresetuj hasło</h3>
             <button onClick={handlePasswordReset} className='resetButton'>Zresetuj</button>
 
@@ -141,12 +139,12 @@ function UserSettingsContainer({userInfo,FetchUserInformation,setIsSettingDispla
             <div className='infoContainer'>
                     <div className="toggle-container">
       <div
-        className={`toggle-switch ${isNotificationOn ? "on" : ""}`}
+        className={`toggle-switch ${userInfo[0].areNotificationSent ? "on" : ""}`}
         onClick={()=>setIsNotificationOn(prev=>!prev)}
       >
         <div className="toggle-thumb"></div>
       </div>
-      <span className="toggle-label">{isNotificationOn ? "Włączone" : "Wyłączone"}</span>
+      <span className="toggle-label">{userInfo[0].areNotificationSent ? "Włączone" : "Wyłączone"}</span>
     </div>
                 
 

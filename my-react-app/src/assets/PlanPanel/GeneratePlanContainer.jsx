@@ -7,7 +7,7 @@ import { doc, updateDoc } from "firebase/firestore";
 import { db, auth } from "../../firebase";
 
 import { CheckIsGoal } from './PlanCreator';
-function GeneratePlanContainer({selectedAddActivity,setIsActivityMatched,planCreatingWay,setPlanCreatingWay,FetchTrainingPlanList,setTrainingPlanData,trainingPlanData,selectedTraining,user,trainingOptions,setTrainingPlan,trainingPlan}){
+function GeneratePlanContainer({setIsLoaderDisplayed,selectedAddActivity,setIsActivityMatched,planCreatingWay,setPlanCreatingWay,FetchTrainingPlanList,setTrainingPlanData,trainingPlanData,selectedTraining,user,trainingOptions,setTrainingPlan,trainingPlan}){
     
     const [trainingOptionsArray, setTrainingOptionsArray] = useState(trainingOptions.map(element=>({value:element, label:element})))
     const goalOptions = ['Poprawa wytrzymałości (kondycji)', 'Budowa masy mięśniowej (siła)', 'Utrata wagi / redukcja tkanki tłuszczowej', 'Poprawa mobilności i elastyczności', 'Poprawa szybkości i zwinności', 'Poprawa zdrowia i samopoczucia'];
@@ -75,6 +75,7 @@ useEffect(()=>{
 
                 
                 try{
+                    setIsLoaderDisplayed(true)
                     if(trainingPlanData.length!==0){
                         const docRef = doc(db, "TrainingPlanData", trainingPlanData[0].id );
                         await updateDoc(docRef, newTrainingPlanData)
@@ -106,6 +107,7 @@ useEffect(()=>{
 
                             
                     }
+                    setIsLoaderDisplayed(false)
 
 
 
@@ -170,7 +172,7 @@ useEffect(()=>{
 
             </div>
 
-            <Select value={selectedActivities} styles={{ control: (base) => ({ ...base, borderRadius: '20px', border: '3px solid hsl(28, 100%, 60%)', width: '400px', boxShadow: 'none' }), placeholder: (base) => ({ ...base, color: '#999' }), multiValue: (base) => ({ ...base, borderRadius: '10px', backgroundColor: 'hsl(28, 100%, 90%)' }) }}
+            <Select value={selectedActivities}  styles={{ control: (base) => ({ ...base, borderRadius: '20px', border: '3px solid hsl(28, 100%, 60%)', width: '400px', boxShadow: 'none' }), placeholder: (base) => ({ ...base, color: '#999' }), multiValue: (base) => ({ ...base, borderRadius: '10px', backgroundColor: 'hsl(28, 100%, 90%)' }) }}
             onChange={setSelectedActivites} classNamePrefix='rs' isMulti options={trainingOptionsArray} type="text" placeholder='Wybierz preferowane aktywności'/>
             <div className='GoalContainer'>
                 <p>Wybierz intensywność:</p>

@@ -116,7 +116,7 @@ async function handleFavourite(element){
                 </div>
 
             )):
-            <h3>Nie masz zaplanowanych żadnych treningów.
+            <h3>Nie wykonałeś jeszcze żadnych aktywności.
                 <br />
                  Może czas to zmienić?</h3>}
 

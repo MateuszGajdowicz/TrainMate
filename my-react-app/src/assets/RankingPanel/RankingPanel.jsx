@@ -11,7 +11,7 @@ function RankingPanel({allUsersInfo,userInfo,activitesList,FetchAllUsers}){
     return(
         <>
         <CurrentUserRanking allUsersInfo={allUsersInfo} userInfo={userInfo}/>
-        <AllUsersRanking userInfo={userInfo} allUsersInfo={allUsersInfo}/>
+        <AllUsersRanking  allUsersInfo={allUsersInfo}/>
         <TrophiesContainer activitesList={activitesList}/>
         </>
     )

@@ -8,7 +8,8 @@ import React from 'react';
 import generatePDF from './generatePDFplan';
 import download from '../../download.png'
 
-function DisplayPlanContainer({trainingsList,fetchTrainingsList,FetchTrainingPlanList,setSelectedTrainingIndex,setSelectedTraining,trainingPlan}){
+function DisplayPlanContainer({isLoaderDisplayed,trainingsList,fetchTrainingsList,FetchTrainingPlanList,setSelectedTrainingIndex,setSelectedTraining,trainingPlan}){
+
 
     const [elementToExpand, setElementToExpand] = useState(null)
 
@@ -157,15 +158,25 @@ useEffect(()=>{
 
         </div>
             <div className='InfoContainer'>
+                {
+                    trainingPlan.length===0?
+                    <p></p>
+                    :
                 <p>Z twoim planem w tydzień spalisz <strong>{totalCalories}</strong> kcal i zdobędziesz <strong>{trainingPlanPoints}</strong> pkt</p>
+
+                }
 
             </div>
 
 
         <div   className='AllSingleTrainigsContainer'> 
+
             {
+                isLoaderDisplayed?
+                (<h3>Czekaj, twój plan właśnie się generuje...</h3>  ):
+
                 trainingPlan.length===0?
-                <h2>Wygląda na to, że nie masz jeszcze planu. Uzupełnij dane obok aby go stworzyć!!</h2>:
+                <h2 style={{marginLeft:"25px"}}>Wygląda na to, że nie masz jeszcze planu. Uzupełnij dane obok aby go stworzyć!!</h2>:
             trainingPlan.sort((a,b)=>a.dayOfTheWeek-b.dayOfTheWeek).map((element, index)=>(
             <div key={index} style={{height:elementToExpand===element && "auto"}} className='SingleTrainigContainer'>
                 <h3>{element.activity}</h3>

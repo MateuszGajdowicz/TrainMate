@@ -2,10 +2,8 @@ import './AllUsersRanking.css'
 import { auth } from "../../firebase"
 import { useEffect } from 'react';
 
-function AllUsersRanking({allUsersInfo,userInfo}){
-    useEffect(()=>{
-        console.log(auth.currentUser.displayName)
-    },[])
+function AllUsersRanking({allUsersInfo}){
+
 
     function setColor(index){
 

@@ -18,6 +18,8 @@ function PlanPanel({trainingsList,fetchTrainingsList,FetchTrainingPlanList,setTr
 
     const [dontShowAgain, setDontShowAgain] = useState(false)
 
+    const [isLoaderDisplayed, setIsLoaderDisplayed] = useState(false)
+
     
     
     return(<>
@@ -45,7 +47,7 @@ function PlanPanel({trainingsList,fetchTrainingsList,FetchTrainingPlanList,setTr
                 )
 
             }
-            <GeneratePlanContainer selectedAddActivity={selectedAddActivity} setIsActivityMatched={setIsActivityMatched} planCreatingWay={planCreatingWay} setPlanCreatingWay={setPlanCreatingWay}  FetchTrainingPlanList={FetchTrainingPlanList} setTrainingPlanData={setTrainingPlanData} trainingPlanData={trainingPlanData} selectedTraining={selectedTraining}  trainingPlan={trainingPlan} setTrainingPlan={setTrainingPlan} user={user} trainingOptions={trainingOptions}/>
+            <GeneratePlanContainer setIsLoaderDisplayed={setIsLoaderDisplayed} selectedAddActivity={selectedAddActivity} setIsActivityMatched={setIsActivityMatched} planCreatingWay={planCreatingWay} setPlanCreatingWay={setPlanCreatingWay}  FetchTrainingPlanList={FetchTrainingPlanList} setTrainingPlanData={setTrainingPlanData} trainingPlanData={trainingPlanData} selectedTraining={selectedTraining}  trainingPlan={trainingPlan} setTrainingPlan={setTrainingPlan} user={user} trainingOptions={trainingOptions}/>
             </>
         )
 
@@ -59,7 +61,7 @@ function PlanPanel({trainingsList,fetchTrainingsList,FetchTrainingPlanList,setTr
         
 
     }
-    <DisplayPlanContainer trainingsList={trainingsList} fetchTrainingsList={fetchTrainingsList} FetchTrainingPlanList={FetchTrainingPlanList} setSelectedTrainingIndex={setSelectedTrainingIndex} setSelectedTraining={setSelectedTraining} trainingPlan={trainingPlan}/>
+    <DisplayPlanContainer isLoaderDisplayed={isLoaderDisplayed} trainingsList={trainingsList} fetchTrainingsList={fetchTrainingsList} FetchTrainingPlanList={FetchTrainingPlanList} setSelectedTrainingIndex={setSelectedTrainingIndex} setSelectedTraining={setSelectedTraining} trainingPlan={trainingPlan}/>
     </>)
 }
 export default PlanPanel

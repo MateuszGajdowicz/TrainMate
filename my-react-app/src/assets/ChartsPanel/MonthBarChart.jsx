@@ -56,7 +56,7 @@ const months = [
         const [selectedActivities, setSelectedActivities] = useState([])
         const [activitiesAnalyzedGoal, setActivitiesAnalyzedGoal] = useState('Ilość treningów')
 
-        const [displayedChartData, setDisplayedChartData] = useState(activitesList)
+        const [displayedChartData, setDisplayedChartData] = useState([])
 
         const [firstMonthSelect, setFirstMonthSelect] = useState("Wybierz miesiąc")
         const [secondMonthSelect, setSecondMonthSelect] = useState("Wybierz miesiąc")
@@ -421,9 +421,21 @@ const months = [
  }
                   <div className='biggestDiv'>
             <h1>Najlepszy miesiąc:</h1>
+            {
+              displayedChartData.reduce((prev, next)=>prev+next.value,0)===0?
+              <p>Brak danych</p>
+              :
             <p>{statsInfo.biggestMonth} - <strong>{statsInfo.biggestValue}</strong> {unit}</p>
+
+            }
             <h1>Najgorszy miesiąc</h1>
+            {
+              displayedChartData.reduce((prev, next)=>prev+next.value,0)===0?
+              <p>Brak danych</p>
+              :
             <p>{statsInfo.lowestMonth} - <strong>{statsInfo.lowestvalue}</strong> {unit}</p>
+
+            }
           </div>
           </div>
 

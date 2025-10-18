@@ -346,13 +346,19 @@ for (let type in groupedByType) {
             </div>
         </div>
         <div className='StatsContainer'>
+            {displayedChartData.length===0?
+            (<h2>Aby zobaczyć statystyki wybierz okres, w którym wykonałeś jakieś aktywności</h2>)
+        :
+        (<>
             <h1>W podanym okresie:</h1>
             <h3>Pokonałeś dystans {summaryInfo.summedDistance} km</h3>
             <h3>Spaliłeś {summaryInfo.summedCalories} kcal</h3>
             <h3>Ćwiczyłeś przez {summaryInfo.summedTime} min</h3>
             <h3>Średnio twój trening trwał {summaryInfo.averageTime.toFixed(2,0)} min</h3>
             <h3>Twój najdłuższy trening to {summaryInfo.longestActivity.activityType} - {summaryInfo.LongestActivityTime} min - {summaryInfo.longestActivity.activityDate} </h3>
-            <h3></h3>
+
+        
+        </>)}
 
         </div>
 
