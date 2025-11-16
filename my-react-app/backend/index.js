@@ -1,5 +1,4 @@
-require('dotenv').config(); // jeśli .env w tym samym folderze
-
+require('dotenv').config();
 
 const admin = require('firebase-admin');
 const cron = require('node-cron');
@@ -12,17 +11,17 @@ admin.initializeApp({
 const db = admin.firestore();
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-async function sendReminder(email, activity) {
+async function sendReminder(email, training) {
   const msg = {
     to: email,
     from: 'trainmateapp@gmail.com',
-    subject: `Przypomnienie o treningu: ${activity.activityType}`,
-    text: `Hej! Twój trening "${activity.activityType}" zaczyna się ${activity.activityDate} o ${activity.activityHour}.`,
+    subject: `Przypomnienie o treningu: ${training.trainingType}`,
+    text: `Hej! Twój trening "${training.trainingType}" zaczyna się ${training.trainingDate} o ${training.trainingHour}.`,
   };
 
   try {
     await sgMail.send(msg);
-    console.log(`✅ Wysłano mail do ${email} o treningu "${activity.activityType}"`);
+    console.log(`✅ Wysłano mail do ${email} o treningu "${training.trainingType}"`);
   } catch (err) {
     console.error('❌ Błąd przy wysyłce maila:', err);
   }
@@ -30,26 +29,26 @@ async function sendReminder(email, activity) {
 
 cron.schedule('* * * * *', async () => {
   const now = new Date();
-  console.log(`\n⏱ Sprawdzanie aktywności o ${now.toLocaleTimeString()}`);
+  console.log(`\n⏱ Sprawdzanie treningów o ${now.toLocaleTimeString()}`);
 
-  const activitiesSnap = await db.collection('Activities').get();
-  console.log(`📋 Znaleziono ${activitiesSnap.size} aktywności w bazie`);
+  const trainingsSnap = await db.collection('Trainings').get();
+  console.log(`📋 Znaleziono ${trainingsSnap.size} treningów w bazie`);
 
-  if (activitiesSnap.empty) return;
+  if (trainingsSnap.empty) return;
 
-  for (const doc of activitiesSnap.docs) {
-    const activity = doc.data();
-    const activityId = doc.id;
-    const activityDateTime = new Date(`${activity.activityDate}T${activity.activityHour}:00`);
-    const diff = (activityDateTime - now) / 1000 / 60; // różnica w minutach
+  for (const doc of trainingsSnap.docs) {
+    const training = doc.data();
+    const trainingId = doc.id;
+    const trainingDateTime = new Date(`${training.trainingDate}T${training.trainingHour}:00`);
+    const diff = (trainingDateTime - now) / 1000 / 60; // różnica w minutach
 
     const userQuery = await db.collection('UserInformation')
-      .where('userID', '==', activity.userID)
+      .where('userID', '==', training.userID)
       .limit(1)
       .get();
 
     if (userQuery.empty) {
-      console.log(`⚠️ Brak danych użytkownika dla userID ${activity.userID}`);
+      console.log(`⚠️ Brak danych użytkownika dla userID ${training.userID}`);
       continue;
     }
 
@@ -61,23 +60,23 @@ cron.schedule('* * * * *', async () => {
       continue;
     }
 
-    if (activity.reminderSent) {
-      console.log(`ℹ️ Przypomnienie dla "${activity.activityType}" już wysłane, pomijam.`);
+    if (training.reminderSent) {
+      console.log(`ℹ️ Przypomnienie dla "${training.trainingType}" już wysłane, pomijam.`);
       continue;
     }
 
     if (!email) {
-      console.log(`⚠️ Brak adresu email dla userID ${activity.userID}`);
+      console.log(`⚠️ Brak adresu email dla userID ${training.userID}`);
       continue;
     }
 
     if (diff > 0 && diff <= 30) {
-      console.log(`✉️ Wysyłam mail do ${email} o treningu "${activity.activityType}" (za ${Math.round(diff)} min)`);
-      await sendReminder(email, activity);
+      console.log(`✉️ Wysyłam mail do ${email} o treningu "${training.trainingType}" (za ${Math.round(diff)} min)`);
+      await sendReminder(email, training);
 
-      await db.collection('Activities').doc(activityId).update({ reminderSent: true });
+      await db.collection('Trainings').doc(trainingId).update({ reminderSent: true });
     } else {
-      console.log(`⏳ Trening "${activity.activityType}" użytkownika ${email} nie jest w ciągu 30 minut (różnica: ${Math.round(diff)} min)`);
+      console.log(`⏳ Trening "${training.trainingType}" użytkownika ${email} nie jest w ciągu 30 minut (różnica: ${Math.round(diff)} min)`);
     }
   }
 

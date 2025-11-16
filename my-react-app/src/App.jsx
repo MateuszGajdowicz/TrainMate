@@ -1,4 +1,4 @@
-import { useState,useEffect, act, use } from 'react'
+import { useState, useEffect, act, use } from 'react'
 import './App.css'
 import { onAuthStateChanged, signOut } from 'firebase/auth'
 import { auth, db } from './firebase'
@@ -16,27 +16,78 @@ import ChartsPanel from './assets/ChartsPanel/ChartsPANEL.JSX'
 import UserProfilePanel from './assets/UserProfilePanel/UserProfilePanel'
 import ResetPasswordContainer from './assets/ResetPasswordContainer'
 
-
-import { collection, getDocs, query,where,doc, addDoc, updateDoc } from 'firebase/firestore'
+import { collection, getDocs, query, where, doc, addDoc, updateDoc } from 'firebase/firestore'
 import { defaultChallenges } from './assets/ChallenegesPanel/DefaultChallenges'
 
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 
 function App() {
-  const trainingOptions=["Bieganie","Rower","Pływanie","Siłownia","Joga","Stretching","HIIT","Pilates","Wspinaczka","Nordic Walking","Rolki","Deskorolka","Kajakarstwo","Wioślarstwo","Snowboard","Narciarstwo","Łyżwy","Boks","Kickboxing","Sztuki walki","Krav Maga","CrossFit","Trening funkcjonalny","Spacer","Marszobieg","Taniec","Zumba","Aqua aerobic","Trening obwodowy","Calisthenics","Gimnastyka","Parkour","Triathlon","Piłka nożna","Koszykówka","Siatkówka","Tenis","Tenis stołowy","Badminton","Squash","Golf","Bouldering","Surfing","Kitesurfing","Windsurfing","SUP (Stand Up Paddle)","Łucznictwo","Jeździectwo","Paintball","Airsoft","Żeglarstwo","Turystyka górska","Bieg na orientację"];
+  const trainingOptions = [
+    'Bieganie',
+    'Rower',
+    'Pływanie',
+    'Siłownia',
+    'Joga',
+    'Stretching',
+    'HIIT',
+    'Pilates',
+    'Wspinaczka',
+    'Nordic Walking',
+    'Rolki',
+    'Deskorolka',
+    'Kajakarstwo',
+    'Wioślarstwo',
+    'Snowboard',
+    'Narciarstwo',
+    'Łyżwy',
+    'Boks',
+    'Kickboxing',
+    'Sztuki walki',
+    'Krav Maga',
+    'CrossFit',
+    'Trening funkcjonalny',
+    'Spacer',
+    'Marszobieg',
+    'Taniec',
+    'Zumba',
+    'Aqua aerobic',
+    'Trening obwodowy',
+    'Calisthenics',
+    'Gimnastyka',
+    'Parkour',
+    'Triathlon',
+    'Piłka nożna',
+    'Koszykówka',
+    'Siatkówka',
+    'Tenis',
+    'Tenis stołowy',
+    'Badminton',
+    'Squash',
+    'Golf',
+    'Bouldering',
+    'Surfing',
+    'Kitesurfing',
+    'Windsurfing',
+    'SUP (Stand Up Paddle)',
+    'Łucznictwo',
+    'Jeździectwo',
+    'Paintball',
+    'Airsoft',
+    'Żeglarstwo',
+    'Turystyka górska',
+    'Bieg na orientację',
+  ]
 
   const [displayedTrainingsList, setDisplayedTrainingList] = useState([])
   const [trainingsList, setTrainingsList] = useState([])
   const [todayTrainings, setTodayTrainings] = useState([])
 
-
   const [activitesList, setActivitesList] = useState([])
   const [displayedActivitiesList, setDisplayedActivitiesList] = useState([])
-  const [points, setPoints] = useState(0);
+  const [points, setPoints] = useState(0)
 
   const [trainingPlan, setTrainingPlan] = useState([])
   const [trainingPlanData, setTrainingPlanData] = useState([])
-
 
   const [favourites, setFavourites] = useState([])
 
@@ -44,249 +95,296 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(true)
   const [isRegistered, setIsRegistered] = useState(true)
   const [isEmailConfirmDisplayed, setIsEmailConfirmDisplayed] = useState(false)
-  const [isPasswordBeingReset, setIsPasswordBeingReset] =useState(false)
+  const [isPasswordBeingReset, setIsPasswordBeingReset] = useState(false)
 
   const [allChallengesList, setAllChallengesList] = useState([])
 
   const [userInfo, setUserInfo] = useState([])
   const [allUsersInfo, setAllUsersInfo] = useState([])
-  
 
   const [isRunnerOpacityFull, setIsRunnerOpacityFull] = useState(false)
 
-
   const [username, setUsername] = useState('')
 
-// 
+  //
 
   async function FetchUserInformation() {
-    const q = query(
-      collection(db, "UserInformation"),
-      where("userID", "==", user.uid));
-      const querySnapshot =await getDocs(q)
-      const userInfo = querySnapshot.docs.map(doc=>({
-        id:doc.id,
-        ...doc.data()
-      }))
-      setUserInfo(userInfo)
-  
-}
-useEffect(()=>{
-  FetchUserInformation()
-},[])
-async function FetchAllUsers() {
-        const q = query(
-      collection(db, "UserInformation"));
-      const querySnapshot =await getDocs(q)
-      const userInfo = querySnapshot.docs.map(doc=>({
-        id:doc.id,
-        ...doc.data()
-      }))
-      const sortedUsers = userInfo.sort((a,b)=>b.userPoints - a.userPoints)
-setAllUsersInfo(sortedUsers)
+    const q = query(collection(db, 'UserInformation'), where('userID', '==', user.uid))
+    const querySnapshot = await getDocs(q)
+    const userInfo = querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    }))
+    setUserInfo(userInfo)
+  }
+  useEffect(() => {
+    FetchUserInformation()
+  }, [])
+  async function FetchAllUsers() {
+    const q = query(collection(db, 'UserInformation'))
+    const querySnapshot = await getDocs(q)
+    const userInfo = querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    }))
+    const sortedUsers = userInfo.sort((a, b) => b.userPoints - a.userPoints)
+    setAllUsersInfo(sortedUsers)
+  }
+  useEffect(() => {
+    FetchAllUsers()
+  }, [])
 
+  // useEffect(()=>{
+  //   console.log(allUsersInfo)
+  // },[allUsersInfo])
+  // useEffect(()=>{
+  //   FetchAllUsers()
+  // },[])
+  async function FetchPersonalChallengesList() {
+    const qPersonal = query(collection(db, 'PersonalChallenges'), where('userID', '==', user.uid))
 
-useEffect(()=>{
-  FetchAllUsers();
-},[])
-
-  
-
-  
-}
-// useEffect(()=>{
-//   console.log(allUsersInfo)
-// },[allUsersInfo])
-// useEffect(()=>{
-//   FetchAllUsers()
-// },[])
-async function FetchPersonalChallengesList() {
-    const qPersonal = query(
-      collection(db,"PersonalChallenges"),
-      where("userID", "==", user.uid));
-
-      const querySnapshot = await getDocs(qPersonal)
-      const personalChallengesList = querySnapshot.docs.map(doc=>({
-        id:doc.id,
-        ...doc.data()
-
-      }));
-      let allChallenges = (personalChallengesList)
-      setAllChallengesList(allChallenges)
-      
-    }
-// useEffect(()=>{
-//   console.log(allChallengesList)
-// }, [allChallengesList])
-
+    const querySnapshot = await getDocs(qPersonal)
+    const personalChallengesList = querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    }))
+    let allChallenges = personalChallengesList
+    setAllChallengesList(allChallenges)
+  }
+  // useEffect(()=>{
+  //   console.log(allChallengesList)
+  // }, [allChallengesList])
 
   // useEffect(()=>{
   //   setAllChallengesList([...defaultChallenges, ...personalChallengesList])
   // }, [personalChallengesList])
 
-    
+  async function FetchTrainingPlanList() {
+    const q = query(collection(db, 'TrainingPlanList'), where('userID', '==', user.uid))
+    const querySnapshot = await getDocs(q)
+    const trainingPlanList = querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    }))
+    setTrainingPlan(trainingPlanList)
 
-  async function FetchTrainingPlanList(){
-        const q= query(
-            collection(db, "TrainingPlanList"),
-            where("userID", "==", user.uid));
-            const querySnapshot = await getDocs(q)
-            const trainingPlanList = querySnapshot.docs.map(doc=>({
-                id:doc.id,
-                ...doc.data()
-            }));
-            setTrainingPlan(trainingPlanList)
+    const q2 = query(collection(db, 'TrainingPlanData'), where('userID', '==', user.uid))
+    const querySnapshot2 = await getDocs(q2)
+    const trainingPlanData = querySnapshot2.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    }))
+    setTrainingPlanData(trainingPlanData)
+  }
 
-            const q2 = query(
-            collection(db, "TrainingPlanData"),
-            where("userID", "==", user.uid));
-            const querySnapshot2 = await getDocs(q2)
-            const trainingPlanData = querySnapshot2.docs.map(doc=>({
-                id:doc.id,
-                ...doc.data()
-            }));
-            setTrainingPlanData(trainingPlanData)
-  
-    }
-
-
-useEffect(()=>{
-    onAuthStateChanged(auth, (u)=>{
+  useEffect(() => {
+    onAuthStateChanged(auth, u => {
       setUser(u)
     })
-    
-
   }, [])
 
-
-  function LogOut(){
+  function LogOut() {
     signOut(auth)
     setUser(null)
     setIsLoggedIn(false)
   }
 
   async function fetchTrainingsList() {
-    const q = query(
-      collection(db, "Trainings"),
-      where("userID","==", user.uid));
-      const querySnapshot = await getDocs(q);
-      const trainings = querySnapshot.docs.map(doc=>({
-        id:doc.id,
-        ...doc.data()
-      }));
+    const q = query(collection(db, 'Trainings'), where('userID', '==', user.uid))
+    const querySnapshot = await getDocs(q)
+    const trainings = querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    }))
     setDisplayedTrainingList(trainings.sort((a, b) => new Date(a.trainingDate) - new Date(b.trainingDate)))
-    setTrainingsList(trainings.sort((a, b) => new Date(a.trainingDate) - new Date(b.trainingDate))
-)
-
+    setTrainingsList(trainings.sort((a, b) => new Date(a.trainingDate) - new Date(b.trainingDate)))
   }
   async function fetchActivitiesList() {
-    const q = query(
-      collection(db, "Activities"),
-      where("userID","==", user.uid));
-      const querySnapshot = await getDocs(q);
-      const trainings = querySnapshot.docs.map(doc=>({
-        id:doc.id,
-        ...doc.data()
-      }));
+    const q = query(collection(db, 'Activities'), where('userID', '==', user.uid))
+    const querySnapshot = await getDocs(q)
+    const trainings = querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    }))
     setDisplayedActivitiesList(trainings.sort((a, b) => new Date(b.activityDate) - new Date(a.activityDate)))
-    setActivitesList(trainings.sort((a, b) => new Date(b.activityDate) - new Date(a.activityDate))
-)
+    setActivitesList(trainings.sort((a, b) => new Date(b.activityDate) - new Date(a.activityDate)))
   }
-// useEffect(()=>{
-//   if(activitesList.length!==0){
-//       let newPoints = (activitesList.reduce((prev, next)=>prev+Number(next.points),0))
-//       console.log(newPoints)
-//       setPoints(newPoints)
+  // useEffect(()=>{
+  //   if(activitesList.length!==0){
+  //       let newPoints = (activitesList.reduce((prev, next)=>prev+Number(next.points),0))
+  //       console.log(newPoints)
+  //       setPoints(newPoints)
 
-//   }
+  //   }
 
-// }, [activitesList])
+  // }, [activitesList])
 
-  useEffect(()=>{
-    if(user){
-          fetchTrainingsList();
-          fetchActivitiesList();
-          FetchPersonalChallengesList();
-          FetchTrainingPlanList();
-          FetchUserInformation();
-
-
+  useEffect(() => {
+    if (user) {
+      fetchTrainingsList()
+      fetchActivitiesList()
+      FetchPersonalChallengesList()
+      FetchTrainingPlanList()
+      FetchUserInformation()
     }
   }, [user])
 
   async function CountPoints() {
-    let summedPoints = 0;
-    let activitiesPoints = activitesList.reduce((prev, next)=>prev+Number(next.points),0)
-    let challengesPoints = allChallengesList.filter(element=>element.status==="finished").reduce((prev, next)=>prev+Number(next.points),0)
-    
-    summedPoints = activitiesPoints+challengesPoints
+    let summedPoints = 0
+    let activitiesPoints = activitesList.reduce((prev, next) => prev + Number(next.points), 0)
+    let challengesPoints = allChallengesList
+      .filter(element => element.status === 'finished')
+      .reduce((prev, next) => prev + Number(next.points), 0)
 
-    try{
-      
-        const docRef = doc(db, "UserInformation", userInfo[0].id);
-        await updateDoc(docRef, {userPoints:summedPoints})
-      
-      FetchUserInformation();
-      FetchAllUsers();
+    summedPoints = activitiesPoints + challengesPoints
 
-    }
+    try {
+      const docRef = doc(db, 'UserInformation', userInfo[0].id)
+      await updateDoc(docRef, { userPoints: summedPoints })
 
-    catch(error){
+      FetchUserInformation()
+      FetchAllUsers()
+    } catch (error) {
       console.log(error)
     }
   }
 
-  useEffect(()=>{
-    CountPoints();
-  }, [activitesList,allChallengesList])
-  return(
+  useEffect(() => {
+    CountPoints()
+  }, [activitesList, allChallengesList])
+  return (
     <>
-    
-      <div style={{opacity:isRunnerOpacityFull?"1":"0.55"}}className='BackgroundImage'></div>
+      <div style={{ opacity: isRunnerOpacityFull ? '1' : '0.55' }} className="BackgroundImage"></div>
 
       {!isLoggedIn ? (
         <>
           {!isRegistered ? (
             !isEmailConfirmDisplayed ? (
-              <SignUp 
-              allUsersInfo={allUsersInfo}
-              username={username}
-              setUsername={setUsername}
-                setIsRegistered={setIsRegistered} 
-                setIsEmailConfirmDisplayed={setIsEmailConfirmDisplayed} 
+              <SignUp
+                allUsersInfo={allUsersInfo}
+                username={username}
+                setUsername={setUsername}
+                setIsRegistered={setIsRegistered}
+                setIsEmailConfirmDisplayed={setIsEmailConfirmDisplayed}
               />
             ) : (
-              <ConfirmEmail 
-                setIsEmailConfirmDisplayed={setIsEmailConfirmDisplayed} 
-                setIsRegistered={setIsRegistered} 
-              />
+              <ConfirmEmail setIsEmailConfirmDisplayed={setIsEmailConfirmDisplayed} setIsRegistered={setIsRegistered} />
             )
+          ) : !isPasswordBeingReset ? (
+            <LogIn
+              setIsPasswordBeingReset={setIsPasswordBeingReset}
+              user={user}
+              setIsRegistered={setIsRegistered}
+              setIsLoggedIn={setIsLoggedIn}
+            />
           ) : (
-            !isPasswordBeingReset? 
-                  (<LogIn setIsPasswordBeingReset={setIsPasswordBeingReset} user={user}setIsRegistered={setIsRegistered} setIsLoggedIn={setIsLoggedIn} />)
-                  :
-                  (<ResetPasswordContainer setIsPasswordBeingReset={setIsPasswordBeingReset}/>)
-            
+            <ResetPasswordContainer setIsPasswordBeingReset={setIsPasswordBeingReset} />
           )}
         </>
-      ) : ( 
+      ) : (
         <>
           <BrowserRouter>
+            <NavBar LogOut={LogOut} />
 
-          <NavBar LogOut={LogOut}/>
-
-          <Routes>
-            <Route path='/' element={<MainPanel FetchPersonalChallengesList={FetchPersonalChallengesList} fetchActivitiesList={fetchActivitiesList} fetchTrainingsList={fetchTrainingsList} trainingsList={trainingsList} allChallengesList={allChallengesList} activitesList={activitesList}/>}/>
-            <Route path='trainingsPanel' element={<YourTrainingsPanel setTodayTrainings={setTodayTrainings}  favourites={favourites} setFavourites={setFavourites} displayedTrainingsList={displayedTrainingsList} setDisplayedTrainingList={setDisplayedTrainingList} setTrainingsList={setTrainingsList} trainingsList={trainingsList} fetchTrainingsList={fetchTrainingsList} user={user} trainingOptions={trainingOptions}/>}/>
-            <Route path='activitiesPanel' element={<YourActivitiesPanel userInfo={userInfo} allChallengesList={allChallengesList} trainingOptions={trainingOptions} fetchActivitiesList={fetchActivitiesList}setActivitesList={setActivitesList} activitesList={activitesList} displayedActivitiesList={displayedActivitiesList} setDisplayedActivitiesList={setDisplayedActivitiesList} user={user}/>}/>
-            <Route path='planPanel' element={<PlanPanel trainingsList={trainingsList} fetchTrainingsList={fetchTrainingsList} FetchTrainingPlanList={FetchTrainingPlanList} setTrainingPlanData={setTrainingPlanData} trainingPlanData={trainingPlanData} setTrainingPlan={setTrainingPlan} trainingPlan={trainingPlan} user={user} trainingOptions={trainingOptions}/>}/>
-            <Route path='challengesPanel' element={<ChallengesPanel  activitesList={activitesList} trainingOptions={trainingOptions} setAllChallengesList={setAllChallengesList} allChallengesList={allChallengesList} FetchPersonalChallengesList={FetchPersonalChallengesList} user={user}/>}/>
-          <Route path='rankingPanel' element={<RankingPanel activitesList={activitesList} allUsersInfo={allUsersInfo} userInfo={userInfo} FetchAllUsers={FetchAllUsers}/>}/>
-          <Route path='chartsPanel' element={<ChartsPanel trainingOptions={trainingOptions} activitesList={activitesList}/>} />
-          <Route path='userProfilePanel' element={<UserProfilePanel LogOut={LogOut}  userInfo={userInfo}FetchUserInformation={FetchUserInformation}/>}/>
-          </Routes>
-        </BrowserRouter>
-
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <MainPanel
+                    FetchPersonalChallengesList={FetchPersonalChallengesList}
+                    fetchActivitiesList={fetchActivitiesList}
+                    fetchTrainingsList={fetchTrainingsList}
+                    trainingsList={trainingsList}
+                    allChallengesList={allChallengesList}
+                    activitesList={activitesList}
+                  />
+                }
+              />
+              <Route
+                path="trainingsPanel"
+                element={
+                  <YourTrainingsPanel
+                    setTodayTrainings={setTodayTrainings}
+                    favourites={favourites}
+                    setFavourites={setFavourites}
+                    displayedTrainingsList={displayedTrainingsList}
+                    setDisplayedTrainingList={setDisplayedTrainingList}
+                    setTrainingsList={setTrainingsList}
+                    trainingsList={trainingsList}
+                    fetchTrainingsList={fetchTrainingsList}
+                    user={user}
+                    trainingOptions={trainingOptions}
+                  />
+                }
+              />
+              <Route
+                path="activitiesPanel"
+                element={
+                  <YourActivitiesPanel
+                    userInfo={userInfo}
+                    allChallengesList={allChallengesList}
+                    trainingOptions={trainingOptions}
+                    fetchActivitiesList={fetchActivitiesList}
+                    setActivitesList={setActivitesList}
+                    activitesList={activitesList}
+                    displayedActivitiesList={displayedActivitiesList}
+                    setDisplayedActivitiesList={setDisplayedActivitiesList}
+                    user={user}
+                  />
+                }
+              />
+              <Route
+                path="planPanel"
+                element={
+                  <PlanPanel
+                    trainingsList={trainingsList}
+                    fetchTrainingsList={fetchTrainingsList}
+                    FetchTrainingPlanList={FetchTrainingPlanList}
+                    setTrainingPlanData={setTrainingPlanData}
+                    trainingPlanData={trainingPlanData}
+                    setTrainingPlan={setTrainingPlan}
+                    trainingPlan={trainingPlan}
+                    user={user}
+                    trainingOptions={trainingOptions}
+                  />
+                }
+              />
+              <Route
+                path="challengesPanel"
+                element={
+                  <ChallengesPanel
+                    activitesList={activitesList}
+                    trainingOptions={trainingOptions}
+                    setAllChallengesList={setAllChallengesList}
+                    allChallengesList={allChallengesList}
+                    FetchPersonalChallengesList={FetchPersonalChallengesList}
+                    user={user}
+                  />
+                }
+              />
+              <Route
+                path="rankingPanel"
+                element={
+                  <RankingPanel
+                    activitesList={activitesList}
+                    allUsersInfo={allUsersInfo}
+                    userInfo={userInfo}
+                    FetchAllUsers={FetchAllUsers}
+                  />
+                }
+              />
+              <Route
+                path="chartsPanel"
+                element={<ChartsPanel trainingOptions={trainingOptions} activitesList={activitesList} />}
+              />
+              <Route
+                path="userProfilePanel"
+                element={
+                  <UserProfilePanel LogOut={LogOut} userInfo={userInfo} FetchUserInformation={FetchUserInformation} />
+                }
+              />
+            </Routes>
+          </BrowserRouter>
         </>
       )}
     </>
