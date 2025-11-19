@@ -15,3 +15,9 @@ body {
   background-repeat: no-repeat;
   z-index: -10;
 }
+@media(max-width:479px){
+  .BackgroundImage{
+    display: none;
+  }
+
+}

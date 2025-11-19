@@ -3,6 +3,8 @@ import './ConfirmPanel.css'
 import { deleteDoc, updateDoc } from 'firebase/firestore'
 import { auth, db } from '../../firebase'
 import { addDoc, collection,doc } from 'firebase/firestore';
+import { getDownloadURL } from 'firebase/storage';
+import { generateImage } from './downloadImage';
 function ConfirmPanel({fetchActivitiesList,fetchTrainingsList,selectedTraining,setIsConfirmDisplayed,setSelectedTraining}){
     
 
@@ -68,6 +70,8 @@ function ConfirmPanel({fetchActivitiesList,fetchTrainingsList,selectedTraining,s
     
 
     }
+
+
     
     return(
         <div className='Container'>
@@ -98,7 +102,7 @@ function ConfirmPanel({fetchActivitiesList,fetchTrainingsList,selectedTraining,s
             <p>Po podaniu informacji kilknij <strong>"Zakończ"</strong>  i ciesz się swoim nowym sukcesem!</p>
             <div className='buttonContainer'>
                 <button onClick={handleFinishTraining}>Zakończ</button>
-                <button>Udostępnij</button>
+                <button onClick={()=>generateImage(selectedTraining)} >Udostępnij</button>
                 <button onClick={()=>{setIsConfirmDisplayed(false), setSelectedTraining(null)}}>Anuluj</button>
 
 

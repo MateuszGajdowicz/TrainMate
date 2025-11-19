@@ -4,11 +4,12 @@
     align-items: center;
     z-index: 100000;
     height: auto;
-    width: 400px;
+    width: 31%;
     position: absolute;
     top: 11%;
     left: 5%;
     gap: 20px;
+    font-size:1rem;
     h1{
         font-size: 4em;
         margin: 0px;
@@ -35,7 +36,7 @@
 
     }
     .Logo{
-        background-color:#FF9131;
+        background-color:#e98e3f;
         width: 100%;
         display: flex;
         justify-content: center;
@@ -77,5 +78,14 @@
 p{
     cursor: pointer;
     margin: 0px;
+
+}
+@media(max-width:479px){
+  .LogInContainer{
+    transform: translateX(-50%);
+    left: 50%;
+    top: 20%;
+    width: 85%;
+  }
 
 }

@@ -13,7 +13,6 @@ function LogIn({setIsRegistered,setIsLoggedIn, user, setIsPasswordBeingReset}){
 
     }
 
-    const [isLoading, setIsLoading] = useState(false)
 
     async function LogInUser() {
   try {

@@ -1,10 +1,5 @@
 
 .TodayTrainingsContainer{
-    position: absolute;
-    left:35%;
-    top: 16%;
-    position: absolute;
-    width: 25%;
     font-size: 1.2em;
     display: flex;
     flex-direction: column;
@@ -12,12 +7,9 @@
     border-radius: 30px;
             background: linear-gradient(-135deg, hsl(0, 0%, 100%) 5%, hsl(26, 100%, 50%) 200%);
         box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3); /* cien */;
-    height: auto;
     .AllTrainingsContainer{
-        height: 80%;
         display: flex;
         flex-direction: column;
-        gap: 5px;
         overflow: scroll;
     }
 
@@ -49,11 +41,12 @@
     .SingleTrainingContainer{
         display: flex;
         justify-content: space-evenly;
-        height: 40%;
+        /* margin-top: 10px; */
         margin: 5px;
         background: linear-gradient(135deg, hsl(0, 0%, 100%) 5%, hsl(200, 80%, 80%) 110%);
                 box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2); /* cien */;
                 border-radius: 30px;
+                height: 100%;
         
 
         
@@ -118,4 +111,15 @@
 }
     .AllTrainingsContainer::-webkit-scrollbar {
   display: none;                 /* Chrome, Safari */
+}
+@media(max-width:479px){
+  .TodayTrainingsContainer{
+    min-height: none;
+
+  }
+.TodayTrainingsContainer .noDisplayButton{
+        font-size: 1.5rem;
+        width: 60%;
+        padding: 15px;
+    }
 }

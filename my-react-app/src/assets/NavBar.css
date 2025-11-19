@@ -37,3 +37,8 @@ nav{
 
     }
 }
+@media(max-width:479px){
+  nav{
+    display: none;
+  }
+}

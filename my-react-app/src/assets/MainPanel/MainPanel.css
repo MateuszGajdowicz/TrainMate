@@ -1,0 +1,52 @@
+.quote{
+    font-size: 2.4rem;
+    margin:40px 20px
+}
+.allContainer{
+    display: flex;
+    height: 80%;
+    width: 90%;
+    left: 2%;
+    position: absolute;
+    top: 17%;
+    gap: 50px;
+    
+}
+.fourContainer{
+    display: grid;
+    width: 60%;
+    position: relative;
+
+    grid-template-columns: repeat(2, 1fr); 
+    grid-template-rows: repeat(2, 1fr);   
+    gap: 20px;
+    
+}
+@media(max-width:479px){
+  .quote{
+    font-size: 1rem;
+    margin:20px 20px;
+
+  }
+  .fourContainer{
+    grid-template-columns: repeat(1,1fr);
+        top: 10%;
+        transform: translateX(-50%);
+        left: 50%;
+        height: auto;
+        width: 100%;
+  }
+}
+
+@media(max-width:479px){
+  .allContainer{
+    flex-direction: column;
+    gap: 0px;
+    transform: translateX(-50%) ;
+    left: 50%;
+    top:10%;
+
+
+  }
+
+}

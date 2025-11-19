@@ -5,6 +5,7 @@ import ConfirmPanel from "./ConfiirmPanel";
 import FailedNotification from "./FailedNotification";
 import MissedTrainings from "./MIssedTrainings";
 import PinnedChallenges from "./PinnedChallenges";
+import './MainPanel.css'
 
 function MainPanel({FetchPersonalChallengesList,fetchActivitiesList,activitesList,allChallengesList,trainingsList,fetchTrainingsList}){
 
@@ -73,11 +74,15 @@ useEffect(()=>{
 
     return(
         <>
-        <h1 style={{fontSize:"2.3em",margin:"40px 20px"}}>{randomQuote}</h1>
+        <h1 className="quote" >{randomQuote}</h1>
+                <div className="allContainer">
+
         <SummaryPanel thisMonthActivities={thisMonthActivities} allChallengesList={allChallengesList}  activitesList={activitesList}/>
+        <div className="fourContainer">
         <TodayTrainings todayTrainings={todayTrainings} setIsFailedDisplayed={setIsFailedDisplayed} setIsConfirmDisplayed={setIsConfirmDisplayed} setSelectedTraining={setSelectedTraining} trainingsList={trainingsList}/>
         <MissedTrainings missedTrainings={missedTrainings} setIsFailedDisplayed={setIsFailedDisplayed} setIsConfirmDisplayed={setIsConfirmDisplayed} setSelectedTraining={setSelectedTraining} trainingsList={trainingsList}/>
         <PinnedChallenges activitesList={activitesList} FetchPersonalChallengesList={FetchPersonalChallengesList} allChallengesList={allChallengesList} pinnedChallenges={pinnedChallenges} />
+        </div>
         {isConfirmDisplayed &&
             <ConfirmPanel fetchActivitiesList={fetchActivitiesList} fetchTrainingsList={fetchTrainingsList} setSelectedTraining={setSelectedTraining} setIsConfirmDisplayed={setIsConfirmDisplayed} selectedTraining={selectedTraining}/>
         }
@@ -86,6 +91,10 @@ useEffect(()=>{
 
         
         }
+
+
+        </div>
+
         </>
     )
 }

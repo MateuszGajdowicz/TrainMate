@@ -6,7 +6,7 @@ function TodayTrainings({todayTrainings,setIsFailedDisplayed, trainingsList, set
 
     return(
 
-        <div style={{height:"33%"}} className='TodayTrainingsContainer'> 
+        <div  className='TodayTrainingsContainer'> 
         <h2>Dzisiejsze treningi</h2>
         <div className='AllTrainingsContainer'>
             { todayTrainings.length!==0?
