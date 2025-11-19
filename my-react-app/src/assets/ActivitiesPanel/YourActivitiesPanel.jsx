@@ -10,8 +10,12 @@ function YourActivitiesPanel({userInfo,allChallengesList,trainingOptions,user,se
     },[])
     return(
         <>
+        <div className='twoContainer'>
         <ActivitiesList fetchActivitiesList={fetchActivitiesList} trainingOptions={trainingOptions} activitesList={activitesList} setActivitesList={setActivitesList} displayedActivitiesList={displayedActivitiesList} setDisplayedActivitiesList={setDisplayedActivitiesList}  />
         <AddNewActivity userInfo={userInfo} activitesList={activitesList} allChallengesList={allChallengesList} user={user} trainingOptions={trainingOptions}  fetchActivitiesList={fetchActivitiesList}/>
+
+        </div>
+       
         </>
     )
 

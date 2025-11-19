@@ -11,6 +11,9 @@ function ActivitiesList({fetchActivitiesList,trainingOptions,activitesList,setAc
 
     const [favouriteActivitiesList, setFavouritesActivitiesList] = useState([])
 
+    const [isFilterDisplayed, setIsFilterDisplayed] = useState(true)
+
+
     useEffect(()=>{
         if(activitesList && displayedActivitiesList){
             setFavouritesActivitiesList(activitesList.filter(element=>element.isFavourite===true))
@@ -74,16 +77,25 @@ async function handleFavourite(element){
     <>
       <div className="YourTrainingsContainer">
         <div className="HeadingContainer">
-          <h1 className="Heading">WYKONANE TRENINGI</h1>
+        <div style={{display:'flex', justifyContent:'space-between',alignItems:'center', width:'100%'}}>
+
+          <h2 className="Heading">WYKONANE TRENINGI</h2>
+            <button onClick={()=>setIsFilterDisplayed(prev=>!prev)} className='filterButton'>Filtruj</button>
+                </div>
+
 
         </div>
+        {
+        isFilterDisplayed &&
+        <FilterActivitiesContainer favouriteActivitiesList={favouriteActivitiesList} trainingOptions={trainingOptions}  displayedActivitiesList={displayedActivitiesList} setDisplayedActivitiesList={setDisplayedActivitiesList} activitesList={activitesList}/>
 
-<FilterActivitiesContainer favouriteActivitiesList={favouriteActivitiesList} trainingOptions={trainingOptions}  displayedActivitiesList={displayedActivitiesList} setDisplayedActivitiesList={setDisplayedActivitiesList} activitesList={activitesList}/>
+        }
+
 
 <div className='AllSingleTrainigsContainer'>
             {displayedActivitiesList.length!==0?
             displayedActivitiesList.map((element,index)=>(
-            <div  className='SingleTrainigContainer' key={index}>
+            <div   className='SingleTrainigContainer' key={index}>
             <h1 className='ToggleFavourite'style={{color:element.isFavourite?"hsl(26, 100%, 50%)":"black"}} onClick={()=>handleFavourite(element)}>❤︎</h1>
 
 
@@ -102,11 +114,15 @@ async function handleFavourite(element){
                         )}
 
                     <div className='HorizontalContainer'>
+                        <div className='infoContainer'>
                         <h4>{element.activityGoalValue} {element.activityUnit}</h4>
                         <h4>{element.activityDate}</h4>
                         <h4>{element.activityHour}</h4>
-                        <div className='buttonContainer' style={{width:"25%"}}>
-                            <button onClick={()=>elementToExpand?setElementToExpand(null):setElementToExpand(element)} >{elementToExpand===element?"Zwiń":"Rozwiń"}</button>
+
+                        </div>
+
+                        <div className='buttonContainer' >
+                            <button onClick={()=>elementToExpand ===element?setElementToExpand(null):setElementToExpand(element)}>{elementToExpand ===element?"Zwiń":"Rozwiń"}</button>
                             <button onClick={()=>DeleteActivity(element.id)} >Usuń</button>
 
                         </div>

@@ -36,10 +36,7 @@
         height: auto;
         width: 100%;
   }
-}
-
-@media(max-width:479px){
-  .allContainer{
+    .allContainer{
     flex-direction: column;
     gap: 0px;
     transform: translateX(-50%) ;
@@ -47,6 +44,7 @@
     top:10%;
 
 
-  }
 
+  }
 }
+

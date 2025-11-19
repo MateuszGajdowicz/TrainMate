@@ -1,0 +1,20 @@
+.twoContainer{
+    display: flex;
+    position: absolute;
+    top: 12%;
+    width: 95%;
+    left: 2%;
+    justify-content: space-around;
+}
+@media(max-width:479px){
+    .twoContainer{
+        flex-direction: column;
+        width: 100%;
+        height: auto;
+        top: 7%;
+        gap: 10px;
+        align-items: center;
+
+    }
+
+}

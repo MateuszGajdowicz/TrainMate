@@ -52,7 +52,7 @@ function FilterActivitiesContainer({favouriteActivitiesList,trainingOptions,Sepa
 
     return(<>
     <div className='FilterTrainingsContainer'>
-        <input style={{width:'35%'}}value={FilteredCategory} type="text" list='trainings'placeholder='Wyszukaj po kategorii'onChange={FilterTrainingsByCategory}/>
+        <input value={FilteredCategory} type="text" list='trainings'placeholder='Wyszukaj po kategorii'onChange={FilterTrainingsByCategory}/>
         <datalist id='trainings'>
             {trainingOptions.map((element, index)=>(
                 <option value={element} key={index}/>

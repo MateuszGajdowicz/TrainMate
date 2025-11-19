@@ -6,12 +6,14 @@ import { addDoc, collection,doc } from 'firebase/firestore';
 import FilterTrainingsContainer from './FilterTrainingsContainer';
 
 
-function TrainingsList({fetchTrainingsList,trainingOptions,displayedTrainingsList,setDisplayedTrainingList,trainingsList,setTrainingsList,setSelectedTraining}){
+function TrainingsList({setIsAddDispalyed,fetchTrainingsList,trainingOptions,displayedTrainingsList,setDisplayedTrainingList,trainingsList,setTrainingsList,setSelectedTraining}){
 
     const [elementToExpand, setElementToExpand] = useState(null)
     const [periodOFTrainings,setperiodOFTrainings] = useState('Nadchodzące treningi')
 
     const [favouritesTrainigsList, setFavouritesTrainingsList] = useState([])
+
+    const [isFilterDisplayed, setIsFilterDisplayed] = useState(true)
 
     useEffect(()=>{
         if(trainingsList && displayedTrainingsList){
@@ -129,7 +131,12 @@ async function handleFavourite(element){
         <>
         <div className='YourTrainingsContainer'>
             <div className='HeadingContainer'> 
+                <div style={{display:'flex', justifyContent:'space-between',alignItems:'center', width:'100%'}}>
                 <h1 className='Heading'>TWOJE TRENINGI</h1>
+                <button onClick={()=>setIsFilterDisplayed(prev=>!prev)} className='filterButton'>Filtruj</button>
+
+                </div>
+
                 <select className='PeriodSelect'value={periodOFTrainings} name="" id="" onChange={(event)=>setperiodOFTrainings(event.target.value)} >
                 <option  value="Nadchodzące treningi">Nadchodzące treningi</option>
                 <option value="Zaległe treningi">Zaległe treningi</option>
@@ -137,8 +144,10 @@ async function handleFavourite(element){
 
             </div>
 
+        {isFilterDisplayed&&
+                <FilterTrainingsContainer favouritesTrainigsList={favouritesTrainigsList} periodOFTrainings={periodOFTrainings} SeparateTrainings={SeparateTrainings} trainingsList={trainingsList} trainingOptions={trainingOptions} displayedTrainingsList={displayedTrainingsList} setDisplayedTrainingList={setDisplayedTrainingList}/>
 
-        <FilterTrainingsContainer favouritesTrainigsList={favouritesTrainigsList} periodOFTrainings={periodOFTrainings} SeparateTrainings={SeparateTrainings} trainingsList={trainingsList} trainingOptions={trainingOptions} displayedTrainingsList={displayedTrainingsList} setDisplayedTrainingList={setDisplayedTrainingList}/>
+        }
         <div className='AllSingleTrainigsContainer'>
             {displayedTrainingsList.length!==0?
             displayedTrainingsList.map((element,index)=>(
@@ -159,9 +168,13 @@ async function handleFavourite(element){
                         )}
 
                     <div className='HorizontalContainer'>
+                        <div className='infoContainer'>
                         <h4>{element.trainingGoalValue} {element.trainingUnit}</h4>
                         <h4>{element.trainingDate}</h4>
                         <h4>{element.trainingHour}</h4>
+
+                        </div>
+
                         <div className='buttonContainer'>
                             <button onClick={()=>elementToExpand ===element?setElementToExpand(null):setElementToExpand(element)}>{elementToExpand ===element?"Zwiń":"Rozwiń"}</button>
                             <button onClick={()=>setSelectedTraining(element)}>Edytuj</button>

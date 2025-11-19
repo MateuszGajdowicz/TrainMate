@@ -1,11 +1,10 @@
 .AddNewTrainingContainer{
-    position: absolute;
-    left: 50%;
+    width: 35%;
     display: flex;
     flex-direction: column;
-    width: 35%;
-    top: 13%;
-    background: linear-gradient(135deg, hsl(26, 100%, 92%, 0.95) 20%, hsl(26, 100%, 50%, 0.95) 100%);
+    align-items: ce;
+
+            background-color:hsl(28, 100%, 80%);
     border-radius: 30px;
     height: 70%;
     gap: 23px;
@@ -13,7 +12,7 @@
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3); /* cień */
     .goalContainer{
         display: flex;
-        width: 80%;
+        width: 95%;
         justify-content: space-between;
         .Inputs{
             width:70%;
@@ -36,7 +35,7 @@
         margin: 0px;
     }
     .Inputs{
-        width: 80%;
+        width: 95%;
         height: 30px;
         border-radius: 20px;
         border: 3px hsl(28, 100%, 60%) solid;
@@ -45,6 +44,8 @@
         display: flex;
         gap: 20px;
         width: 60%;
+        justify-content: center;
+        align-items: center;
         justify-content: space-between;
         button{
             width: 50%;
@@ -64,4 +65,24 @@
     }
 
     
+}
+@media(max-width:479px){
+    .AddNewTrainingContainer{
+        width: 75%;
+        align-items: center;
+        margin-bottom: 100px;
+    }
+    .AddNewTrainingContainer .checkContainer{
+        width: 110%;
+        font-size: 1.5rem;
+
+    }
+    .AddNewTrainingContainer .ButtonContainer{
+        width: 100%;
+    }
+    .AddNewTrainingContainer .ButtonContainer button{
+        font-size: 1.2rem;
+        width: 50%;
+    }
+
 }

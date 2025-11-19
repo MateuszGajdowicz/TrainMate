@@ -29,3 +29,18 @@
         }
 
 }
+@media(max-width:479px){
+    .FilterTrainingsContainer{
+        flex-direction: column;
+        align-items: center;
+    }
+    .FilterTrainingsContainer input{
+        width: 100%;
+    }
+    .FilterTrainingsContainer button{
+        font-size: 1.3rem;
+        padding: 10px;
+        width: 50%;
+        background-color: gainsboro;
+    }
+}
