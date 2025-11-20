@@ -24,3 +24,7 @@ body {
   }
 
 }
+button {
+  -webkit-tap-highlight-color: transparent; /* usuwa niebieskie podświetlenie na iOS/Chrome Android */
+  outline: none; /* usuwa focus */
+}

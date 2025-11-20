@@ -172,7 +172,7 @@ useEffect(()=>{
 
             </div>
 
-            <Select value={selectedActivities}  styles={{ control: (base) => ({ ...base, borderRadius: '20px', border: '3px solid hsl(28, 100%, 60%)', width: '400px', boxShadow: 'none' }), placeholder: (base) => ({ ...base, color: '#999' }), multiValue: (base) => ({ ...base, borderRadius: '10px', backgroundColor: 'hsl(28, 100%, 90%)' }) }}
+            <Select value={selectedActivities}  styles={{ control: (base) => ({ ...base, borderRadius: '20px', border: '3px solid hsl(28, 100%, 60%)', width: '', boxShadow: 'none' }), placeholder: (base) => ({ ...base, color: '#999' }), multiValue: (base) => ({ ...base, borderRadius: '10px', backgroundColor: 'hsl(28, 100%, 90%)' }) }}
             onChange={setSelectedActivites} classNamePrefix='rs' isMulti options={trainingOptionsArray} type="text" placeholder='Wybierz preferowane aktywności'/>
             <div className='GoalContainer'>
                 <p>Wybierz intensywność:</p>

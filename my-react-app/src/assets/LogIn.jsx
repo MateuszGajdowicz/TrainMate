@@ -1,6 +1,8 @@
 import { signInWithEmailAndPassword } from "firebase/auth"
 import { useState } from "react"
 import { auth } from "../firebase";
+import { useNavigate } from "react-router-dom";
+
 
 function LogIn({setIsRegistered,setIsLoggedIn, user, setIsPasswordBeingReset}){
     const [email,setEmail] = useState('')
@@ -9,9 +11,8 @@ function LogIn({setIsRegistered,setIsLoggedIn, user, setIsPasswordBeingReset}){
 
     const [isResetDisplayed, setIsResetDisplayed] = useState(false)
 
-    function resetPadssword(){
+    const navigate = useNavigate();
 
-    }
 
 
     async function LogInUser() {
@@ -25,6 +26,7 @@ function LogIn({setIsRegistered,setIsLoggedIn, user, setIsPasswordBeingReset}){
     if (user.emailVerified) {
       window.alert("Pomyślnie zalogowano ✅");
       setIsLoggedIn(true);
+      navigate("/mainPanel")
     } else {
       setMessage("Twój email nie został zweryfikowany ❌");
       await auth.signOut();

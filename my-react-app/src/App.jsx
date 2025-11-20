@@ -16,6 +16,7 @@ import ChartsPanel from './assets/ChartsPanel/ChartsPANEL.JSX'
 import UserProfilePanel from './assets/UserProfilePanel/UserProfilePanel'
 import ResetPasswordContainer from './assets/ResetPasswordContainer'
 
+
 import { collection, getDocs, query, where, doc, addDoc, updateDoc } from 'firebase/firestore'
 import { defaultChallenges } from './assets/ChallenegesPanel/DefaultChallenges'
 
@@ -78,6 +79,8 @@ function App() {
     'Bieg na orientację',
   ]
 
+
+
   const [displayedTrainingsList, setDisplayedTrainingList] = useState([])
   const [trainingsList, setTrainingsList] = useState([])
   const [todayTrainings, setTodayTrainings] = useState([])
@@ -92,7 +95,7 @@ function App() {
   const [favourites, setFavourites] = useState([])
 
   const [user, setUser] = useState(null)
-  const [isLoggedIn, setIsLoggedIn] = useState(true)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [isRegistered, setIsRegistered] = useState(true)
   const [isEmailConfirmDisplayed, setIsEmailConfirmDisplayed] = useState(false)
   const [isPasswordBeingReset, setIsPasswordBeingReset] = useState(false)
@@ -255,7 +258,7 @@ function App() {
   return (
     <>
       <div style={{ opacity: isRunnerOpacityFull ? '1' : '0.55' }} className="BackgroundImage"></div>
-
+    <BrowserRouter>
       {!isLoggedIn ? (
         <>
           {!isRegistered ? (
@@ -271,24 +274,29 @@ function App() {
               <ConfirmEmail setIsEmailConfirmDisplayed={setIsEmailConfirmDisplayed} setIsRegistered={setIsRegistered} />
             )
           ) : !isPasswordBeingReset ? (
-            <LogIn
+            <Routes>
+              <Route path="/" element={                
+                <LogIn
               setIsPasswordBeingReset={setIsPasswordBeingReset}
               user={user}
               setIsRegistered={setIsRegistered}
               setIsLoggedIn={setIsLoggedIn}
-            />
+            />} />
+
+
+            </Routes>
+
           ) : (
             <ResetPasswordContainer setIsPasswordBeingReset={setIsPasswordBeingReset} />
           )}
         </>
       ) : (
         <>
-          <BrowserRouter>
             <NavBar LogOut={LogOut} />
 
             <Routes>
               <Route
-                path="/"
+                path="mainPanel"
                 element={
                   <MainPanel
                     FetchPersonalChallengesList={FetchPersonalChallengesList}
@@ -384,9 +392,11 @@ function App() {
                 }
               />
             </Routes>
-          </BrowserRouter>
         </>
+
       )}
+              </BrowserRouter>
+
     </>
   )
 }

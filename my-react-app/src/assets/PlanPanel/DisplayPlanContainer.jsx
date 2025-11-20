@@ -148,14 +148,18 @@ useEffect(()=>{
     }
     return(<>
     
-    <div style={{left:'50%'}} className="YourTrainingsContainer" id="DisplayPlanContainer">
+    <div className="YourTrainingsContainer" id="DisplayPlanContainer">
         <div className='headingContainer'>
             <h1>Twój nowy plan</h1>
-            <input min="1" onChange={event=>setPlanRepeatValue(Number(event.target.value))} type="number" placeholder='Na ile tygodni?' className='planInput' />
+            <div style={{display:'flex', justifyContent:'space-around', alignItems:'center'}}>
+                <input min="1" onChange={event=>setPlanRepeatValue(Number(event.target.value))} type="number" placeholder='Na ile tygodni?' className='planInput' />
             <button onClick={()=>MovePlanToTrainings(trainingPlan)}>Dodaj do treningów</button>
             <button onClick={()=>generatePDF(trainingPlan)} className='downloadButton'></button>
 
 
+
+            </div>
+            
         </div>
             <div className='InfoContainer'>
                 {
@@ -181,9 +185,13 @@ useEffect(()=>{
             <div key={index} style={{height:elementToExpand===element && "auto"}} className='SingleTrainigContainer'>
                 <h3>{element.activity}</h3>
                     <div className='HorizontalContainer'>
+                        <divs className = 'infoContainer'>
                         <h4>{element.trainingGoalValue} {element.trainingUnit}</h4>
                         <h4>{element.timeOfDay}</h4>
                         <h4>{element.trainingDays}</h4>
+
+                        </divs>
+
                         <div className='buttonContainer'>
                             <button onClick={()=>{elementToExpand===element?setElementToExpand(null):setElementToExpand(element)}} >{elementToExpand===element?"Zwiń":"Rozwiń"}</button>
                             <button onClick={()=>{setSelectedTrainingIndex(index);setSelectedTraining(element)}}>Edytuj</button>

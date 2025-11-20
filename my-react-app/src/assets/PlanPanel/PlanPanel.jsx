@@ -5,6 +5,7 @@ import { useState } from 'react'
 import FillTrainingPlan from './FillTrainingPlan'
 import { CheckIsGoal } from './PlanCreator'
 import CategoryInformationContainer from './CategoryInformationContainer'
+import './PlanPanel.css'
 function PlanPanel({trainingsList,fetchTrainingsList,FetchTrainingPlanList,setTrainingPlanData,trainingPlanData,user,trainingOptions, setTrainingPlan,trainingPlan}){
 
     const [selectedTraining,setSelectedTraining ]= useState(null)
@@ -22,7 +23,12 @@ function PlanPanel({trainingsList,fetchTrainingsList,FetchTrainingPlanList,setTr
 
     
     
-    return(<>
+    return(
+    <div className='TwoContainer'
+    
+    
+    >
+        <>
     {
         selectedTraining ?
         (
@@ -62,6 +68,8 @@ function PlanPanel({trainingsList,fetchTrainingsList,FetchTrainingPlanList,setTr
 
     }
     <DisplayPlanContainer isLoaderDisplayed={isLoaderDisplayed} trainingsList={trainingsList} fetchTrainingsList={fetchTrainingsList} FetchTrainingPlanList={FetchTrainingPlanList} setSelectedTrainingIndex={setSelectedTrainingIndex} setSelectedTraining={setSelectedTraining} trainingPlan={trainingPlan}/>
-    </>)
+    </>
+    </div>
+    )
 }
 export default PlanPanel

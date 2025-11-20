@@ -1,12 +1,14 @@
 #DisplayPlanContainer{
     background-color: hsl(26, 100%, 96%);
-    top: 8%;
     display: flex;
+    width: 45%;
     align-items: start;
     border-radius: 30px;
+    margin-top: 0px;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3); /* cień */
     .AllSingleTrainigsContainer{
         top: 20%;
+        margin-bottom: 30px;
     }
     .InfoContainer{
         margin-left: 20px;
@@ -57,4 +59,21 @@ background: linear-gradient(135deg, hsl(0, 0%, 100%) 35%, hsl(26, 100%, 50%) 150
 
         
     }
+}
+@media(max-width:479px){
+    #DisplayPlanContainer{
+        width: 100%;
+        .headingContainer{
+            flex-direction: column;
+            margin: 0px;
+            
+
+        }
+        .SingleTrainigContainer .HorizontalContainer .infoContainer{
+            display: flex;
+            flex-direction: row;
+            
+    }
+    }
+
 }
